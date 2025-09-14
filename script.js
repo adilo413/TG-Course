@@ -652,15 +652,26 @@ class CourseManager {
 
     // Deep Link Handling
     handleDeepLink() {
+        console.log('🔍 Handling deep link...', {
+            url: window.location.href,
+            search: window.location.search,
+            hash: window.location.hash
+        });
+
         // Check for Telegram Mini App startapp parameter first
         const urlParams = new URLSearchParams(window.location.search);
         const startapp = urlParams.get('startapp');
+        console.log('📱 Startapp parameter:', startapp);
+        
         if (startapp) {
             const parts = startapp.split('_');
+            console.log('🔧 Parsed startapp parts:', parts);
             if (parts.length >= 2) {
                 const courseId = parts[0];
                 const token = parts.slice(1).join('_'); // In case token contains underscores
+                console.log('✅ Found courseId:', courseId, 'token:', token);
                 this.userRole = 'student';
+                this.simulateTelegramUser(); // Initialize Telegram user data
                 this.loadStudentCourse(courseId, token);
                 return;
             }
@@ -673,7 +684,9 @@ class CourseManager {
             if (hashMatch) {
                 const courseId = hashMatch[1];
                 const token = hashMatch[2];
+                console.log('🔗 Hash-based routing - courseId:', courseId, 'token:', token);
                 this.userRole = 'student';
+                this.simulateTelegramUser(); // Initialize Telegram user data
                 this.loadStudentCourse(courseId, token);
                 return;
             }
@@ -684,9 +697,12 @@ class CourseManager {
         const token = urlParams.get('token');
 
         if (courseId && token) {
+            console.log('🔄 Fallback routing - courseId:', courseId, 'token:', token);
             this.userRole = 'student';
+            this.simulateTelegramUser(); // Initialize Telegram user data
             this.loadStudentCourse(courseId, token);
         } else {
+            console.log('❌ No valid deep link found, showing login');
             this.showScreen('login');
         }
     }
@@ -708,8 +724,12 @@ class CourseManager {
     detectUserRole() {
         // In a real app, this would check Telegram WebApp init data
         // For now, we'll simulate based on URL parameters
+        console.log('👤 Detecting user role:', this.userRole);
         if (this.userRole === 'student') {
             this.simulateTelegramUser();
+        } else if (!this.userRole) {
+            // Default to admin if no role is set
+            this.userRole = 'admin';
         }
     }
 
