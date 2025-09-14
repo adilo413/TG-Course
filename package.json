@@ -1,0 +1,26 @@
+{
+  "name": "tg-course-bot",
+  "version": "1.0.0",
+  "description": "Telegram Bot for Course Distribution",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "dev": "node bot.js"
+  },
+  "dependencies": {
+    "node-telegram-bot-api": "^0.64.0",
+    "dotenv": "^16.3.1",
+    "@supabase/supabase-js": "^2.38.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "course",
+    "education"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

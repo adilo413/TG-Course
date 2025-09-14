@@ -1,0 +1,27 @@
+# Copy this file to .env.local and update with your actual values
+
+# Database Configuration - Supabase
+NEXT_PUBLIC_SUPABASE_URL=https://vfzyxiuhrjrqhoxbdxwg.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmenl4aXVocmpycWhveGJkeHdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc4NTE4NTIsImV4cCI6MjA3MzQyNzg1Mn0.IOW_ER_I6UrpTDvn23qgAuLWp0iPzSn0tBVP_lKvRkw
+DATABASE_URL=postgresql://postgres:tutorplusodadb@db.vfzyxiuhrjrqhoxbdxwg.supabase.co:5432/postgres
+
+# Security
+JWT_SECRET=MySecureJWTKey2024!@#$%^&*()_+
+ADMIN_PASSWORD=admin123secure
+
+# Telegram Bot Configuration
+BOT_TOKEN=8480202227:AAGJkjHD7dTUFZiiAKUzeb_UHXCQ50XTNxQ
+CHANNEL_CHAT_ID=-1002798244043
+CHANNEL_INVITE_LINK=https://t.me/+JPNdO8oddSIxZjZk
+
+# Mini App Configuration
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:3000
+NEXT_PUBLIC_BOT_USERNAME=tutor_tiial_bot
+NEXT_PUBLIC_CHANNEL_ID=-1002798244043
+NEXT_PUBLIC_CHANNEL_INVITE_LINK=https://t.me/+JPNdO8oddSIxZjZk
+NEXT_PUBLIC_ADMIN_USER_ID=2798244043
+
+# Server Configuration
+PORT=3000
+NODE_ENV=development
