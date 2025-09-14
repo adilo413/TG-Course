@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Management App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="screen active">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>Course Manager</h1>
+                    <p>Admin Access</p>
+                </div>
+                <form id="loginForm" class="login-form">
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="adminPassword" placeholder="Enter admin password" required>
+                    </div>
+                    <button type="submit" class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </button>
+                </form>
+                <div id="loginError" class="error-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboardScreen" class="screen">
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fas fa-graduation-cap"></i> Course Manager</h1>
+                <div class="header-actions">
+                    <button id="createCourseBtn" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        New Course
+                    </button>
+                    <button id="settingsBtn" class="btn-secondary">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <button id="logoutBtn" class="btn-secondary">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="subjects-grid" id="subjectsGrid">
+                <!-- Subjects will be dynamically loaded here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Course Creation Screen -->
+    <div id="courseCreationScreen" class="screen">
+        <header class="app-header">
+            <div class="header-content">
+                <button id="backToDashboard" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <h1>Create New Course</h1>
+            </div>
+        </header>
+
+        <main class="course-editor-container">
+            <div class="editor-layout">
+                <div class="editor-panel">
+                    <div class="course-form">
+                        <div class="form-group">
+                            <label for="courseTitle">Course Title</label>
+                            <input type="text" id="courseTitle" placeholder="Enter course title">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="courseSubject">Subject</label>
+                            <select id="courseSubject">
+                                <option value="">Select Subject</option>
+                                <option value="amharic">Amharic</option>
+                                <option value="english">English</option>
+                                <option value="math">Math</option>
+                                <option value="science">Science</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Course Content</label>
+                            <div class="rich-text-toolbar">
+                                <!-- Font Family -->
+                                <select class="toolbar-select" id="fontFamily">
+                                    <option value="">Font Family</option>
+                                    <option value="Arial, sans-serif">Arial</option>
+                                    <option value="Georgia, serif">Georgia</option>
+                                    <option value="Times New Roman, serif">Times New Roman</option>
+                                    <option value="Verdana, sans-serif">Verdana</option>
+                                    <option value="Helvetica, sans-serif">Helvetica</option>
+                                    <option value="Courier New, monospace">Courier New</option>
+                                </select>
+                                
+                                <!-- Font Size -->
+                                <select class="toolbar-select" id="fontSize">
+                                    <option value="">Size</option>
+                                    <option value="12px">12px</option>
+                                    <option value="14px">14px</option>
+                                    <option value="16px">16px</option>
+                                    <option value="18px">18px</option>
+                                    <option value="20px">20px</option>
+                                    <option value="24px">24px</option>
+                                    <option value="28px">28px</option>
+                                    <option value="32px">32px</option>
+                                </select>
+                                
+                                <div class="toolbar-divider"></div>
+                                
+                                <!-- Text Formatting -->
+                                <button type="button" class="toolbar-btn" data-command="bold" title="Bold">
+                                    <i class="fas fa-bold"></i>
+                                </button>
+                                <button type="button" class="toolbar-btn" data-command="italic" title="Italic">
+                                    <i class="fas fa-italic"></i>
+                                </button>
+                                <button type="button" class="toolbar-btn" data-command="underline" title="Underline">
+                                    <i class="fas fa-underline"></i>
+                                </button>
+                                
+                                <div class="toolbar-divider"></div>
+                                
+                                <!-- Text Alignment -->
+                                <button type="button" class="toolbar-btn" data-command="justifyLeft" title="Align Left">
+                                    <i class="fas fa-align-left"></i>
+                                </button>
+                                <button type="button" class="toolbar-btn" data-command="justifyCenter" title="Align Center">
+                                    <i class="fas fa-align-center"></i>
+                                </button>
+                                <button type="button" class="toolbar-btn" data-command="justifyRight" title="Align Right">
+                                    <i class="fas fa-align-right"></i>
+                                </button>
+                                <button type="button" class="toolbar-btn" data-command="justifyFull" title="Justify">
+                                    <i class="fas fa-align-justify"></i>
+                                </button>
+                                
+                                <div class="toolbar-divider"></div>
+                                
+                                <!-- Lists and Media -->
+                                <button type="button" class="toolbar-btn" data-command="insertUnorderedList" title="Bullet List">
+                                    <i class="fas fa-list-ul"></i>
+                                </button>
+                                <button type="button" class="toolbar-btn" data-command="insertOrderedList" title="Numbered List">
+                                    <i class="fas fa-list-ol"></i>
+                                </button>
+                                <button type="button" class="toolbar-btn" data-command="insertImage" title="Insert Image">
+                                    <i class="fas fa-image"></i>
+                                </button>
+                                
+                                <div class="toolbar-divider"></div>
+                                
+                                <!-- Text Color -->
+                                <input type="color" class="toolbar-color" id="textColor" title="Text Color" value="#000000">
+                                
+                                <!-- Background Color -->
+                                <input type="color" class="toolbar-color" id="backgroundColor" title="Background Color" value="#ffffff">
+                            </div>
+                            <div id="courseContent" class="rich-text-editor" contenteditable="true" placeholder="Write your course content here..."></div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button id="saveCourse" class="btn-primary">
+                                <i class="fas fa-save"></i>
+                                Save Course
+                            </button>
+                            <button id="previewCourse" class="btn-secondary">
+                                <i class="fas fa-eye"></i>
+                                Preview
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="preview-panel">
+                    <div class="preview-header">
+                        <h3>Preview</h3>
+                    </div>
+                    <div id="coursePreview" class="course-preview">
+                        <p class="preview-placeholder">Start writing to see preview...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Settings Screen -->
+    <div id="settingsScreen" class="screen">
+        <header class="app-header">
+            <div class="header-content">
+                <button id="backToDashboardFromSettings" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <h1>Settings</h1>
+            </div>
+        </header>
+
+        <main class="settings-container">
+            <div class="settings-card">
+                <h2>Change Admin Password</h2>
+                <form id="changePasswordForm">
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password</label>
+                        <input type="password" id="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <input type="password" id="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-key"></i>
+                        Change Password
+                    </button>
+                </form>
+                <div id="passwordError" class="error-message"></div>
+                <div id="passwordSuccess" class="success-message"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Courses List Screen -->
+    <div id="coursesListScreen" class="screen">
+        <header class="app-header">
+            <div class="header-content">
+                <button id="backToSubjects" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <h1 id="subjectTitle">Subject Courses</h1>
+            </div>
+        </header>
+
+        <main class="courses-container">
+            <div id="coursesList" class="courses-grid">
+                <!-- Courses will be dynamically loaded here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Student Course Reader Screen -->
+    <div id="studentCourseScreen" class="screen">
+        <header class="student-header">
+            <div class="student-header-content">
+                <button id="backToTelegram" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Telegram
+                </button>
+                <div class="course-info">
+                    <h1 id="studentCourseTitle">Course Title</h1>
+                    <div class="course-meta-student">
+                        <span id="studentCourseSubject"></span>
+                        <span id="studentCourseDate"></span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="student-course-content">
+            <div class="course-reader">
+                <div id="studentCourseContent" class="course-content">
+                    <!-- Course content will be loaded here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Watermark -->
+        <div id="watermark" class="watermark">
+            <span id="userInfo">Telegram User</span>
+        </div>
+    </div>
+
+    <!-- Access Denied Screen -->
+    <div id="accessDeniedScreen" class="screen">
+        <div class="access-denied-container">
+            <div class="access-denied-card">
+                <div class="access-denied-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h1>Access Denied</h1>
+                <p>You don't have permission to view this course.</p>
+                <div class="access-reasons">
+                    <div class="reason-item">
+                        <i class="fas fa-link"></i>
+                        <span>This course may have been deactivated by the admin</span>
+                    </div>
+                    <div class="reason-item">
+                        <i class="fas fa-key"></i>
+                        <span>Invalid or expired access link</span>
+                    </div>
+                    <div class="reason-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Access verification failed</span>
+                    </div>
+                </div>
+                <div class="access-actions">
+                    <button class="btn-primary" onclick="window.courseManager.contactAdmin()">
+                        <i class="fas fa-envelope"></i>
+                        Contact Admin
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="screen">
+        <div class="loading-container">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <h2>Loading Course...</h2>
+                <p>Please wait while we verify your access</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="supabase.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

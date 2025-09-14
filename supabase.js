@@ -1,0 +1,236 @@
+// Supabase configuration
+const SUPABASE_URL = 'https://vfzyxiuhrjrqhoxbdxwg.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmenl4aXVocmpycWhveGJkeHdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc4NTE4NTIsImV4cCI6MjA3MzQyNzg1Mn0.IOW_ER_I6UrpTDvn23qgAuLWp0iPzSn0tBVP_lKvRkw';
+
+// Initialize Supabase client
+const { createClient } = supabase;
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Supabase API class
+class SupabaseAPI {
+    constructor() {
+        this.client = supabaseClient;
+    }
+
+    // Authentication
+    async loginAdmin(password) {
+        try {
+            // For now, we'll use a simple password check
+            // In production, you'd use Supabase Auth
+            if (password === 'admin123') {
+                // Create a simple session token
+                const token = btoa(JSON.stringify({
+                    admin: true,
+                    timestamp: Date.now()
+                }));
+                localStorage.setItem('admin_token', token);
+                return { success: true, token };
+            } else {
+                return { success: false, error: 'Invalid password' };
+            }
+        } catch (error) {
+            return { success: false, error: error.message };
+        }
+    }
+
+    async logoutAdmin() {
+        localStorage.removeItem('admin_token');
+        return { success: true };
+    }
+
+    async isAdminLoggedIn() {
+        const token = localStorage.getItem('admin_token');
+        if (!token) return false;
+        
+        try {
+            const decoded = JSON.parse(atob(token));
+            // Check if token is not expired (24 hours)
+            return Date.now() - decoded.timestamp < 24 * 60 * 60 * 1000;
+        } catch {
+            return false;
+        }
+    }
+
+    // Courses
+    async getCourses() {
+        try {
+            const { data, error } = await this.client
+                .from('courses')
+                .select('*')
+                .order('created_at', { ascending: false });
+            
+            if (error) throw error;
+            return { success: true, courses: data || [] };
+        } catch (error) {
+            console.error('Get courses error:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async getCourse(courseId) {
+        try {
+            const { data, error } = await this.client
+                .from('courses')
+                .select('*')
+                .eq('course_id', courseId)
+                .single();
+            
+            if (error) throw error;
+            return { success: true, course: data };
+        } catch (error) {
+            console.error('Get course error:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async createCourse(courseData) {
+        try {
+            const course = {
+                course_id: this.generateId(),
+                title: courseData.title,
+                subject: courseData.subject,
+                content: courseData.content,
+                images: courseData.images || [],
+                is_active: true,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            };
+
+            const { data, error } = await this.client
+                .from('courses')
+                .insert([course])
+                .select()
+                .single();
+            
+            if (error) throw error;
+            return { success: true, course: data };
+        } catch (error) {
+            console.error('Create course error:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async updateCourse(courseId, updates) {
+        try {
+            const updateData = {
+                ...updates,
+                updated_at: new Date().toISOString()
+            };
+
+            const { data, error } = await this.client
+                .from('courses')
+                .update(updateData)
+                .eq('course_id', courseId)
+                .select()
+                .single();
+            
+            if (error) throw error;
+            return { success: true, course: data };
+        } catch (error) {
+            console.error('Update course error:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async deleteCourse(courseId) {
+        try {
+            const { error } = await this.client
+                .from('courses')
+                .delete()
+                .eq('course_id', courseId);
+            
+            if (error) throw error;
+            return { success: true };
+        } catch (error) {
+            console.error('Delete course error:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    // Tokens
+    async generateCourseToken(courseId) {
+        try {
+            const token = this.generateSecureToken();
+            const expiresAt = new Date();
+            expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+
+            const { data, error } = await this.client
+                .from('tokens')
+                .insert([{
+                    course_id: courseId,
+                    token: token,
+                    expires_at: expiresAt.toISOString()
+                }])
+                .select()
+                .single();
+            
+            if (error) throw error;
+            return { success: true, token: data.token };
+        } catch (error) {
+            console.error('Generate token error:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async validateCourseToken(courseId, token) {
+        try {
+            const { data, error } = await this.client
+                .from('tokens')
+                .select('*, courses(*)')
+                .eq('course_id', courseId)
+                .eq('token', token)
+                .single();
+            
+            if (error) throw error;
+            
+            // Check if token is expired
+            if (new Date(data.expires_at) < new Date()) {
+                return { success: false, error: 'Token expired' };
+            }
+            
+            return { success: true, course: data.courses };
+        } catch (error) {
+            console.error('Validate token error:', error);
+            return { success: false, error: 'Invalid token' };
+        }
+    }
+
+    // File Upload
+    async uploadImage(file) {
+        try {
+            const fileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${file.name.split('.').pop()}`;
+            
+            const { data, error } = await this.client.storage
+                .from('course-images')
+                .upload(fileName, file);
+            
+            if (error) throw error;
+            
+            const { data: { publicUrl } } = this.client.storage
+                .from('course-images')
+                .getPublicUrl(fileName);
+            
+            return { success: true, url: publicUrl, fileName };
+        } catch (error) {
+            console.error('Upload image error:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    // Utility functions
+    generateId() {
+        return Date.now().toString() + Math.random().toString(36).substr(2, 9);
+    }
+
+    generateSecureToken() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let token = '';
+        for (let i = 0; i < 32; i++) {
+            token += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return token;
+    }
+}
+
+// Create global instance
+window.supabaseAPI = new SupabaseAPI();
