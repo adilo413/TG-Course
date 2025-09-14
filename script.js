@@ -510,7 +510,7 @@ class CourseManager {
                 const token = result.token;
                 // Generate Telegram Mini App link that opens within Telegram
                 const miniAppUrl = `https://tg-course.vercel.app/#/course/${courseId}?token=${token}`;
-                const telegramLink = `https://t.me/tutor_tiial_bot/app?startapp=course_${courseId}_${token}`;
+                const telegramLink = `https://t.me/tutor_tiial_bot/CourseViewer?startapp=${courseId}_${token}`;
                 
                 // Find course for display
                 const course = this.courses.find(c => c.course_id === courseId);
@@ -652,7 +652,21 @@ class CourseManager {
 
     // Deep Link Handling
     handleDeepLink() {
-        // Check for hash-based routing first
+        // Check for Telegram Mini App startapp parameter first
+        const urlParams = new URLSearchParams(window.location.search);
+        const startapp = urlParams.get('startapp');
+        if (startapp) {
+            const parts = startapp.split('_');
+            if (parts.length >= 2) {
+                const courseId = parts[0];
+                const token = parts.slice(1).join('_'); // In case token contains underscores
+                this.userRole = 'student';
+                this.loadStudentCourse(courseId, token);
+                return;
+            }
+        }
+
+        // Check for hash-based routing
         const hash = window.location.hash;
         if (hash) {
             const hashMatch = hash.match(/#\/course\/([^\/\?]+)\?token=(.+)/);
@@ -666,7 +680,6 @@ class CourseManager {
         }
 
         // Fallback to query parameters
-        const urlParams = new URLSearchParams(window.location.search);
         const courseId = this.getCourseIdFromUrl();
         const token = urlParams.get('token');
 
