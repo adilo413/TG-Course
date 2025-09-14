@@ -508,12 +508,14 @@ class CourseManager {
             
             if (result.success) {
                 const token = result.token;
-                const link = `${window.location.origin}${window.location.pathname}#/course/${courseId}?token=${token}`;
+                // Generate Telegram Mini App link that opens within Telegram
+                const miniAppUrl = `https://tg-course.vercel.app/#/course/${courseId}?token=${token}`;
+                const telegramLink = `https://t.me/tutor_tiial_bot/app?startapp=course_${courseId}_${token}`;
                 
                 // Find course for display
                 const course = this.courses.find(c => c.course_id === courseId);
                 if (course) {
-                    this.showLinkModal(course.title, link);
+                    this.showLinkModal(course.title, telegramLink, miniAppUrl);
                 }
                 
                 // Refresh the courses list
@@ -538,7 +540,7 @@ class CourseManager {
         return token;
     }
 
-    showLinkModal(title, link) {
+    showLinkModal(title, telegramLink, miniAppUrl) {
         const modal = document.createElement('div');
         modal.className = 'link-modal';
         modal.innerHTML = `
@@ -551,25 +553,42 @@ class CourseManager {
                 </div>
                 <div class="link-modal-body">
                     <p><strong>Course:</strong> ${title}</p>
-                    <div class="link-container">
-                        <input type="text" value="${link}" readonly class="link-input" id="generatedLink">
-                        <button class="btn-copy" onclick="window.courseManager.copyToClipboard('${link}')">
-                            <i class="fas fa-copy"></i> Copy
-                        </button>
+                    
+                    <div style="margin: 15px 0;">
+                        <h4 style="color: #007bff; margin-bottom: 10px;">📱 Telegram Mini App Link (Recommended)</h4>
+                        <div class="link-container">
+                            <input type="text" value="${telegramLink}" readonly class="link-input" id="telegramLink">
+                            <button class="btn-copy" onclick="window.courseManager.copyToClipboard('${telegramLink}')">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <p style="font-size: 12px; color: #666; margin-top: 5px;">This link opens the course directly in Telegram</p>
                     </div>
-                    <p class="link-note">Share this link with your students. They can only access it if they're channel members.</p>
+                    
+                    <div style="margin: 15px 0;">
+                        <h4 style="color: #28a745; margin-bottom: 10px;">🌐 Web Link (Fallback)</h4>
+                        <div class="link-container">
+                            <input type="text" value="${miniAppUrl}" readonly class="link-input" id="webLink">
+                            <button class="btn-copy" onclick="window.courseManager.copyToClipboard('${miniAppUrl}')">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <p style="font-size: 12px; color: #666; margin-top: 5px;">This link opens in browser if Telegram link doesn't work</p>
+                    </div>
+                    
+                    <p class="link-note">Share the Telegram link with your students. They can only access it if they're channel members.</p>
                 </div>
             </div>
         `;
         
         document.body.appendChild(modal);
         
-        // Auto-close after 10 seconds
+        // Auto-close after 15 seconds
         setTimeout(() => {
             if (modal.parentNode) {
                 modal.remove();
             }
-        }, 10000);
+        }, 15000);
     }
 
     copyToClipboard(text) {
