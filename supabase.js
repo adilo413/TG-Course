@@ -16,23 +16,35 @@ class SupabaseAPI {
     async loginAdmin(password) {
         try {
             console.log('🔐 Supabase API - loginAdmin called with password:', password);
-            console.log('🔐 Expected password: admin123secure');
             
-            // For now, we'll use a simple password check
-            // In production, you'd use Supabase Auth
-            if (password === 'admin123secure') {
-                console.log('✅ Password matches! Creating session...');
-                // Create a simple session token
+            // Call the database function to verify admin password
+            const { data, error } = await this.client.rpc('verify_admin_password', {
+                input_username: 'admin',
+                input_password: password
+            });
+            
+            if (error) {
+                console.error('❌ Database error:', error);
+                return { success: false, error: 'Database error occurred' };
+            }
+            
+            console.log('🔐 Database response:', data);
+            
+            if (data && data.success) {
+                console.log('✅ Database authentication successful!');
+                // Create a session token
                 const token = btoa(JSON.stringify({
                     admin: true,
+                    admin_id: data.admin_id,
+                    username: data.username,
                     timestamp: Date.now()
                 }));
                 localStorage.setItem('admin_token', token);
                 console.log('✅ Session token created and stored');
-                return { success: true, token };
+                return { success: true, token, admin: data };
             } else {
-                console.log('❌ Password does not match');
-                return { success: false, error: 'Invalid password' };
+                console.log('❌ Database authentication failed:', data?.error);
+                return { success: false, error: data?.error || 'Invalid credentials' };
             }
         } catch (error) {
             console.error('❌ Supabase API - loginAdmin error:', error);
@@ -43,6 +55,40 @@ class SupabaseAPI {
     async logoutAdmin() {
         localStorage.removeItem('admin_token');
         return { success: true };
+    }
+
+    // Change admin password
+    async changeAdminPassword(currentPassword, newPassword) {
+        try {
+            console.log('🔐 Changing admin password...');
+            
+            // First verify current password
+            const verifyResult = await this.loginAdmin(currentPassword);
+            if (!verifyResult.success) {
+                return { success: false, error: 'Current password is incorrect' };
+            }
+            
+            // Update password in database
+            const { data, error } = await this.client
+                .from('admin_users')
+                .update({ 
+                    password_hash: newPassword, // In production, hash this password
+                    updated_at: new Date().toISOString()
+                })
+                .eq('username', 'admin')
+                .select();
+            
+            if (error) {
+                console.error('❌ Password update error:', error);
+                return { success: false, error: 'Failed to update password' };
+            }
+            
+            console.log('✅ Password updated successfully');
+            return { success: true, message: 'Password updated successfully' };
+        } catch (error) {
+            console.error('❌ Change password error:', error);
+            return { success: false, error: error.message };
+        }
     }
 
     async isAdminLoggedIn() {

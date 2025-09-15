@@ -14,17 +14,31 @@ class CourseManager {
         this.editingCourseId = null; // Track if we're editing a course
         this.userRole = 'admin'; // 'admin' or 'student'
         this.telegramUser = null;
-        this.api = window.supabaseAPI;
+        this.api = null; // Will be initialized when ready
         this.init();
     }
 
     init() {
+        this.initializeAPI();
         this.setupEventListeners();
         this.loadCourses();
         this.handleDeepLink();
         this.detectUserRole();
         this.setupHashRouting();
         this.setupStudentSection();
+    }
+
+    initializeAPI() {
+        // Wait for Supabase API to be available
+        if (window.supabaseAPI) {
+            this.api = window.supabaseAPI;
+            console.log('✅ Supabase API initialized');
+        } else {
+            // Retry after a short delay
+            setTimeout(() => {
+                this.initializeAPI();
+            }, 100);
+        }
     }
 
     setupEventListeners() {
@@ -267,6 +281,12 @@ class CourseManager {
 
         if (!password) {
             errorDiv.textContent = 'Please enter a password.';
+            errorDiv.classList.add('show');
+            return;
+        }
+
+        if (!this.api) {
+            errorDiv.textContent = 'System is still loading. Please wait a moment and try again.';
             errorDiv.classList.add('show');
             return;
         }
@@ -1213,15 +1233,10 @@ class CourseManager {
         });
     }
 
-    changePassword() {
+    async changePassword() {
         const currentPassword = document.getElementById('currentPassword').value;
         const newPassword = document.getElementById('newPassword').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
-
-        if (currentPassword !== this.adminPassword) {
-            this.showMessage('Current password is incorrect', 'error', 'passwordError');
-            return;
-        }
 
         if (newPassword !== confirmPassword) {
             this.showMessage('New passwords do not match', 'error', 'passwordError');
@@ -1233,13 +1248,30 @@ class CourseManager {
             return;
         }
 
-        this.adminPassword = newPassword;
-        this.showMessage('Password changed successfully!', 'success', 'passwordSuccess');
-        
-        // Clear form
-        document.getElementById('currentPassword').value = '';
-        document.getElementById('newPassword').value = '';
-        document.getElementById('confirmPassword').value = '';
+        if (!this.api) {
+            this.showMessage('System is still loading. Please try again.', 'error', 'passwordError');
+            return;
+        }
+
+        try {
+            this.showMessage('Changing password...', 'info', 'passwordError');
+            
+            const result = await this.api.changeAdminPassword(currentPassword, newPassword);
+            
+            if (result.success) {
+                this.showMessage('Password changed successfully!', 'success', 'passwordSuccess');
+                
+                // Clear form
+                document.getElementById('currentPassword').value = '';
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
+            } else {
+                this.showMessage(result.error || 'Failed to change password', 'error', 'passwordError');
+            }
+        } catch (error) {
+            console.error('Change password error:', error);
+            this.showMessage('Failed to change password. Please try again.', 'error', 'passwordError');
+        }
     }
 
     async loadCourses() {
