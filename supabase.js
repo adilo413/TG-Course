@@ -2,14 +2,39 @@
 const SUPABASE_URL = 'https://vfzyxiuhrjrqhoxbdxwg.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmenl4aXVocmpycWhveGJkeHdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc4NTE4NTIsImV4cCI6MjA3MzQyNzg1Mn0.IOW_ER_I6UrpTDvn23qgAuLWp0iPzSn0tBVP_lKvRkw';
 
+// Wait for Supabase library to be available
+function initializeSupabase() {
+    console.log('🔄 Initializing Supabase...');
+    console.log('🔄 supabase object available:', typeof supabase !== 'undefined');
+    
+    if (typeof supabase === 'undefined') {
+        console.error('❌ Supabase library not loaded');
+        return null;
+    }
+    
+    try {
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log('✅ Supabase client created successfully');
+        return supabaseClient;
+    } catch (error) {
+        console.error('❌ Failed to create Supabase client:', error);
+        return null;
+    }
+}
+
 // Initialize Supabase client
-const { createClient } = supabase;
-const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = initializeSupabase();
 
 // Supabase API class
 class SupabaseAPI {
     constructor() {
         this.client = supabaseClient;
+        if (!this.client) {
+            console.error('❌ SupabaseAPI: No client available');
+        } else {
+            console.log('✅ SupabaseAPI: Client initialized');
+        }
     }
 
     // Authentication

@@ -15,6 +15,8 @@ class CourseManager {
         this.userRole = 'admin'; // 'admin' or 'student'
         this.telegramUser = null;
         this.api = null; // Will be initialized when ready
+        this.apiRetryCount = 0; // Track retry attempts
+        this.maxApiRetries = 50; // Maximum retry attempts (5 seconds)
         this.init();
     }
 
@@ -29,16 +31,41 @@ class CourseManager {
     }
 
     initializeAPI() {
+        console.log(`🔄 Checking for Supabase API... (attempt ${this.apiRetryCount + 1}/${this.maxApiRetries})`);
+        console.log('🔄 window.supabaseAPI exists:', !!window.supabaseAPI);
+        
         // Wait for Supabase API to be available
         if (window.supabaseAPI) {
             this.api = window.supabaseAPI;
-            console.log('✅ Supabase API initialized');
+            console.log('✅ Supabase API initialized successfully');
+            console.log('✅ API methods available:', Object.keys(this.api));
         } else {
+            this.apiRetryCount++;
+            
+            if (this.apiRetryCount >= this.maxApiRetries) {
+                console.error('❌ Failed to initialize Supabase API after maximum retries');
+                console.error('❌ This might be due to a script loading issue');
+                // Show error message to user
+                const errorDiv = document.getElementById('loginError');
+                if (errorDiv) {
+                    errorDiv.textContent = 'Failed to load system. Please refresh the page.';
+                    errorDiv.classList.add('show');
+                }
+                return;
+            }
+            
+            console.log(`⏳ Supabase API not ready, retrying in 100ms... (${this.apiRetryCount}/${this.maxApiRetries})`);
             // Retry after a short delay
             setTimeout(() => {
                 this.initializeAPI();
             }, 100);
         }
+    }
+
+    retryApiInitialization() {
+        console.log('🔄 Manual API retry requested');
+        this.apiRetryCount = 0; // Reset retry counter
+        this.initializeAPI();
     }
 
     setupEventListeners() {
@@ -286,7 +313,7 @@ class CourseManager {
         }
 
         if (!this.api) {
-            errorDiv.textContent = 'System is still loading. Please wait a moment and try again.';
+            errorDiv.innerHTML = 'System is still loading. Please wait a moment and try again.<br><button type="button" onclick="courseManager.retryApiInitialization()" style="margin-top: 10px; padding: 5px 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Retry</button>';
             errorDiv.classList.add('show');
             return;
         }
