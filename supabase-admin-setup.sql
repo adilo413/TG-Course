@@ -24,7 +24,7 @@ END $$;
 INSERT INTO admin_users (username, password_hash, is_active)
 VALUES (
     'admin', 
-    'admin123secure', -- For now, store as plain text
+    'admin', -- For now, store as plain text
     TRUE
 ) ON CONFLICT (username) DO NOTHING;
 
