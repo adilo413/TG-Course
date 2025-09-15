@@ -520,10 +520,13 @@ class CourseManager {
                 const miniAppUrl = `https://tg-course.vercel.app/#/course/${courseId}?token=${token}`;
                 const telegramLink = `https://t.me/tutor_tiial_bot/CourseViewer?startapp=${courseId}_${token}`;
                 
+                // Also create a simple direct link for testing
+                const directLink = `https://tg-course.vercel.app/?course=${courseId}&token=${token}`;
+                
                 // Find course for display
                 const course = this.courses.find(c => c.course_id === courseId);
                 if (course) {
-                    this.showLinkModal(course.title, telegramLink, miniAppUrl);
+                    this.showLinkModal(course.title, telegramLink, miniAppUrl, directLink);
                 }
                 
                 // Refresh the courses list
@@ -548,7 +551,7 @@ class CourseManager {
         return token;
     }
 
-    showLinkModal(title, telegramLink, miniAppUrl) {
+    showLinkModal(title, telegramLink, miniAppUrl, directLink) {
         const modal = document.createElement('div');
         modal.className = 'link-modal';
         modal.innerHTML = `
@@ -567,6 +570,19 @@ class CourseManager {
                         <div class="link-container">
                             <input type="text" value="${telegramLink}" readonly class="link-input" id="telegramLink">
                             <button class="btn-copy" onclick="window.courseManager.copyToClipboard('${telegramLink}')">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <p style="font-size: 12px; color: #666; margin-top: 5px;">
+                            Use this link in your Telegram channel. Students will click it and see the course directly.
+                        </p>
+                    </div>
+                    
+                    <div style="margin: 15px 0;">
+                        <h4 style="color: #28a745; margin-bottom: 10px;">🔗 Direct Link (For Testing)</h4>
+                        <div class="link-container">
+                            <input type="text" value="${directLink}" readonly class="link-input" id="directLink">
+                            <button class="btn-copy" onclick="window.courseManager.copyToClipboard('${directLink}')">
                                 <i class="fas fa-copy"></i> Copy
                             </button>
                         </div>
@@ -663,7 +679,8 @@ class CourseManager {
         console.log('🔍 Handling deep link...', {
             url: window.location.href,
             search: window.location.search,
-            hash: window.location.hash
+            hash: window.location.hash,
+            pathname: window.location.pathname
         });
 
         // Check for Telegram Mini App startapp parameter first
@@ -685,6 +702,31 @@ class CourseManager {
             }
         }
 
+        // Check for Telegram WebApp init data
+        if (window.Telegram && window.Telegram.WebApp) {
+            const initData = window.Telegram.WebApp.initData;
+            console.log('📱 Telegram WebApp initData:', initData);
+            
+            if (initData) {
+                const initDataParams = new URLSearchParams(initData);
+                const startParam = initDataParams.get('start_param');
+                console.log('📱 Start param from initData:', startParam);
+                
+                if (startParam) {
+                    const parts = startParam.split('_');
+                    if (parts.length >= 2) {
+                        const courseId = parts[0];
+                        const token = parts.slice(1).join('_');
+                        console.log('✅ Found courseId from initData:', courseId, 'token:', token);
+                        this.userRole = 'student';
+                        this.simulateTelegramUser();
+                        this.autoLoadStudentCourse(courseId, token);
+                        return;
+                    }
+                }
+            }
+        }
+
         // Check for hash-based routing
         const hash = window.location.hash;
         if (hash) {
@@ -698,6 +740,35 @@ class CourseManager {
                 this.autoLoadStudentCourse(courseId, token);
                 return;
             }
+        }
+
+        // Check for path-based routing (for Telegram Mini Apps)
+        const pathname = window.location.pathname;
+        if (pathname.includes('/course/')) {
+            const pathMatch = pathname.match(/\/course\/([^\/\?]+)/);
+            if (pathMatch) {
+                const courseId = pathMatch[1];
+                const token = urlParams.get('token');
+                if (token) {
+                    console.log('🛤️ Path-based routing - courseId:', courseId, 'token:', token);
+                    this.userRole = 'student';
+                    this.simulateTelegramUser();
+                    this.autoLoadStudentCourse(courseId, token);
+                    return;
+                }
+            }
+        }
+
+        // Check for direct link format (?course=ID&token=TOKEN)
+        const directCourseId = urlParams.get('course');
+        const directToken = urlParams.get('token');
+        
+        if (directCourseId && directToken) {
+            console.log('🔄 Direct link format - courseId:', directCourseId, 'token:', directToken);
+            this.userRole = 'student';
+            this.simulateTelegramUser();
+            this.autoLoadStudentCourse(directCourseId, directToken);
+            return;
         }
 
         // Fallback to query parameters
