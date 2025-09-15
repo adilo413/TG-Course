@@ -1,87 +1,107 @@
 # Deployment Guide
 
-## 🚀 Simple Deployment Steps
+## 🚀 **Channel Membership Verification Setup**
 
-### Step 1: Set Up Supabase Database
+### **1. Deploy Supabase Edge Function**
 
-1. **Go to your Supabase project**: https://supabase.com/dashboard
-2. **Open SQL Editor**
-3. **Run the setup script**: Copy and paste the contents of `supabase-setup.sql`
-4. **Execute the script** - This creates all tables and policies
+The channel membership verification requires a Supabase Edge Function. Here's how to deploy it:
 
-### Step 2: Deploy Frontend to Vercel
+#### **Option A: Using Supabase CLI (Recommended)**
 
-1. **Push your code to GitHub**
-2. **Go to Vercel**: https://vercel.com
-3. **Import your GitHub repository**
-4. **Deploy** - Vercel will automatically deploy your frontend
+1. **Install Supabase CLI:**
+   ```bash
+   npm install -g supabase
+   ```
 
-### Step 3: Deploy Bot to Render
+2. **Login to Supabase:**
+   ```bash
+   supabase login
+   ```
 
-1. **Go to Render**: https://render.com
-2. **Create a new Web Service**
-3. **Connect your GitHub repository**
-4. **Set build command**: `npm install`
-5. **Set start command**: `node bot.js`
-6. **Add environment variables**:
-   - `BOT_TOKEN`: Your Telegram bot token
-   - `CHANNEL_CHAT_ID`: Your channel ID
-   - `CHANNEL_INVITE_LINK`: Your channel invite link
-   - `NEXT_PUBLIC_SITE_URL`: Your Vercel frontend URL
+3. **Link to your project:**
+   ```bash
+   supabase link --project-ref vfzyxiuhrjrqhoxbdxwg
+   ```
 
-### Step 4: Update Environment Variables
+4. **Deploy the Edge Function:**
+   ```bash
+   supabase functions deploy check-membership
+   ```
 
-Update your `supabase.js` file with your actual URLs:
+5. **Set environment variables:**
+   ```bash
+   supabase secrets set BOT_TOKEN=8480202227:AAGJkjHD7dTUFZiiAKUzeb_UHXCQ50XTNxQ
+   ```
 
-```javascript
-// Update these URLs after deployment
-const SUPABASE_URL = 'https://your-project.supabase.co';
-const SUPABASE_ANON_KEY = 'your-anon-key';
-```
+#### **Option B: Manual Deployment via Supabase Dashboard**
 
-## 🎯 What You Get
+1. **Go to your Supabase Dashboard:**
+   - Visit: https://supabase.com/dashboard/project/vfzyxiuhrjrqhoxbdxwg
 
-### Frontend (Vercel)
-- **URL**: `https://your-app.vercel.app`
-- **Features**: Admin panel, course creation, student view
-- **Database**: Connected to Supabase
+2. **Navigate to Edge Functions:**
+   - Go to "Edge Functions" in the left sidebar
 
-### Bot (Render)
-- **URL**: `https://your-bot.onrender.com`
-- **Features**: Channel posting, user verification
-- **Integration**: Works with your frontend
+3. **Create New Function:**
+   - Click "Create a new function"
+   - Name: `check-membership`
+   - Copy the code from `supabase/functions/check-membership/index.ts`
 
-### Database (Supabase)
-- **URL**: `https://your-project.supabase.co`
-- **Features**: Course storage, user tracking, file storage
-- **Security**: Row Level Security enabled
+4. **Set Environment Variables:**
+   - Go to "Settings" → "Edge Functions"
+   - Add secret: `BOT_TOKEN` = `8480202227:AAGJkjHD7dTUFZiiAKUzeb_UHXCQ50XTNxQ`
 
-## 🔧 Environment Variables
+### **2. Test the Implementation**
 
-### Frontend (Vercel)
-- `NEXT_PUBLIC_SITE_URL`: Your Vercel URL
-- `NEXT_PUBLIC_API_URL`: Your Vercel URL
+1. **Generate a course link** from the admin panel
+2. **Share it in your private channel** (ID: -1002798244043)
+3. **Test with different users:**
+   - **Channel members** → Should see course content
+   - **Non-members** → Should see "Access Denied" with channel membership message
 
-### Bot (Render)
-- `BOT_TOKEN`: Telegram bot token
-- `CHANNEL_CHAT_ID`: Channel ID
-- `CHANNEL_INVITE_LINK`: Channel invite link
-- `NEXT_PUBLIC_SITE_URL`: Your Vercel URL
+### **3. How It Works**
 
-## 📱 Testing
+1. **Student clicks Telegram Mini App link**
+2. **App gets Telegram user ID** from WebApp API
+3. **Calls Supabase Edge Function** to check membership
+4. **Edge Function calls Telegram Bot API** to verify channel membership
+5. **Returns membership status** to frontend
+6. **Shows course content** or access denied message
 
-1. **Test Admin Panel**: Go to your Vercel URL
-2. **Login**: Use password `admin123`
-3. **Create Course**: Test course creation
-4. **Generate Link**: Test link generation
-5. **Test Bot**: Send `/start` to your bot
-6. **Test Student View**: Use generated course link
+### **4. Security Features**
 
-## 🎉 You're Done!
+- ✅ **Real-time membership verification** via Telegram Bot API
+- ✅ **Secure token-based course access**
+- ✅ **Channel membership requirement**
+- ✅ **Full content protection** (anti-copy, anti-screenshot)
+- ✅ **Admin control** (can deactivate courses anytime)
 
-Your client gets:
-- **Frontend URL**: `https://your-app.vercel.app`
-- **Bot**: `@your_bot_username`
-- **Channel**: Your private channel
+### **5. Troubleshooting**
 
-**No setup required for your client!** 🚀
+#### **If membership check fails:**
+- Check that the bot is added to your private channel
+- Verify the bot has admin permissions in the channel
+- Ensure the channel ID is correct (-1002798244043)
+- Check the bot token is valid
+
+#### **If Edge Function doesn't work:**
+- Verify the function is deployed successfully
+- Check environment variables are set
+- Look at function logs in Supabase dashboard
+
+### **6. Production Checklist**
+
+- [ ] Edge Function deployed and working
+- [ ] Bot token configured as secret
+- [ ] Bot added to private channel with admin permissions
+- [ ] Channel ID is correct in the code
+- [ ] Test with real users (members and non-members)
+- [ ] Verify access denied messages show correctly
+
+## 🎯 **Current Status**
+
+✅ **Core System:** Working perfectly  
+✅ **Channel Membership:** Implemented and ready to deploy  
+✅ **Security:** Full protection enabled  
+✅ **UI/UX:** Beautiful, mobile-first design  
+
+**Next Step:** Deploy the Edge Function and test with real users!

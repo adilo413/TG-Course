@@ -813,13 +813,26 @@ class CourseManager {
     }
 
     simulateTelegramUser() {
-        // Simulate Telegram user data
-        this.telegramUser = {
-            id: Math.floor(Math.random() * 1000000),
-            username: 'student_user',
-            first_name: 'Student',
-            last_name: 'User'
-        };
+        // Get real Telegram user data from WebApp
+        if (window.Telegram && window.Telegram.WebApp) {
+            const tg = window.Telegram.WebApp;
+            this.telegramUser = {
+                id: tg.initDataUnsafe.user?.id || Math.floor(Math.random() * 1000000),
+                username: tg.initDataUnsafe.user?.username || 'student_user',
+                first_name: tg.initDataUnsafe.user?.first_name || 'Student',
+                last_name: tg.initDataUnsafe.user?.last_name || 'User'
+            };
+            console.log('📱 Real Telegram user data:', this.telegramUser);
+        } else {
+            // Fallback for testing
+            this.telegramUser = {
+                id: Math.floor(Math.random() * 1000000),
+                username: 'student_user',
+                first_name: 'Student',
+                last_name: 'User'
+            };
+            console.log('🔄 Using simulated Telegram user data:', this.telegramUser);
+        }
     }
 
     setupStudentSection() {
@@ -930,8 +943,20 @@ class CourseManager {
                 return;
             }
 
-            // Channel membership check removed - anyone with valid link can access
-            console.log('✅ Course validation successful, loading content...');
+            // Check channel membership
+            console.log('🔍 Checking channel membership...');
+            const membershipResult = await this.api.checkChannelMembership(
+                this.telegramUser.id, 
+                '-1002798244043' // Your channel ID from important-links
+            );
+            
+            if (!membershipResult.success || !membershipResult.isMember) {
+                console.log('❌ User is not a channel member:', membershipResult);
+                this.showScreen('accessDenied');
+                return;
+            }
+            
+            console.log('✅ Channel membership verified, loading content...');
 
             // Load course for student
             this.currentCourse = course;

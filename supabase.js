@@ -211,6 +211,24 @@ class SupabaseAPI {
         }
     }
 
+    // Channel Membership Check
+    async checkChannelMembership(telegramUserId, channelId) {
+        try {
+            const { data, error } = await this.client.functions.invoke('check-membership', {
+                body: {
+                    telegramUserId: telegramUserId,
+                    channelId: channelId
+                }
+            });
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error('Check membership error:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
     // File Upload
     async uploadImage(file) {
         try {
