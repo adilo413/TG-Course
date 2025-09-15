@@ -1,8 +1,8 @@
 # Copy this file to .env.local and update with your actual values
 
 # Database Configuration - Supabase
-NEXT_PUBLIC_SUPABASE_URL=https://vfzyxiuhrjrqhoxbdxwg.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmenl4aXVocmpycWhveGJkeHdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc4NTE4NTIsImV4cCI6MjA3MzQyNzg1Mn0.IOW_ER_I6UrpTDvn23qgAuLWp0iPzSn0tBVP_lKvRkw
+SUPABASE_URL=https://vfzyxiuhrjrqhoxbdxwg.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmenl4aXVocmpycWhveGJkeHdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc4NTE4NTIsImV4cCI6MjA3MzQyNzg1Mn0.IOW_ER_I6UrpTDvn23qgAuLWp0iPzSn0tBVP_lKvRkw
 DATABASE_URL=postgresql://postgres:tutorplusodadb@db.vfzyxiuhrjrqhoxbdxwg.supabase.co:5432/postgres
 
 # Security

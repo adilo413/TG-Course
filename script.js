@@ -298,7 +298,12 @@ class CourseManager {
         });
 
         // Show target screen
-        document.getElementById(screenName + 'Screen').classList.add('active');
+        const screenElement = document.getElementById(screenName + 'Screen') || document.getElementById(screenName);
+        if (screenElement) {
+            screenElement.classList.add('active');
+        } else {
+            console.error('Screen not found:', screenName);
+        }
         this.currentScreen = screenName;
 
         // Load content based on screen
@@ -755,6 +760,11 @@ class CourseManager {
             if (e.key === 'Enter') {
                 this.handleCourseLinkInput();
             }
+        });
+
+        // Admin login link
+        document.getElementById('adminLoginLink').addEventListener('click', () => {
+            this.showScreen('login');
         });
     }
 
