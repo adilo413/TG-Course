@@ -263,6 +263,8 @@ class CourseManager {
         const password = document.getElementById('adminPassword').value;
         const errorDiv = document.getElementById('loginError');
 
+        console.log('🔐 Attempting login with password:', password);
+
         if (!password) {
             errorDiv.textContent = 'Please enter a password.';
             errorDiv.classList.add('show');
@@ -270,18 +272,23 @@ class CourseManager {
         }
 
         try {
+            console.log('🔐 Calling loginAdmin API...');
             const result = await this.api.loginAdmin(password);
+            console.log('🔐 Login result:', result);
             
             if (result.success) {
+                console.log('✅ Login successful!');
                 errorDiv.classList.remove('show');
                 this.showScreen('dashboard');
                 document.getElementById('adminPassword').value = '';
             } else {
+                console.log('❌ Login failed:', result.error);
                 errorDiv.textContent = result.error || 'Invalid password. Please try again.';
                 errorDiv.classList.add('show');
             }
         } catch (error) {
-            errorDiv.textContent = 'Login failed. Please try again.';
+            console.error('❌ Login exception:', error);
+            errorDiv.textContent = `Login failed: ${error.message}`;
             errorDiv.classList.add('show');
         }
     }

@@ -15,20 +15,27 @@ class SupabaseAPI {
     // Authentication
     async loginAdmin(password) {
         try {
+            console.log('🔐 Supabase API - loginAdmin called with password:', password);
+            console.log('🔐 Expected password: admin123secure');
+            
             // For now, we'll use a simple password check
             // In production, you'd use Supabase Auth
             if (password === 'admin123secure') {
+                console.log('✅ Password matches! Creating session...');
                 // Create a simple session token
                 const token = btoa(JSON.stringify({
                     admin: true,
                     timestamp: Date.now()
                 }));
                 localStorage.setItem('admin_token', token);
+                console.log('✅ Session token created and stored');
                 return { success: true, token };
             } else {
+                console.log('❌ Password does not match');
                 return { success: false, error: 'Invalid password' };
             }
         } catch (error) {
+            console.error('❌ Supabase API - loginAdmin error:', error);
             return { success: false, error: error.message };
         }
     }
