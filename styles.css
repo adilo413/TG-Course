@@ -152,7 +152,7 @@ body {
 }
 
 /* Buttons */
-.btn-primary, .btn-secondary {
+.btn-primary, .btn-secondary, .btn-back {
     padding: 10px 20px;
     border: none;
     border-radius: 10px;
@@ -187,6 +187,49 @@ body {
     transform: translateY(-1px);
 }
 
+/* Back Button Styles */
+.btn-back {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+    color: white;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-back::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-back:hover {
+    background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(108, 117, 125, 0.3);
+}
+
+.btn-back:hover::before {
+    left: 100%;
+}
+
+.btn-back:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.2);
+}
+
+.btn-back i {
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-back:hover i {
+    transform: translateX(-2px);
+}
 
 /* Main Content */
 .main-content {
@@ -1225,6 +1268,13 @@ body {
         text-align: center;
     }
     
+    .btn-back {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+        align-self: flex-start;
+        margin-bottom: 10px;
+    }
+    
     .header-actions {
         flex-wrap: wrap;
         justify-content: center;
@@ -1278,6 +1328,16 @@ body {
 }
 
 @media (max-width: 480px) {
+    .btn-back {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        gap: 4px;
+    }
+    
+    .btn-back i {
+        font-size: 0.8rem;
+    }
+    
     .login-header h1 {
         font-size: 1.5rem;
     }
