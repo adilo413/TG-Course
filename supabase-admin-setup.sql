@@ -10,13 +10,21 @@ CREATE TABLE IF NOT EXISTS admin_users (
     last_login TIMESTAMP WITH TIME ZONE
 );
 
+-- Add email column if it doesn't exist (for existing tables)
+DO $$ 
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'admin_users' AND column_name = 'email') THEN
+        ALTER TABLE admin_users ADD COLUMN email VARCHAR(100);
+    END IF;
+END $$;
+
 -- Insert default admin user
--- Password: admin123secure (hashed with bcrypt)
-INSERT INTO admin_users (username, password_hash, email, is_active)
+-- Password: admin123secure (stored as plain text for now)
+INSERT INTO admin_users (username, password_hash, is_active)
 VALUES (
     'admin', 
-    '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', -- admin123secure
-    'admin@example.com',
+    'admin123secure', -- For now, store as plain text
     TRUE
 ) ON CONFLICT (username) DO NOTHING;
 
@@ -73,7 +81,7 @@ BEGIN
     
     -- For now, we'll do a simple password comparison
     -- In production, you should use proper bcrypt verification
-    IF input_password = 'admin123secure' THEN
+    IF input_password = admin_record.password_hash THEN
         -- Update last login
         UPDATE admin_users 
         SET last_login = NOW() 
@@ -82,8 +90,7 @@ BEGIN
         result := json_build_object(
             'success', true,
             'admin_id', admin_record.id,
-            'username', admin_record.username,
-            'email', admin_record.email
+            'username', admin_record.username
         );
         RETURN result;
     ELSE
