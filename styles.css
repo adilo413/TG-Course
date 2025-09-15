@@ -1050,16 +1050,18 @@ body {
     -ms-user-select: none;
     position: relative;
     z-index: 2;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.98);
     padding: 20px;
     border-radius: 12px;
     margin: 20px;
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.8);
 }
 
 .course-content h1, .course-content h2, .course-content h3 {
-    color: #2c3e50;
+    color: #1a252f;
     margin: 30px 0 15px 0;
     font-weight: 700;
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.9);
 }
 
 .course-content h1 {
@@ -1080,6 +1082,8 @@ body {
 .course-content p {
     margin-bottom: 20px;
     text-align: justify;
+    color: #1a252f;
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.8);
 }
 
 .course-content img {
@@ -1135,13 +1139,13 @@ body {
     transform: translate(-50%, -50%) rotate(-45deg);
     font-size: 8rem;
     font-weight: 300;
-    color: rgba(102, 126, 234, 0.15);
+    color: rgba(102, 126, 234, 0.06);
     text-shadow: none;
     user-select: none;
     white-space: nowrap;
     letter-spacing: 0.1em;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    opacity: 0.8;
+    opacity: 0.4;
 }
 
 /* Remove the multiple instances - use single large watermark like Word */
