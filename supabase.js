@@ -174,21 +174,37 @@ class SupabaseAPI {
 
     async validateCourseToken(courseId, token) {
         try {
-            const { data, error } = await this.client
+            // First, validate the token exists
+            const { data: tokenData, error: tokenError } = await this.client
                 .from('tokens')
-                .select('*, courses(*)')
+                .select('*')
                 .eq('course_id', courseId)
                 .eq('token', token)
                 .single();
             
-            if (error) throw error;
+            if (tokenError || !tokenData) {
+                console.log('Token validation failed:', tokenError);
+                return { success: false, error: 'Invalid or expired token' };
+            }
             
-            // Check if token is expired
-            if (new Date(data.expires_at) < new Date()) {
+            // Check if token is expired (if expires_at is set)
+            if (tokenData.expires_at && new Date(tokenData.expires_at) < new Date()) {
                 return { success: false, error: 'Token expired' };
             }
             
-            return { success: true, course: data.courses };
+            // Get the course details
+            const { data: courseData, error: courseError } = await this.client
+                .from('courses')
+                .select('*')
+                .eq('course_id', courseId)
+                .single();
+            
+            if (courseError || !courseData) {
+                console.log('Course not found:', courseError);
+                return { success: false, error: 'Course not found' };
+            }
+            
+            return { success: true, course: courseData };
         } catch (error) {
             console.error('Validate token error:', error);
             return { success: false, error: 'Invalid token' };

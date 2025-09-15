@@ -832,25 +832,32 @@ class CourseManager {
     }
 
     async loadStudentCourse(courseId, token) {
+        console.log('🔍 Loading student course:', { courseId, token });
         this.showScreen('loading');
         
         try {
             // Validate token and get course
+            console.log('🔐 Validating token...');
             const result = await this.api.validateCourseToken(courseId, token);
+            console.log('🔐 Token validation result:', result);
             
             if (!result.success) {
+                console.log('❌ Token validation failed:', result.error);
                 this.showScreen('accessDenied');
                 return;
             }
 
             const course = result.course;
+            console.log('📚 Course data:', course);
             
             if (!course.is_active) {
+                console.log('❌ Course is not active');
                 this.showScreen('accessDenied');
                 return;
             }
 
             // Channel membership check removed - anyone with valid link can access
+            console.log('✅ Course validation successful, loading content...');
 
             // Load course for student
             this.currentCourse = course;
@@ -859,7 +866,7 @@ class CourseManager {
             this.updateWatermark();
             this.showScreen('studentCourse');
         } catch (error) {
-            console.error('Load student course error:', error);
+            console.error('❌ Load student course error:', error);
             this.showScreen('accessDenied');
         }
     }
