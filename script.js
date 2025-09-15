@@ -295,12 +295,14 @@ class CourseManager {
         // Hide all screens
         document.querySelectorAll('.screen').forEach(screen => {
             screen.classList.remove('active');
+            screen.style.display = 'none';
         });
 
         // Show target screen
         const screenElement = document.getElementById(screenName + 'Screen') || document.getElementById(screenName);
         if (screenElement) {
             screenElement.classList.add('active');
+            screenElement.style.display = 'block';
         } else {
             console.error('Screen not found:', screenName);
         }
@@ -678,7 +680,7 @@ class CourseManager {
                 console.log('✅ Found courseId:', courseId, 'token:', token);
                 this.userRole = 'student';
                 this.simulateTelegramUser(); // Initialize Telegram user data
-                this.loadStudentCourse(courseId, token);
+                this.autoLoadStudentCourse(courseId, token);
                 return;
             }
         }
@@ -693,7 +695,7 @@ class CourseManager {
                 console.log('🔗 Hash-based routing - courseId:', courseId, 'token:', token);
                 this.userRole = 'student';
                 this.simulateTelegramUser(); // Initialize Telegram user data
-                this.loadStudentCourse(courseId, token);
+                this.autoLoadStudentCourse(courseId, token);
                 return;
             }
         }
@@ -706,10 +708,10 @@ class CourseManager {
             console.log('🔄 Fallback routing - courseId:', courseId, 'token:', token);
             this.userRole = 'student';
             this.simulateTelegramUser(); // Initialize Telegram user data
-            this.loadStudentCourse(courseId, token);
+            this.autoLoadStudentCourse(courseId, token);
         } else {
-            console.log('❌ No valid deep link found, showing student section');
-            this.showScreen('studentSection');
+            console.log('❌ No valid deep link found, showing admin login');
+            this.showScreen('login');
         }
     }
 
@@ -828,6 +830,47 @@ class CourseManager {
         } catch (error) {
             console.error('Error parsing course link:', error);
             return null;
+        }
+    }
+
+    async autoLoadStudentCourse(courseId, token) {
+        console.log('🔍 Auto-loading student course:', { courseId, token });
+        // Show loading screen to students
+        this.showScreen('studentLoadingScreen');
+        
+        try {
+            // Validate token and get course
+            console.log('🔐 Validating token...');
+            const result = await this.api.validateCourseToken(courseId, token);
+            console.log('🔐 Token validation result:', result);
+            
+            if (!result.success) {
+                console.log('❌ Token validation failed:', result.error);
+                this.showScreen('accessDenied');
+                return;
+            }
+
+            const course = result.course;
+            console.log('📚 Course data:', course);
+            
+            if (!course.is_active) {
+                console.log('❌ Course is not active');
+                this.showScreen('accessDenied');
+                return;
+            }
+
+            // Channel membership check removed - anyone with valid link can access
+            console.log('✅ Course validation successful, loading content...');
+
+            // Load course for student
+            this.currentCourse = course;
+            this.loadStudentCourseContent();
+            this.setupAntiCopyProtection();
+            this.updateWatermark();
+            this.showScreen('studentCourse');
+        } catch (error) {
+            console.error('❌ Load student course error:', error);
+            this.showScreen('accessDenied');
         }
     }
 
