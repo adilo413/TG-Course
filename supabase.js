@@ -305,7 +305,7 @@ class SupabaseAPI {
             console.error('Check membership error:', error);
             return { success: false, error: error.message };
         }
-    },
+    }
 
     // Post Course Link to Channel
     async postCourseToChannel(courseTitle, courseLink, channelId) {
