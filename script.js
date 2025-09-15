@@ -579,6 +579,16 @@ class CourseManager {
                     </div>
                     
                     <div style="margin: 15px 0;">
+                        <h4 style="color: #e74c3c; margin-bottom: 10px;">🚀 Auto-Upload to Channel</h4>
+                        <button class="btn-upload" onclick="window.courseManager.uploadToChannel('${title}', '${telegramLink}')">
+                            <i class="fas fa-paper-plane"></i> Post to Channel
+                        </button>
+                        <p style="font-size: 12px; color: #666; margin-top: 5px;">
+                            Automatically post this course link to your private channel
+                        </p>
+                    </div>
+                    
+                    <div style="margin: 15px 0;">
                         <h4 style="color: #28a745; margin-bottom: 10px;">🔗 Direct Link (For Testing)</h4>
                         <div class="link-container">
                             <input type="text" value="${directLink}" readonly class="link-input" id="directLink">
@@ -628,6 +638,27 @@ class CourseManager {
             document.body.removeChild(textArea);
             this.showMessage('Link copied to clipboard!', 'success');
         });
+    }
+
+    async uploadToChannel(courseTitle, courseLink) {
+        try {
+            this.showMessage('Posting to channel...', 'info');
+            
+            const result = await this.api.postCourseToChannel(
+                courseTitle, 
+                courseLink, 
+                '-1002798244043' // Your channel ID
+            );
+            
+            if (result.success) {
+                this.showMessage('✅ Course posted to channel successfully!', 'success');
+            } else {
+                this.showMessage(`❌ Failed to post to channel: ${result.error}`, 'error');
+            }
+        } catch (error) {
+            console.error('Upload to channel error:', error);
+            this.showMessage('Failed to post to channel. Please try again.', 'error');
+        }
     }
 
     async toggleCourseStatus(courseId) {
