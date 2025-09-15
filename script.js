@@ -1468,43 +1468,10 @@ class CourseManager {
     }
 
     setupWatermark() {
-        // Create additional watermark instances for better coverage
-        const watermarkContainer = document.querySelector('.background-watermark');
-        if (!watermarkContainer) return;
-
-        // Create multiple watermark instances at different positions
-        const positions = [
-            { top: '10%', left: '10%' },
-            { top: '10%', right: '10%' },
-            { top: '50%', left: '5%' },
-            { top: '50%', right: '5%' },
-            { bottom: '10%', left: '10%' },
-            { bottom: '10%', right: '10%' },
-            { top: '30%', left: '50%' },
-            { bottom: '30%', left: '50%' }
-        ];
-
-        positions.forEach((pos, index) => {
-            const watermark = document.createElement('div');
-            watermark.className = 'watermark-instance';
-            watermark.textContent = 'A+Tutor';
-            watermark.style.cssText = `
-                position: absolute;
-                font-size: 2.5rem;
-                font-weight: 900;
-                color: rgba(102, 126, 234, 0.05);
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-                user-select: none;
-                white-space: nowrap;
-                letter-spacing: 0.2em;
-                font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-                transform: rotate(-45deg);
-                pointer-events: none;
-                z-index: 1;
-                ${Object.entries(pos).map(([key, value]) => `${key}: ${value};`).join(' ')}
-            `;
-            watermarkContainer.appendChild(watermark);
-        });
+        // The watermark is now handled purely by CSS
+        // No need for additional JavaScript watermark instances
+        // The single large watermark in CSS matches the Word document style
+        console.log('✅ Watermark setup complete - using Word-style watermark');
     }
 
     contactAdmin() {

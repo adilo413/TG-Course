@@ -1133,40 +1133,21 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(-45deg);
-    font-size: 4rem;
-    font-weight: 900;
-    color: rgba(102, 126, 234, 0.08);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 8rem;
+    font-weight: 300;
+    color: rgba(102, 126, 234, 0.15);
+    text-shadow: none;
     user-select: none;
     white-space: nowrap;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.1em;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    opacity: 0.8;
 }
 
-/* Create multiple watermark instances for better coverage */
+/* Remove the multiple instances - use single large watermark like Word */
 .background-watermark::before,
 .background-watermark::after {
-    content: "A+Tutor";
-    position: absolute;
-    font-size: 3rem;
-    font-weight: 900;
-    color: rgba(102, 126, 234, 0.06);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    user-select: none;
-    white-space: nowrap;
-    letter-spacing: 0.2em;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    transform: rotate(-45deg);
-}
-
-.background-watermark::before {
-    top: 20%;
-    left: 20%;
-}
-
-.background-watermark::after {
-    bottom: 20%;
-    right: 20%;
+    display: none;
 }
 
 /* Access Denied Screen */
@@ -1527,12 +1508,7 @@ body {
     
     /* Mobile Background Watermark */
     .watermark-text {
-        font-size: 2.5rem;
-    }
-    
-    .background-watermark::before,
-    .background-watermark::after {
-        font-size: 2rem;
+        font-size: 5rem;
     }
 }
 
