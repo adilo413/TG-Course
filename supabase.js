@@ -17,7 +17,7 @@ class SupabaseAPI {
         try {
             // For now, we'll use a simple password check
             // In production, you'd use Supabase Auth
-            if (password === 'admin123') {
+            if (password === 'admin123secure') {
                 // Create a simple session token
                 const token = btoa(JSON.stringify({
                     admin: true,
