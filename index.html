@@ -255,8 +255,36 @@
         </main>
     </div>
 
+    <!-- Student Section -->
+    <div id="studentSection" class="screen">
+        <div class="container">
+            <div class="header">
+                <h1>📚 Student Portal</h1>
+                <p>Enter your course link to access content</p>
+            </div>
+            
+            <div class="student-input-section">
+                <div class="input-group">
+                    <label for="courseLinkInput">Course Link:</label>
+                    <input 
+                        type="text" 
+                        id="courseLinkInput" 
+                        placeholder="Paste your course link here..."
+                        class="form-input"
+                    >
+                    <button id="viewCourseBtn" class="btn btn-primary">
+                        📖 View Course
+                    </button>
+                </div>
+                <div class="help-text">
+                    <p>💡 Paste the course link you received from your instructor</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Student Course Reader Screen -->
-    <div id="studentCourseScreen" class="screen">
+    <div id="studentCourseScreen" class="screen hidden">
         <header class="student-header">
             <div class="student-header-content">
                 <button id="backToTelegram" class="btn-back">

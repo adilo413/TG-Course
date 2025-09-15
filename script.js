@@ -24,6 +24,7 @@ class CourseManager {
         this.handleDeepLink();
         this.detectUserRole();
         this.setupHashRouting();
+        this.setupStudentSection();
     }
 
     setupEventListeners() {
@@ -702,8 +703,8 @@ class CourseManager {
             this.simulateTelegramUser(); // Initialize Telegram user data
             this.loadStudentCourse(courseId, token);
         } else {
-            console.log('❌ No valid deep link found, showing login');
-            this.showScreen('login');
+            console.log('❌ No valid deep link found, showing student section');
+            this.showScreen('studentSection');
         }
     }
 
@@ -741,6 +742,83 @@ class CourseManager {
             first_name: 'Student',
             last_name: 'User'
         };
+    }
+
+    setupStudentSection() {
+        // View Course button
+        document.getElementById('viewCourseBtn').addEventListener('click', () => {
+            this.handleCourseLinkInput();
+        });
+
+        // Enter key support
+        document.getElementById('courseLinkInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.handleCourseLinkInput();
+            }
+        });
+    }
+
+    handleCourseLinkInput() {
+        const courseLink = document.getElementById('courseLinkInput').value.trim();
+        
+        if (!courseLink) {
+            this.showMessage('Please enter a course link', 'error');
+            return;
+        }
+
+        // Parse the course link
+        const parsed = this.parseCourseLink(courseLink);
+        if (!parsed) {
+            this.showMessage('Invalid course link format', 'error');
+            return;
+        }
+
+        // Load the course
+        this.userRole = 'student';
+        this.simulateTelegramUser();
+        this.loadStudentCourse(parsed.courseId, parsed.token);
+    }
+
+    parseCourseLink(link) {
+        try {
+            // Handle Telegram Mini App links
+            if (link.includes('t.me/') && link.includes('startapp=')) {
+                const url = new URL(link);
+                const startapp = url.searchParams.get('startapp');
+                if (startapp) {
+                    const parts = startapp.split('_');
+                    if (parts.length >= 2) {
+                        return {
+                            courseId: parts[0],
+                            token: parts.slice(1).join('_')
+                        };
+                    }
+                }
+            }
+
+            // Handle direct links with course ID and token
+            const directMatch = link.match(/course[\/=]([^\/\?&]+)[\/\?&]token[\/=]([^\/\?&]+)/);
+            if (directMatch) {
+                return {
+                    courseId: directMatch[1],
+                    token: directMatch[2]
+                };
+            }
+
+            // Handle hash-based links
+            const hashMatch = link.match(/#\/course\/([^\/\?]+)\?token=(.+)/);
+            if (hashMatch) {
+                return {
+                    courseId: hashMatch[1],
+                    token: hashMatch[2]
+                };
+            }
+
+            return null;
+        } catch (error) {
+            console.error('Error parsing course link:', error);
+            return null;
+        }
     }
 
     async loadStudentCourse(courseId, token) {
@@ -810,7 +888,7 @@ class CourseManager {
         // Disable right-click
         courseContent.addEventListener('contextmenu', (e) => {
             e.preventDefault();
-            this.showProtectionMessage('Right-click is disabled');
+            this.showProtectionMessage('🚫 Right-click is disabled');
         });
 
         // Disable text selection
@@ -821,26 +899,53 @@ class CourseManager {
         // Disable copy/paste
         courseContent.addEventListener('copy', (e) => {
             e.preventDefault();
-            this.showProtectionMessage('Copying is disabled');
+            this.showProtectionMessage('🚫 Copying is disabled');
         });
 
         courseContent.addEventListener('paste', (e) => {
             e.preventDefault();
-            this.showProtectionMessage('Pasting is disabled');
+            this.showProtectionMessage('🚫 Pasting is disabled');
+        });
+
+        courseContent.addEventListener('cut', (e) => {
+            e.preventDefault();
+            this.showProtectionMessage('🚫 Cutting is disabled');
         });
 
         // Disable drag
         courseContent.addEventListener('dragstart', (e) => {
             e.preventDefault();
+            this.showProtectionMessage('🚫 Dragging is disabled');
         });
 
-        // Disable F12, Ctrl+Shift+I, Ctrl+U
+        // Enhanced keyboard shortcuts protection
         document.addEventListener('keydown', (e) => {
+            // Disable F12, Ctrl+Shift+I, Ctrl+U, Ctrl+S, Ctrl+P, Ctrl+A
             if (e.key === 'F12' || 
                 (e.ctrlKey && e.shiftKey && e.key === 'I') ||
-                (e.ctrlKey && e.key === 'u')) {
+                (e.ctrlKey && e.key === 'u') ||
+                (e.ctrlKey && e.key === 's') ||
+                (e.ctrlKey && e.key === 'p') ||
+                (e.ctrlKey && e.key === 'a') ||
+                (e.ctrlKey && e.key === 'c') ||
+                (e.ctrlKey && e.key === 'v') ||
+                (e.ctrlKey && e.key === 'x')) {
                 e.preventDefault();
-                this.showProtectionMessage('Developer tools are disabled');
+                this.showProtectionMessage('🚫 This action is disabled');
+            }
+        });
+
+        // Disable print
+        window.addEventListener('beforeprint', (e) => {
+            e.preventDefault();
+            this.showProtectionMessage('🚫 Printing is disabled');
+        });
+
+        // Disable screenshot attempts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'PrintScreen') {
+                e.preventDefault();
+                this.showProtectionMessage('🚫 Screenshots are disabled');
             }
         });
 
@@ -849,7 +954,39 @@ class CourseManager {
         images.forEach(img => {
             img.addEventListener('dragstart', (e) => e.preventDefault());
             img.addEventListener('contextmenu', (e) => e.preventDefault());
+            img.style.pointerEvents = 'none';
         });
+
+        // Disable text selection on the entire page when in student mode
+        if (this.userRole === 'student') {
+            document.body.style.userSelect = 'none';
+            document.body.style.webkitUserSelect = 'none';
+            document.body.style.mozUserSelect = 'none';
+            document.body.style.msUserSelect = 'none';
+        }
+
+        // Add visual protection overlay
+        this.addProtectionOverlay();
+    }
+
+    addProtectionOverlay() {
+        // Create invisible overlay to prevent interaction with content
+        const overlay = document.createElement('div');
+        overlay.id = 'protectionOverlay';
+        overlay.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 1;
+            pointer-events: none;
+        `;
+        
+        const courseContent = document.getElementById('studentCourseContent');
+        courseContent.style.position = 'relative';
+        courseContent.appendChild(overlay);
     }
 
     showProtectionMessage(message) {
