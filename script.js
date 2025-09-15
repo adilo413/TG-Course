@@ -17,17 +17,17 @@ class CourseManager {
         this.api = null; // Will be initialized when ready
         this.apiRetryCount = 0; // Track retry attempts
         this.maxApiRetries = 50; // Maximum retry attempts (5 seconds)
+        this.deepLinkProcessed = false; // Track if deep link has been processed
         this.init();
     }
 
     init() {
-        this.initializeAPI();
         this.setupEventListeners();
-        this.loadCourses();
-        this.handleDeepLink();
-        this.detectUserRole();
         this.setupHashRouting();
         this.setupStudentSection();
+        this.detectUserRole();
+        this.initializeAPI(); // Initialize API and handle deep links
+        this.loadCourses();
     }
 
     initializeAPI() {
@@ -40,7 +40,13 @@ class CourseManager {
             console.log('✅ Supabase API initialized successfully');
             console.log('✅ API methods available:', Object.keys(this.api));
             
-            // Check for existing admin session
+            // Handle deep links first if not already processed
+            if (!this.deepLinkProcessed) {
+                this.handleDeepLink();
+                this.deepLinkProcessed = true;
+            }
+            
+            // Check for existing admin session only if not in student mode
             this.checkExistingSession();
         } else {
             this.apiRetryCount++;
@@ -68,6 +74,12 @@ class CourseManager {
     async checkExistingSession() {
         try {
             console.log('🔍 Checking for existing admin session...');
+            
+            // Only check for admin session if we're not in student mode
+            if (this.userRole === 'student') {
+                console.log('👤 Student mode detected, skipping admin session check');
+                return;
+            }
             
             if (this.api && await this.api.isAdminLoggedIn()) {
                 console.log('✅ Valid admin session found, redirecting to dashboard');
