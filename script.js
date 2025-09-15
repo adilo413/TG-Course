@@ -39,6 +39,9 @@ class CourseManager {
             this.api = window.supabaseAPI;
             console.log('✅ Supabase API initialized successfully');
             console.log('✅ API methods available:', Object.keys(this.api));
+            
+            // Check for existing admin session
+            this.checkExistingSession();
         } else {
             this.apiRetryCount++;
             
@@ -59,6 +62,23 @@ class CourseManager {
             setTimeout(() => {
                 this.initializeAPI();
             }, 100);
+        }
+    }
+
+    async checkExistingSession() {
+        try {
+            console.log('🔍 Checking for existing admin session...');
+            
+            if (this.api && await this.api.isAdminLoggedIn()) {
+                console.log('✅ Valid admin session found, redirecting to dashboard');
+                this.showScreen('dashboard');
+            } else {
+                console.log('ℹ️ No valid admin session found, showing login screen');
+                this.showScreen('login');
+            }
+        } catch (error) {
+            console.error('❌ Error checking session:', error);
+            this.showScreen('login');
         }
     }
 
@@ -340,9 +360,25 @@ class CourseManager {
         }
     }
 
-    logout() {
-        this.showScreen('login');
-        document.getElementById('adminPassword').value = '';
+    async logout() {
+        try {
+            // Clear the session from the API
+            if (this.api) {
+                await this.api.logoutAdmin();
+            }
+            
+            // Clear the password field
+            document.getElementById('adminPassword').value = '';
+            
+            // Show login screen
+            this.showScreen('login');
+            
+            console.log('✅ Admin logged out successfully');
+        } catch (error) {
+            console.error('❌ Error during logout:', error);
+            // Still show login screen even if logout fails
+            this.showScreen('login');
+        }
     }
 
     showScreen(screenName) {
@@ -895,6 +931,9 @@ class CourseManager {
             // Default to admin if no role is set
             this.userRole = 'admin';
         }
+        
+        // Note: Session checking will override this if admin is logged in
+        console.log('👤 Final user role:', this.userRole);
     }
 
     simulateTelegramUser() {
