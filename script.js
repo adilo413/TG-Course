@@ -850,12 +850,7 @@ class CourseManager {
                 return;
             }
 
-            // Simulate channel membership check (we'll implement this properly later)
-            const isChannelMember = await this.checkChannelMembership();
-            if (!isChannelMember) {
-                this.showScreen('accessDenied');
-                return;
-            }
+            // Channel membership check removed - anyone with valid link can access
 
             // Load course for student
             this.currentCourse = course;
@@ -869,14 +864,6 @@ class CourseManager {
         }
     }
 
-    async checkChannelMembership() {
-        // Simulate API call to check if user is channel member
-        // In real app, this would call Telegram API
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        // For demo, randomly return true/false (80% chance of being member)
-        return Math.random() > 0.2;
-    }
 
     loadStudentCourseContent() {
         if (!this.currentCourse) return;
