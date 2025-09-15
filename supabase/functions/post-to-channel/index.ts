@@ -36,12 +36,22 @@ serve(async (req) => {
       )
     }
 
-    // Create the message
-    const message = `📚 **New Course Available!**
+    // Create the message with HTML formatting (more reliable than Markdown)
+    const escapedTitle = courseTitle.replace(/[<>&"]/g, (match) => {
+        switch (match) {
+            case '<': return '&lt;';
+            case '>': return '&gt;';
+            case '&': return '&amp;';
+            case '"': return '&quot;';
+            default: return match;
+        }
+    });
+    
+    const message = `📚 <b>New Course Available!</b>
 
-🎯 **${courseTitle}**
+🎯 <b>${escapedTitle}</b>
 
-🔗 Access the course: ${courseLink}
+🔗 Access the course: <a href="${courseLink}">${escapedTitle}</a>
 
 💡 Click the link above to start learning!`;
 
@@ -55,7 +65,7 @@ serve(async (req) => {
       body: JSON.stringify({
         chat_id: channelId,
         text: message,
-        parse_mode: 'Markdown',
+        parse_mode: 'HTML',
         disable_web_page_preview: false
       })
     })
