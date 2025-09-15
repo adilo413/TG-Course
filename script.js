@@ -210,12 +210,149 @@ class CourseManager {
     }
 
     executeCommand(command) {
+        const editor = document.getElementById('courseContent');
+        
         if (command === 'insertImage') {
             this.insertImage();
         } else {
-            document.execCommand(command, false, null);
+            // Use modern text editing methods instead of deprecated execCommand
+            this.executeModernCommand(command);
         }
-        document.getElementById('courseContent').focus();
+        editor.focus();
+    }
+
+    executeModernCommand(command) {
+        const editor = document.getElementById('courseContent');
+        const selection = window.getSelection();
+        
+        if (!selection.rangeCount) return;
+        
+        const range = selection.getRangeAt(0);
+        
+        switch (command) {
+            case 'bold':
+                this.toggleFormat('strong');
+                break;
+            case 'italic':
+                this.toggleFormat('em');
+                break;
+            case 'underline':
+                this.toggleFormat('u');
+                break;
+            case 'justifyLeft':
+                this.setAlignment('left');
+                break;
+            case 'justifyCenter':
+                this.setAlignment('center');
+                break;
+            case 'justifyRight':
+                this.setAlignment('right');
+                break;
+            case 'justifyFull':
+                this.setAlignment('justify');
+                break;
+            case 'insertUnorderedList':
+                this.insertList('ul');
+                break;
+            case 'insertOrderedList':
+                this.insertList('ol');
+                break;
+            case 'indent':
+                this.indentElement();
+                break;
+            case 'outdent':
+                this.outdentElement();
+                break;
+            default:
+                // Fallback to execCommand for other commands
+                document.execCommand(command, false, null);
+        }
+    }
+
+    toggleFormat(tagName) {
+        const selection = window.getSelection();
+        if (!selection.rangeCount) return;
+        
+        const range = selection.getRangeAt(0);
+        const container = range.commonAncestorContainer;
+        const element = container.nodeType === Node.TEXT_NODE ? container.parentElement : container;
+        
+        // Check if already formatted
+        const existingTag = element.closest(tagName);
+        if (existingTag) {
+            // Remove formatting
+            const parent = existingTag.parentNode;
+            while (existingTag.firstChild) {
+                parent.insertBefore(existingTag.firstChild, existingTag);
+            }
+            parent.removeChild(existingTag);
+        } else {
+            // Add formatting
+            const selectedText = range.toString();
+            if (selectedText) {
+                const newElement = document.createElement(tagName);
+                newElement.textContent = selectedText;
+                range.deleteContents();
+                range.insertNode(newElement);
+            }
+        }
+    }
+
+    setAlignment(alignment) {
+        const selection = window.getSelection();
+        if (!selection.rangeCount) return;
+        
+        const range = selection.getRangeAt(0);
+        const container = range.commonAncestorContainer;
+        const element = container.nodeType === Node.TEXT_NODE ? container.parentElement : container;
+        
+        // Find the paragraph or div to align
+        const blockElement = element.closest('p, div, h1, h2, h3, h4, h5, h6') || element;
+        blockElement.style.textAlign = alignment;
+    }
+
+    insertList(listType) {
+        const selection = window.getSelection();
+        if (!selection.rangeCount) return;
+        
+        const range = selection.getRangeAt(0);
+        const selectedText = range.toString();
+        
+        if (selectedText) {
+            const list = document.createElement(listType);
+            const listItem = document.createElement('li');
+            listItem.textContent = selectedText;
+            list.appendChild(listItem);
+            
+            range.deleteContents();
+            range.insertNode(list);
+        }
+    }
+
+    indentElement() {
+        const selection = window.getSelection();
+        if (!selection.rangeCount) return;
+        
+        const range = selection.getRangeAt(0);
+        const container = range.commonAncestorContainer;
+        const element = container.nodeType === Node.TEXT_NODE ? container.parentElement : container;
+        
+        const blockElement = element.closest('p, div, li') || element;
+        const currentMargin = parseInt(blockElement.style.marginLeft) || 0;
+        blockElement.style.marginLeft = (currentMargin + 20) + 'px';
+    }
+
+    outdentElement() {
+        const selection = window.getSelection();
+        if (!selection.rangeCount) return;
+        
+        const range = selection.getRangeAt(0);
+        const container = range.commonAncestorContainer;
+        const element = container.nodeType === Node.TEXT_NODE ? container.parentElement : container;
+        
+        const blockElement = element.closest('p, div, li') || element;
+        const currentMargin = parseInt(blockElement.style.marginLeft) || 0;
+        blockElement.style.marginLeft = Math.max(0, currentMargin - 20) + 'px';
     }
 
     updateToolbarState() {
@@ -227,10 +364,39 @@ class CourseManager {
             const container = range.commonAncestorContainer;
             const element = container.nodeType === Node.TEXT_NODE ? container.parentElement : container;
             
-            // Update button states
+            // Update button states with modern methods
             document.querySelectorAll('.toolbar-btn').forEach(btn => {
                 const command = btn.dataset.command;
-                if (command && document.queryCommandState(command)) {
+                let isActive = false;
+                
+                switch (command) {
+                    case 'bold':
+                        isActive = !!element.closest('strong, b');
+                        break;
+                    case 'italic':
+                        isActive = !!element.closest('em, i');
+                        break;
+                    case 'underline':
+                        isActive = !!element.closest('u');
+                        break;
+                    case 'justifyLeft':
+                        isActive = element.style.textAlign === 'left';
+                        break;
+                    case 'justifyCenter':
+                        isActive = element.style.textAlign === 'center';
+                        break;
+                    case 'justifyRight':
+                        isActive = element.style.textAlign === 'right';
+                        break;
+                    case 'justifyFull':
+                        isActive = element.style.textAlign === 'justify';
+                        break;
+                    default:
+                        // Fallback to execCommand for other commands
+                        isActive = document.queryCommandState ? document.queryCommandState(command) : false;
+                }
+                
+                if (isActive) {
                     btn.classList.add('active');
                 } else {
                     btn.classList.remove('active');

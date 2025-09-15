@@ -333,6 +333,8 @@ body {
     border-radius: 10px;
     font-size: 1rem;
     transition: all 0.3s ease;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .form-group input:focus, .form-group select:focus {
@@ -1275,6 +1277,26 @@ body {
         margin-bottom: 10px;
     }
     
+    /* Mobile dropdown fixes */
+    .form-group select, .toolbar-select {
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 10px 12px;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .rich-text-toolbar {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px;
+    }
+    
+    .toolbar-group {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    
     .header-actions {
         flex-wrap: wrap;
         justify-content: center;
@@ -1336,6 +1358,26 @@ body {
     
     .btn-back i {
         font-size: 0.8rem;
+    }
+    
+    /* Small mobile dropdown fixes */
+    .form-group select, .toolbar-select {
+        font-size: 16px;
+        padding: 8px 10px;
+        min-width: 0;
+        width: auto;
+        max-width: 100%;
+    }
+    
+    .rich-text-toolbar {
+        padding: 8px;
+        gap: 6px;
+    }
+    
+    .toolbar-btn {
+        padding: 6px 8px;
+        font-size: 0.8rem;
+        min-width: 32px;
     }
     
     .login-header h1 {
