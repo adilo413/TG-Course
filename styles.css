@@ -389,17 +389,21 @@ body {
 }
 
 .subject-actions button {
-    padding: 8px 10px;
+    padding: 6px 8px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 36px;
-    height: 36px;
+    min-width: 32px;
+    height: 32px;
+}
+
+.subject-actions button i {
+    font-size: 0.8rem !important;
 }
 
 .subject-actions .btn-edit {

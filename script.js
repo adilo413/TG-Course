@@ -25,6 +25,7 @@ class CourseManager {
         this.setupEventListeners();
         this.setupHashRouting();
         this.setupStudentSection();
+        this.setupSubjectManagement(); // Setup subject management functionality
         this.detectUserRole();
         this.initializeAPI(); // Initialize API and handle deep links
         this.loadCourses();
