@@ -114,6 +114,41 @@ body {
     margin-bottom: 20px;
 }
 
+/* Logo Styles */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.login-logo {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: var(--bg-card);
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.main-logo {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1); /* Makes logo white for dark theme */
+}
+
+/* Light theme logo adjustment */
+[data-theme="light"] .main-logo {
+    filter: brightness(0) invert(0); /* Makes logo black for light theme */
+}
+
 .login-header h1 {
     font-size: 2rem;
     margin-bottom: 10px;
@@ -1710,6 +1745,20 @@ body {
         flex-direction: column;
         gap: 15px;
         text-align: center;
+    }
+    
+    .header-logo {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .main-logo {
+        height: 35px;
+    }
+    
+    .login-logo {
+        width: 100px;
+        height: 100px;
     }
     
     .btn-back {

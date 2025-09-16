@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bright Freshman Tutorial</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -15,7 +16,9 @@
         <div class="login-container">
             <div class="login-card">
                 <div class="login-header">
-                    <i class="fas fa-graduation-cap"></i>
+                    <div class="logo-container">
+                        <img src="logo.png" alt="Bright Freshman Tutorial" class="login-logo">
+                    </div>
                     <h1>Bright Freshman Tutorial</h1>
                     <p>Admin Access</p>
                 </div>
@@ -38,7 +41,10 @@
     <div id="dashboardScreen" class="screen">
         <header class="app-header">
             <div class="header-content">
-                <h1><i class="fas fa-graduation-cap"></i> Bright Freshman Tutorial</h1>
+                <div class="header-logo">
+                    <img src="logo-header.png" alt="Bright Freshman Tutorial" class="main-logo">
+                </div>
+                <h1>Bright Freshman Tutorial</h1>
                 <div class="header-actions">
                     <button id="manageSubjectsBtn" class="btn-secondary">
                         <i class="fas fa-tags"></i>
