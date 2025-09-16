@@ -304,7 +304,7 @@ body {
     transform: translateY(-5px);
     box-shadow: 0 20px 40px rgba(8, 7, 7, 0.25);
     border-color: var(--color-primary);
-    background: rgba(255, 255, 255, 1);
+    background: var(--color-light-gray);
 }
 
 .subject-card i {
@@ -459,7 +459,7 @@ body {
 
 .toolbar-color:hover {
     transform: scale(1.1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
 }
 
 .toolbar-divider {
@@ -596,7 +596,7 @@ body {
     transform: translateY(-8px);
     box-shadow: 0 25px 50px rgba(8, 7, 7, 0.25);
     border-color: var(--color-primary);
-    background: rgba(255, 255, 255, 1);
+    background: var(--color-light-gray);
 }
 
 .course-header {
@@ -709,6 +709,7 @@ body {
 
 .btn-generate:hover {
     background: var(--color-primary);
+    color: var(--text-white);
     transform: translateY(-1px);
     box-shadow: 0 3px 10px rgba(0, 255, 136, 0.3);
 }
@@ -720,6 +721,7 @@ body {
 
 .btn-toggle:hover {
     background: var(--color-primary);
+    color: var(--text-white);
     transform: translateY(-1px);
     box-shadow: 0 3px 10px rgba(233, 151, 26, 0.3);
 }
@@ -731,6 +733,7 @@ body {
 
 .btn-delete:hover {
     background: #cc0000;
+    color: var(--text-white);
     transform: translateY(-1px);
     box-shadow: 0 3px 10px rgba(255, 68, 68, 0.3);
 }
@@ -845,8 +848,8 @@ body {
 }
 
 .close-modal:hover {
-    background: #f8f9fa;
-    color: #333;
+    background: var(--color-light-gray);
+    color: var(--text-primary);
 }
 
 .link-modal-body {
@@ -1025,6 +1028,7 @@ body {
 
 .admin-link .btn-secondary:hover {
     background: var(--color-primary);
+    color: var(--text-white);
     transform: none;
     box-shadow: none;
 }
