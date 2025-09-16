@@ -1,40 +1,38 @@
-/* CSS Custom Properties - Color Palette */
+/* CSS Custom Properties - Black Theme */
 :root {
     /* Primary Colors */
-    --color-primary: #e9971a;      /* Orange - Main brand color */
+    --color-primary: #e9971a;      /* Orange - Main brand color (kept for accents) */
     --color-primary-dark: #d17a0a;  /* Darker orange for hover states */
     --color-primary-light: #f5b84d; /* Lighter orange for backgrounds */
     
-    /* Secondary Colors */
-    --color-secondary: #080707;     /* Dark charcoal - Text and accents */
-    --color-secondary-light: #2a2a2a; /* Lighter charcoal */
+    /* Black Theme Colors */
+    --color-black: #000000;         /* Pure black */
+    --color-dark-gray: #1a1a1a;     /* Very dark gray */
+    --color-medium-gray: #2d2d2d;   /* Medium dark gray */
+    --color-light-gray: #404040;    /* Light dark gray */
+    --color-lighter-gray: #555555;  /* Lighter gray for borders */
     
-    /* Accent Colors */
-    --color-accent-1: #5b1c07;      /* Dark red-brown */
-    --color-accent-2: #983404;      /* Medium red-brown */
-    --color-accent-3: #2e0e05;      /* Very dark brown */
-    
-    /* Neutral Colors */
-    --color-neutral-1: #272634;     /* Dark purple-gray */
-    --color-neutral-2: #192418;     /* Dark green-gray */
-    --color-neutral-3: #7c7c4c;     /* Olive green */
+    /* Accent Colors for Black Theme */
+    --color-accent-1: #ff4444;      /* Red accent */
+    --color-accent-2: #00ff88;      /* Green accent */
+    --color-accent-3: #4488ff;      /* Blue accent */
     
     /* Background Colors */
-    --bg-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent-2) 100%);
-    --bg-secondary: linear-gradient(135deg, var(--color-neutral-1) 0%, var(--color-secondary) 100%);
-    --bg-card: rgba(255, 255, 255, 0.95);
-    --bg-overlay: rgba(8, 7, 7, 0.8);
+    --bg-primary: linear-gradient(135deg, var(--color-black) 0%, var(--color-dark-gray) 100%);
+    --bg-secondary: linear-gradient(135deg, var(--color-dark-gray) 0%, var(--color-medium-gray) 100%);
+    --bg-card: rgba(26, 26, 26, 0.95);
+    --bg-overlay: rgba(0, 0, 0, 0.8);
     
     /* Text Colors */
-    --text-primary: var(--color-secondary);
-    --text-secondary: var(--color-neutral-1);
-    --text-light: #666;
-    --text-white: #ffffff;
+    --text-primary: #ffffff;        /* White text */
+    --text-secondary: #e0e0e0;      /* Light gray text */
+    --text-light: #b0b0b0;          /* Medium gray text */
+    --text-white: #ffffff;          /* Pure white */
     
     /* Border Colors */
-    --border-light: rgba(233, 151, 26, 0.2);
-    --border-medium: rgba(233, 151, 26, 0.4);
-    --border-dark: var(--color-primary);
+    --border-light: rgba(255, 255, 255, 0.1);
+    --border-medium: rgba(255, 255, 255, 0.2);
+    --border-dark: rgba(255, 255, 255, 0.3);
 }
 
 /* Reset and Base Styles */
@@ -220,15 +218,15 @@ body {
 }
 
 .btn-secondary {
-    background: var(--color-neutral-3);
+    background: var(--color-light-gray);
     color: var(--text-white);
     border: 1px solid var(--border-medium);
 }
 
 .btn-secondary:hover {
-    background: var(--color-neutral-2);
+    background: var(--color-primary);
     transform: translateY(-1px);
-    box-shadow: 0 3px 10px rgba(124, 124, 76, 0.3);
+    box-shadow: 0 3px 10px rgba(233, 151, 26, 0.3);
 }
 
 /* Back Button Styles */
@@ -381,7 +379,8 @@ body {
     transition: all 0.3s ease;
     max-width: 100%;
     box-sizing: border-box;
-    background: var(--text-white);
+    background: var(--color-medium-gray);
+    color: var(--text-primary);
 }
 
 .form-group input:focus, .form-group select:focus {
@@ -397,7 +396,7 @@ body {
     gap: 8px;
     margin-bottom: 15px;
     padding: 15px;
-    background: var(--color-primary-light);
+    background: var(--color-medium-gray);
     border-radius: 12px;
     border: 1px solid var(--border-medium);
     align-items: center;
@@ -407,7 +406,8 @@ body {
     padding: 6px 10px;
     border: 1px solid var(--border-medium);
     border-radius: 6px;
-    background: var(--text-white);
+    background: var(--color-medium-gray);
+    color: var(--text-primary);
     font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -476,7 +476,8 @@ body {
     border-radius: 10px;
     font-size: 1rem;
     line-height: 1.6;
-    background: var(--text-white);
+    background: var(--color-medium-gray);
+    color: var(--text-primary);
     transition: all 0.3s ease;
 }
 
@@ -507,7 +508,7 @@ body {
 .course-preview {
     min-height: 300px;
     padding: 20px;
-    background: var(--color-primary-light);
+    background: var(--color-medium-gray);
     border-radius: 10px;
     border: 1px solid var(--border-medium);
 }
@@ -690,14 +691,15 @@ body {
 }
 
 .btn-edit {
-    background: var(--color-primary-light);
-    color: var(--color-primary);
+    background: var(--color-accent-3);
+    color: var(--text-white);
 }
 
 .btn-edit:hover {
     background: var(--color-primary);
     color: var(--text-white);
     transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(68, 136, 255, 0.3);
 }
 
 .btn-generate {
@@ -706,18 +708,20 @@ body {
 }
 
 .btn-generate:hover {
-    background: var(--color-accent-1);
+    background: var(--color-primary);
     transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0, 255, 136, 0.3);
 }
 
 .btn-toggle {
-    background: var(--color-neutral-3);
+    background: var(--color-light-gray);
     color: var(--text-white);
 }
 
 .btn-toggle:hover {
-    background: var(--color-neutral-2);
+    background: var(--color-primary);
     transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(233, 151, 26, 0.3);
 }
 
 .btn-delete {
@@ -726,8 +730,9 @@ body {
 }
 
 .btn-delete:hover {
-    background: var(--color-accent-3);
+    background: #cc0000;
     transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(255, 68, 68, 0.3);
 }
 
 /* Empty State */
@@ -865,7 +870,7 @@ body {
     border: 2px solid var(--border-light);
     border-radius: 10px;
     font-size: 0.9rem;
-    background: var(--color-primary-light);
+    background: var(--color-medium-gray);
     color: var(--text-primary);
 }
 
@@ -955,7 +960,8 @@ body {
     font-size: 1rem;
     transition: all 0.3s ease;
     box-sizing: border-box;
-    background: var(--text-white);
+    background: var(--color-medium-gray);
+    color: var(--text-primary);
 }
 
 .student-input-section .form-input:focus {
@@ -996,7 +1002,7 @@ body {
 .help-text p {
     margin: 0;
     padding: 0.5rem;
-    background: var(--color-primary-light);
+    background: var(--color-medium-gray);
     border-radius: 8px;
     border-left: 4px solid var(--color-primary);
 }
@@ -1009,7 +1015,7 @@ body {
 }
 
 .admin-link .btn-secondary {
-    background: var(--color-neutral-3);
+    background: var(--color-light-gray);
     color: var(--text-white);
     border: 1px solid var(--border-medium);
     font-size: 0.9rem;
@@ -1018,7 +1024,7 @@ body {
 }
 
 .admin-link .btn-secondary:hover {
-    background: var(--color-neutral-2);
+    background: var(--color-primary);
     transform: none;
     box-shadow: none;
 }
@@ -1098,25 +1104,25 @@ body {
 .course-content {
     line-height: 1.8;
     font-size: 1.1rem;
-    color: #2c3e50;
+    color: var(--text-primary);
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     position: relative;
     z-index: 1;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--color-medium-gray);
     padding: 20px;
     border-radius: 12px;
     margin: 20px;
-    text-shadow: 0 0 1px rgba(255, 255, 255, 0.8);
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
 }
 
 .course-content h1, .course-content h2, .course-content h3 {
-    color: #1a252f;
+    color: var(--text-primary);
     margin: 30px 0 15px 0;
     font-weight: 700;
-    text-shadow: 0 0 2px rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.9);
 }
 
 .course-content h1 {
@@ -1137,8 +1143,8 @@ body {
 .course-content p {
     margin-bottom: 20px;
     text-align: justify;
-    color: #1a252f;
-    text-shadow: 0 0 1px rgba(255, 255, 255, 0.8);
+    color: var(--text-secondary);
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
 }
 
 .course-content img {
@@ -1163,7 +1169,7 @@ body {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: var(--color-primary-light);
+    background: var(--color-medium-gray);
     color: var(--color-primary);
     padding: 8px 15px;
     border-radius: 20px;
@@ -1191,7 +1197,7 @@ body {
     left: 50%;
     
     /* Text and styling properties */
-    color: rgba(233, 151, 26, 0.08); /* Use new orange color with transparency */
+    color: rgba(255, 255, 255, 0.05); /* White watermark for black theme */
     font-size: 6rem;
     font-weight: 300;
     text-transform: uppercase;
@@ -1265,7 +1271,7 @@ body {
     gap: 15px;
     margin-bottom: 15px;
     padding: 15px;
-    background: var(--color-primary-light);
+    background: var(--color-medium-gray);
     border-radius: 12px;
     border-left: 4px solid var(--color-primary);
 }
@@ -1353,13 +1359,13 @@ body {
 .error-message {
     background: var(--color-accent-1);
     color: var(--text-white);
-    border: 1px solid var(--color-accent-2);
+    border: 1px solid #ff6666;
 }
 
 .success-message {
-    background: var(--color-neutral-3);
+    background: var(--color-accent-2);
     color: var(--text-white);
-    border: 1px solid var(--color-neutral-2);
+    border: 1px solid #00cc66;
 }
 
 .error-message.show, .success-message.show {
