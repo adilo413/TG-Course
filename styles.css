@@ -1,3 +1,42 @@
+/* CSS Custom Properties - Color Palette */
+:root {
+    /* Primary Colors */
+    --color-primary: #e9971a;      /* Orange - Main brand color */
+    --color-primary-dark: #d17a0a;  /* Darker orange for hover states */
+    --color-primary-light: #f5b84d; /* Lighter orange for backgrounds */
+    
+    /* Secondary Colors */
+    --color-secondary: #080707;     /* Dark charcoal - Text and accents */
+    --color-secondary-light: #2a2a2a; /* Lighter charcoal */
+    
+    /* Accent Colors */
+    --color-accent-1: #5b1c07;      /* Dark red-brown */
+    --color-accent-2: #983404;      /* Medium red-brown */
+    --color-accent-3: #2e0e05;      /* Very dark brown */
+    
+    /* Neutral Colors */
+    --color-neutral-1: #272634;     /* Dark purple-gray */
+    --color-neutral-2: #192418;     /* Dark green-gray */
+    --color-neutral-3: #7c7c4c;     /* Olive green */
+    
+    /* Background Colors */
+    --bg-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent-2) 100%);
+    --bg-secondary: linear-gradient(135deg, var(--color-neutral-1) 0%, var(--color-secondary) 100%);
+    --bg-card: rgba(255, 255, 255, 0.95);
+    --bg-overlay: rgba(8, 7, 7, 0.8);
+    
+    /* Text Colors */
+    --text-primary: var(--color-secondary);
+    --text-secondary: var(--color-neutral-1);
+    --text-light: #666;
+    --text-white: #ffffff;
+    
+    /* Border Colors */
+    --border-light: rgba(233, 151, 26, 0.2);
+    --border-medium: rgba(233, 151, 26, 0.4);
+    --border-dark: var(--color-primary);
+}
+
 /* Reset and Base Styles */
 * {
     margin: 0;
@@ -7,9 +46,9 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--bg-primary);
     min-height: 100vh;
-    color: #333;
+    color: var(--text-primary);
     overflow-x: hidden;
 }
 
@@ -33,31 +72,32 @@ body {
 }
 
 .login-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--bg-card);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 40px 30px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 40px rgba(8, 7, 7, 0.2);
     width: 100%;
     max-width: 400px;
     text-align: center;
+    border: 2px solid var(--border-light);
 }
 
 .login-header i {
     font-size: 3rem;
-    color: #667eea;
+    color: var(--color-primary);
     margin-bottom: 20px;
 }
 
 .login-header h1 {
     font-size: 2rem;
     margin-bottom: 10px;
-    color: #333;
+    color: var(--text-primary);
     font-weight: 600;
 }
 
 .login-header p {
-    color: #666;
+    color: var(--text-light);
     margin-bottom: 30px;
     font-size: 1rem;
 }
@@ -88,15 +128,15 @@ body {
 
 .input-group input:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(233, 151, 26, 0.1);
 }
 
 .login-btn {
     width: 100%;
     padding: 15px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: var(--bg-primary);
+    color: var(--text-white);
     border: none;
     border-radius: 12px;
     font-size: 1.1rem;
@@ -111,18 +151,20 @@ body {
 
 .login-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 25px rgba(233, 151, 26, 0.4);
+    background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-accent-1) 100%);
 }
 
 /* App Header */
 .app-header {
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--bg-card);
     backdrop-filter: blur(10px);
     padding: 15px 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(8, 7, 7, 0.15);
     position: sticky;
     top: 0;
     z-index: 100;
+    border-bottom: 2px solid var(--border-light);
 }
 
 .header-content {
@@ -135,14 +177,14 @@ body {
 
 .header-content h1 {
     font-size: 1.5rem;
-    color: #333;
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
 .header-content h1 i {
-    color: #667eea;
+    color: var(--color-primary);
 }
 
 .header-actions {
@@ -167,30 +209,32 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: var(--bg-primary);
+    color: var(--text-white);
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 5px 15px rgba(233, 151, 26, 0.4);
+    background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-accent-1) 100%);
 }
 
 .btn-secondary {
-    background: #f8f9fa;
-    color: #666;
-    border: 1px solid #e1e5e9;
+    background: var(--color-neutral-3);
+    color: var(--text-white);
+    border: 1px solid var(--border-medium);
 }
 
 .btn-secondary:hover {
-    background: #e9ecef;
+    background: var(--color-neutral-2);
     transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(124, 124, 76, 0.3);
 }
 
 /* Back Button Styles */
 .btn-back {
-    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
-    color: white;
+    background: var(--bg-secondary);
+    color: var(--text-white);
     border: 2px solid transparent;
     position: relative;
     overflow: hidden;
@@ -208,9 +252,9 @@ body {
 }
 
 .btn-back:hover {
-    background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+    background: linear-gradient(135deg, var(--color-neutral-1) 0%, var(--color-accent-3) 100%);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(108, 117, 125, 0.3);
+    box-shadow: 0 8px 25px rgba(39, 38, 52, 0.4);
 }
 
 .btn-back:hover::before {
@@ -247,44 +291,45 @@ body {
 }
 
 .subject-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--bg-card);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 30px;
     text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(8, 7, 7, 0.15);
     cursor: pointer;
     transition: all 0.3s ease;
-    border: 2px solid transparent;
+    border: 2px solid var(--border-light);
 }
 
 .subject-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    border-color: #667eea;
+    box-shadow: 0 20px 40px rgba(8, 7, 7, 0.25);
+    border-color: var(--color-primary);
+    background: rgba(255, 255, 255, 1);
 }
 
 .subject-card i {
     font-size: 3rem;
     margin-bottom: 20px;
-    color: #667eea;
+    color: var(--color-primary);
 }
 
 .subject-card h3 {
     font-size: 1.5rem;
     margin-bottom: 10px;
-    color: #333;
+    color: var(--text-primary);
     font-weight: 600;
 }
 
 .subject-card p {
-    color: #666;
+    color: var(--text-light);
     font-size: 0.9rem;
 }
 
 .course-count {
-    background: #667eea;
-    color: white;
+    background: var(--color-primary);
+    color: var(--text-white);
     padding: 5px 12px;
     border-radius: 20px;
     font-size: 0.8rem;
@@ -308,11 +353,12 @@ body {
 }
 
 .editor-panel, .preview-panel {
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--bg-card);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(8, 7, 7, 0.15);
+    border: 2px solid var(--border-light);
 }
 
 .form-group {
@@ -323,24 +369,25 @@ body {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: #333;
+    color: var(--text-primary);
 }
 
 .form-group input, .form-group select {
     width: 100%;
     padding: 12px 15px;
-    border: 2px solid #e1e5e9;
+    border: 2px solid var(--border-light);
     border-radius: 10px;
     font-size: 1rem;
     transition: all 0.3s ease;
     max-width: 100%;
     box-sizing: border-box;
+    background: var(--text-white);
 }
 
 .form-group input:focus, .form-group select:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(233, 151, 26, 0.1);
 }
 
 /* Rich Text Editor */
@@ -350,17 +397,17 @@ body {
     gap: 8px;
     margin-bottom: 15px;
     padding: 15px;
-    background: #f8f9fa;
+    background: var(--color-primary-light);
     border-radius: 12px;
-    border: 1px solid #e1e5e9;
+    border: 1px solid var(--border-medium);
     align-items: center;
 }
 
 .toolbar-select {
     padding: 6px 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-medium);
     border-radius: 6px;
-    background: white;
+    background: var(--text-white);
     font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -369,8 +416,8 @@ body {
 
 .toolbar-select:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(233, 151, 26, 0.1);
 }
 
 .toolbar-btn {
@@ -380,7 +427,7 @@ body {
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
-    color: #666;
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -389,15 +436,15 @@ body {
 }
 
 .toolbar-btn:hover {
-    background: #e9ecef;
-    color: #333;
+    background: var(--color-primary);
+    color: var(--text-white);
     transform: translateY(-1px);
 }
 
 .toolbar-btn.active {
-    background: #667eea;
-    color: white;
-    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+    background: var(--color-primary);
+    color: var(--text-white);
+    box-shadow: 0 2px 4px rgba(233, 151, 26, 0.4);
 }
 
 .toolbar-color {
@@ -425,18 +472,18 @@ body {
 .rich-text-editor {
     min-height: 300px;
     padding: 15px;
-    border: 2px solid #e1e5e9;
+    border: 2px solid var(--border-light);
     border-radius: 10px;
     font-size: 1rem;
     line-height: 1.6;
-    background: white;
+    background: var(--text-white);
     transition: all 0.3s ease;
 }
 
 .rich-text-editor:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(233, 151, 26, 0.1);
 }
 
 .rich-text-editor:empty:before {
@@ -447,26 +494,26 @@ body {
 
 /* Preview Panel */
 .preview-header {
-    border-bottom: 2px solid #e1e5e9;
+    border-bottom: 2px solid var(--border-light);
     padding-bottom: 15px;
     margin-bottom: 20px;
 }
 
 .preview-header h3 {
-    color: #333;
+    color: var(--text-primary);
     font-size: 1.2rem;
 }
 
 .course-preview {
     min-height: 300px;
     padding: 20px;
-    background: #f8f9fa;
+    background: var(--color-primary-light);
     border-radius: 10px;
-    border: 1px solid #e1e5e9;
+    border: 1px solid var(--border-medium);
 }
 
 .preview-placeholder {
-    color: #999;
+    color: var(--text-light);
     font-style: italic;
     text-align: center;
     margin-top: 100px;
@@ -487,16 +534,17 @@ body {
 }
 
 .settings-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--bg-card);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 40px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(8, 7, 7, 0.15);
+    border: 2px solid var(--border-light);
 }
 
 .settings-card h2 {
     margin-bottom: 30px;
-    color: #333;
+    color: var(--text-primary);
     font-size: 1.5rem;
 }
 
@@ -515,14 +563,14 @@ body {
 }
 
 .course-card {
-    background: rgba(255, 255, 255, 0.98);
+    background: var(--bg-card);
     backdrop-filter: blur(15px);
     border-radius: 20px;
     padding: 30px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 15px 40px rgba(8, 7, 7, 0.15);
     cursor: pointer;
     transition: all 0.4s ease;
-    border: 2px solid transparent;
+    border: 2px solid var(--border-light);
     position: relative;
     overflow: hidden;
 }
@@ -534,7 +582,7 @@ body {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--bg-primary);
     transform: scaleX(0);
     transition: transform 0.3s ease;
 }
@@ -545,8 +593,8 @@ body {
 
 .course-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-    border-color: #667eea;
+    box-shadow: 0 25px 50px rgba(8, 7, 7, 0.25);
+    border-color: var(--color-primary);
     background: rgba(255, 255, 255, 1);
 }
 
@@ -559,7 +607,7 @@ body {
 
 .course-card h3 {
     font-size: 1.4rem;
-    color: #2c3e50;
+    color: var(--text-primary);
     font-weight: 700;
     line-height: 1.3;
     margin: 0;
@@ -592,7 +640,7 @@ body {
 }
 
 .course-card p {
-    color: #34495e;
+    color: var(--text-secondary);
     font-size: 1rem;
     line-height: 1.6;
     margin-bottom: 20px;
@@ -604,15 +652,15 @@ body {
     justify-content: space-between;
     align-items: center;
     font-size: 0.85rem;
-    color: #7f8c8d;
+    color: var(--text-light);
     padding: 15px 0;
-    border-top: 1px solid #ecf0f1;
+    border-top: 1px solid var(--border-light);
     margin-bottom: 15px;
 }
 
 .course-meta i {
     margin-right: 5px;
-    color: #667eea;
+    color: var(--color-primary);
 }
 
 .course-meta span {
@@ -642,42 +690,43 @@ body {
 }
 
 .btn-edit {
-    background: #e3f2fd;
-    color: #1976d2;
+    background: var(--color-primary-light);
+    color: var(--color-primary);
 }
 
 .btn-edit:hover {
-    background: #bbdefb;
+    background: var(--color-primary);
+    color: var(--text-white);
     transform: translateY(-1px);
 }
 
 .btn-generate {
-    background: #f3e5f5;
-    color: #7b1fa2;
+    background: var(--color-accent-2);
+    color: var(--text-white);
 }
 
 .btn-generate:hover {
-    background: #e1bee7;
+    background: var(--color-accent-1);
     transform: translateY(-1px);
 }
 
 .btn-toggle {
-    background: #fff3e0;
-    color: #f57c00;
+    background: var(--color-neutral-3);
+    color: var(--text-white);
 }
 
 .btn-toggle:hover {
-    background: #ffe0b2;
+    background: var(--color-neutral-2);
     transform: translateY(-1px);
 }
 
 .btn-delete {
-    background: #ffebee;
-    color: #d32f2f;
+    background: var(--color-accent-1);
+    color: var(--text-white);
 }
 
 .btn-delete:hover {
-    background: #ffcdd2;
+    background: var(--color-accent-3);
     transform: translateY(-1px);
 }
 
@@ -692,31 +741,32 @@ body {
 
 .empty-state-content {
     text-align: center;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--bg-card);
     backdrop-filter: blur(15px);
     border-radius: 25px;
     padding: 50px 40px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 50px rgba(8, 7, 7, 0.15);
     max-width: 400px;
     width: 100%;
+    border: 2px solid var(--border-light);
 }
 
 .empty-state-content i {
     font-size: 4rem;
-    color: #667eea;
+    color: var(--color-primary);
     margin-bottom: 25px;
     opacity: 0.8;
 }
 
 .empty-state-content h3 {
     font-size: 1.8rem;
-    color: #2c3e50;
+    color: var(--text-primary);
     margin-bottom: 15px;
     font-weight: 700;
 }
 
 .empty-state-content p {
-    color: #7f8c8d;
+    color: var(--text-light);
     font-size: 1.1rem;
     margin-bottom: 30px;
     line-height: 1.5;
@@ -743,13 +793,14 @@ body {
 }
 
 .link-modal-content {
-    background: white;
+    background: var(--text-white);
     border-radius: 20px;
     padding: 0;
     max-width: 500px;
     width: 100%;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 50px rgba(8, 7, 7, 0.4);
     animation: modalSlideIn 0.3s ease;
+    border: 2px solid var(--border-light);
 }
 
 @keyframes modalSlideIn {
@@ -768,12 +819,12 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 25px 30px;
-    border-bottom: 1px solid #e1e5e9;
+    border-bottom: 1px solid var(--border-light);
 }
 
 .link-modal-header h3 {
     margin: 0;
-    color: #2c3e50;
+    color: var(--text-primary);
     font-size: 1.3rem;
 }
 
@@ -799,7 +850,7 @@ body {
 
 .link-modal-body p {
     margin-bottom: 20px;
-    color: #666;
+    color: var(--text-light);
 }
 
 .link-container {
@@ -811,17 +862,17 @@ body {
 .link-input {
     flex: 1;
     padding: 12px 15px;
-    border: 2px solid #e1e5e9;
+    border: 2px solid var(--border-light);
     border-radius: 10px;
     font-size: 0.9rem;
-    background: #f8f9fa;
-    color: #666;
+    background: var(--color-primary-light);
+    color: var(--text-primary);
 }
 
 .btn-copy {
     padding: 12px 20px;
-    background: #667eea;
-    color: white;
+    background: var(--color-primary);
+    color: var(--text-white);
     border: none;
     border-radius: 10px;
     cursor: pointer;
@@ -833,13 +884,14 @@ body {
 }
 
 .btn-copy:hover {
-    background: #5a6fd8;
+    background: var(--color-primary-dark);
     transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(233, 151, 26, 0.3);
 }
 
 .btn-upload {
-    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-    color: white;
+    background: linear-gradient(135deg, var(--color-accent-2) 0%, var(--color-accent-1) 100%);
+    color: var(--text-white);
     border: none;
     padding: 12px 24px;
     border-radius: 8px;
@@ -855,9 +907,9 @@ body {
 }
 
 .btn-upload:hover {
-    background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+    background: linear-gradient(135deg, var(--color-accent-1) 0%, var(--color-accent-3) 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    box-shadow: 0 4px 15px rgba(91, 28, 7, 0.4);
 }
 
 .btn-upload:active {
@@ -866,7 +918,7 @@ body {
 
 .link-note {
     font-size: 0.85rem;
-    color: #999;
+    color: var(--text-light);
     font-style: italic;
     margin: 0;
 }
@@ -876,11 +928,11 @@ body {
     max-width: 600px;
     margin: 2rem auto;
     padding: 2rem;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--bg-card);
     border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(8, 7, 7, 0.15);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid var(--border-light);
 }
 
 .student-input-section .input-group {
@@ -891,24 +943,25 @@ body {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #333;
+    color: var(--text-primary);
     font-size: 1.1rem;
 }
 
 .student-input-section .form-input {
     width: 100%;
     padding: 1rem;
-    border: 2px solid #e1e5e9;
+    border: 2px solid var(--border-light);
     border-radius: 12px;
     font-size: 1rem;
     transition: all 0.3s ease;
     box-sizing: border-box;
+    background: var(--text-white);
 }
 
 .student-input-section .form-input:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(233, 151, 26, 0.1);
 }
 
 .student-input-section .btn {
@@ -923,18 +976,19 @@ body {
 }
 
 .student-input-section .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: var(--bg-primary);
+    color: var(--text-white);
 }
 
 .student-input-section .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 25px rgba(233, 151, 26, 0.4);
+    background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-accent-1) 100%);
 }
 
 .help-text {
     text-align: center;
-    color: #666;
+    color: var(--text-light);
     font-size: 0.9rem;
     margin-top: 1rem;
 }
@@ -942,43 +996,43 @@ body {
 .help-text p {
     margin: 0;
     padding: 0.5rem;
-    background: rgba(102, 126, 234, 0.1);
+    background: var(--color-primary-light);
     border-radius: 8px;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid var(--color-primary);
 }
 
 .admin-link {
     text-align: center;
     margin-top: 1rem;
     padding-top: 1rem;
-    border-top: 1px solid #e1e5e9;
+    border-top: 1px solid var(--border-light);
 }
 
 .admin-link .btn-secondary {
-    background: rgba(108, 117, 125, 0.1);
-    color: #6c757d;
-    border: 1px solid rgba(108, 117, 125, 0.2);
+    background: var(--color-neutral-3);
+    color: var(--text-white);
+    border: 1px solid var(--border-medium);
     font-size: 0.9rem;
     padding: 0.5rem 1rem;
     width: auto;
 }
 
 .admin-link .btn-secondary:hover {
-    background: rgba(108, 117, 125, 0.2);
+    background: var(--color-neutral-2);
     transform: none;
     box-shadow: none;
 }
 
 /* Student View Styles */
 .student-header {
-    background: rgba(255, 255, 255, 0.98);
+    background: var(--bg-card);
     backdrop-filter: blur(15px);
     padding: 15px 20px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 15px rgba(8, 7, 7, 0.15);
     position: sticky;
     top: 0;
     z-index: 100;
-    border-bottom: 1px solid #e1e5e9;
+    border-bottom: 2px solid var(--border-light);
 }
 
 .student-header-content {
@@ -995,7 +1049,7 @@ body {
 
 .course-info h1 {
     font-size: 1.4rem;
-    color: #2c3e50;
+    color: var(--text-primary);
     margin: 0 0 5px 0;
     font-weight: 700;
 }
@@ -1004,7 +1058,7 @@ body {
     display: flex;
     gap: 20px;
     font-size: 0.9rem;
-    color: #7f8c8d;
+    color: var(--text-light);
 }
 
 .course-meta-student span {
@@ -1014,8 +1068,8 @@ body {
 }
 
 .course-meta-student span:first-child {
-    background: #667eea;
-    color: white;
+    background: var(--color-primary);
+    color: var(--text-white);
     padding: 4px 12px;
     border-radius: 15px;
     font-size: 0.8rem;
@@ -1031,13 +1085,14 @@ body {
 }
 
 .course-reader {
-    background: rgba(255, 255, 255, 0.98);
+    background: var(--bg-card);
     backdrop-filter: blur(15px);
     border-radius: 20px;
     padding: 40px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 15px 40px rgba(8, 7, 7, 0.15);
     position: relative;
     overflow: hidden;
+    border: 2px solid var(--border-light);
 }
 
 .course-content {
@@ -1049,8 +1104,8 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     position: relative;
-    z-index: 2;
-    background: rgba(255, 255, 255, 0.98);
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.95);
     padding: 20px;
     border-radius: 12px;
     margin: 20px;
@@ -1066,13 +1121,13 @@ body {
 
 .course-content h1 {
     font-size: 2rem;
-    border-bottom: 3px solid #667eea;
+    border-bottom: 3px solid var(--color-primary);
     padding-bottom: 10px;
 }
 
 .course-content h2 {
     font-size: 1.6rem;
-    color: #667eea;
+    color: var(--color-primary);
 }
 
 .course-content h3 {
@@ -1108,8 +1163,8 @@ body {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: rgba(102, 126, 234, 0.1);
-    color: #667eea;
+    background: var(--color-primary-light);
+    color: var(--color-primary);
     padding: 8px 15px;
     border-radius: 20px;
     font-size: 0.8rem;
@@ -1117,41 +1172,44 @@ body {
     z-index: 50;
     pointer-events: none;
     opacity: 0.7;
-    border: 1px solid rgba(102, 126, 234, 0.2);
+    border: 1px solid var(--border-medium);
 }
 
-/* Background Watermark */
-.background-watermark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
+/* Watermarked Container - CSS Pseudo-element Method */
+.watermarked-container {
+    /* Establish a positioning context for the pseudo-element */
+    position: relative;
     overflow: hidden;
 }
 
-.watermark-text {
+.watermarked-container::after {
+    content: 'A+Tutor'; /* The text for your watermark */
+    
+    /* Positioning and size to cover the container */
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) rotate(-45deg);
-    font-size: 8rem;
+    
+    /* Text and styling properties */
+    color: rgba(233, 151, 26, 0.08); /* Use new orange color with transparency */
+    font-size: 6rem;
     font-weight: 300;
-    color: rgba(102, 126, 234, 0.06);
-    text-shadow: none;
+    text-transform: uppercase;
+    
+    /* Transform for rotation and centering */
+    transform: translate(-50%, -50%) rotate(-45deg);
+    
+    /* Ensure the watermark is behind the main content */
+    z-index: -1; 
+    
+    /* Prevent the watermark text from being selected */
     user-select: none;
-    white-space: nowrap;
-    letter-spacing: 0.1em;
+    pointer-events: none;
+    
+    /* Additional styling */
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    opacity: 0.4;
-}
-
-/* Remove the multiple instances - use single large watermark like Word */
-.background-watermark::before,
-.background-watermark::after {
-    display: none;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
 }
 
 /* Access Denied Screen */
@@ -1161,35 +1219,36 @@ body {
     justify-content: center;
     min-height: 100vh;
     padding: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--bg-primary);
 }
 
 .access-denied-card {
-    background: rgba(255, 255, 255, 0.98);
+    background: var(--bg-card);
     backdrop-filter: blur(15px);
     border-radius: 25px;
     padding: 50px 40px;
     text-align: center;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 25px 60px rgba(8, 7, 7, 0.25);
     max-width: 500px;
     width: 100%;
+    border: 2px solid var(--border-light);
 }
 
 .access-denied-icon {
     font-size: 4rem;
-    color: #e74c3c;
+    color: var(--color-accent-1);
     margin-bottom: 25px;
 }
 
 .access-denied-card h1 {
     font-size: 2rem;
-    color: #2c3e50;
+    color: var(--text-primary);
     margin-bottom: 15px;
     font-weight: 700;
 }
 
 .access-denied-card > p {
-    color: #7f8c8d;
+    color: var(--text-light);
     font-size: 1.1rem;
     margin-bottom: 30px;
     line-height: 1.6;
@@ -1206,20 +1265,20 @@ body {
     gap: 15px;
     margin-bottom: 15px;
     padding: 15px;
-    background: #f8f9fa;
+    background: var(--color-primary-light);
     border-radius: 12px;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid var(--color-primary);
 }
 
 .reason-item i {
-    color: #667eea;
+    color: var(--color-primary);
     font-size: 1.2rem;
     width: 20px;
     text-align: center;
 }
 
 .reason-item span {
-    color: #555;
+    color: var(--text-primary);
     font-size: 0.95rem;
 }
 
@@ -1246,38 +1305,39 @@ body {
     justify-content: center;
     min-height: 100vh;
     padding: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--bg-primary);
 }
 
 .loading-spinner {
     text-align: center;
-    background: rgba(255, 255, 255, 0.98);
+    background: var(--bg-card);
     backdrop-filter: blur(15px);
     border-radius: 25px;
     padding: 50px 40px;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 25px 60px rgba(8, 7, 7, 0.25);
     max-width: 400px;
     width: 100%;
+    border: 2px solid var(--border-light);
 }
 
 .spinner {
     width: 50px;
     height: 50px;
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #667eea;
+    border: 4px solid var(--color-primary-light);
+    border-top: 4px solid var(--color-primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin: 0 auto 25px;
 }
 
 .loading-spinner h2 {
-    color: #2c3e50;
+    color: var(--text-primary);
     margin-bottom: 10px;
     font-size: 1.5rem;
 }
 
 .loading-spinner p {
-    color: #7f8c8d;
+    color: var(--text-light);
     font-size: 1rem;
 }
 
@@ -1291,15 +1351,15 @@ body {
 }
 
 .error-message {
-    background: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+    background: var(--color-accent-1);
+    color: var(--text-white);
+    border: 1px solid var(--color-accent-2);
 }
 
 .success-message {
-    background: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+    background: var(--color-neutral-3);
+    color: var(--text-white);
+    border: 1px solid var(--color-neutral-2);
 }
 
 .error-message.show, .success-message.show {
@@ -1511,8 +1571,8 @@ body {
     }
     
     /* Mobile Background Watermark */
-    .watermark-text {
-        font-size: 5rem;
+    .watermarked-container::after {
+        font-size: 4rem;
     }
 }
 
@@ -1521,8 +1581,8 @@ body {
     display: inline-block;
     width: 20px;
     height: 20px;
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #667eea;
+    border: 3px solid var(--color-primary-light);
+    border-top: 3px solid var(--color-primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -1559,10 +1619,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #667eea;
+    background: var(--color-primary);
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #5a6fd8;
+    background: var(--color-primary-dark);
 }
