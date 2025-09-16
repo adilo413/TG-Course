@@ -591,20 +591,36 @@ class CourseManager {
         this.subjects.forEach(subject => {
             const subjectCard = document.createElement('div');
             subjectCard.className = 'subject-card';
-            subjectCard.onclick = () => {
-                this.currentSubject = subject.id;
-                document.getElementById('subjectTitle').textContent = subject.name + ' Courses';
-                this.showScreen('coursesList');
-            };
-
+            
             const courseCount = this.courses.filter(course => course.subject === subject.id).length;
 
             subjectCard.innerHTML = `
-                <i class="${subject.icon}" style="color: ${subject.color}"></i>
-                <h3>${subject.name}</h3>
-                <p>Manage your ${subject.name.toLowerCase()} courses</p>
+                <div class="subject-card-header">
+                    <div class="subject-info">
+                        <i class="${subject.icon}" style="color: ${subject.color}"></i>
+                        <h3>${subject.name}</h3>
+                    </div>
+                    <div class="subject-actions">
+                        <button class="btn-edit" onclick="event.stopPropagation(); window.courseManager.editSubject(${JSON.stringify(subject).replace(/"/g, '&quot;')})" title="Edit Subject">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-delete" onclick="event.stopPropagation(); window.courseManager.deleteSubject('${subject.id}')" title="Delete Subject">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <p>${subject.description || `Manage your ${subject.name.toLowerCase()} courses`}</p>
                 <div class="course-count">${courseCount} courses</div>
             `;
+            
+            // Add click handler for the main card area (excluding buttons)
+            subjectCard.addEventListener('click', (e) => {
+                if (!e.target.closest('.subject-actions')) {
+                    this.currentSubject = subject.id;
+                    document.getElementById('subjectTitle').textContent = subject.name + ' Courses';
+                    this.showScreen('coursesList');
+                }
+            });
 
             subjectsGrid.appendChild(subjectCard);
         });
@@ -1472,6 +1488,169 @@ class CourseManager {
         // The ::after pseudo-element creates the watermark automatically
         // No JavaScript needed - it's all CSS-based
         console.log('✅ Watermark setup complete - using CSS pseudo-element method');
+    }
+
+    // Subject Management Methods
+    setupSubjectManagement() {
+        // Manage Subjects button
+        document.getElementById('manageSubjectsBtn').addEventListener('click', () => {
+            this.showSubjectModal();
+        });
+
+        // Subject modal event listeners
+        document.getElementById('closeSubjectModal').addEventListener('click', () => {
+            this.hideSubjectModal();
+        });
+
+        document.getElementById('cancelSubject').addEventListener('click', () => {
+            this.hideSubjectModal();
+        });
+
+        // Subject form submission
+        document.getElementById('subjectForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.saveSubject();
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('subjectModal').addEventListener('click', (e) => {
+            if (e.target.id === 'subjectModal') {
+                this.hideSubjectModal();
+            }
+        });
+    }
+
+    showSubjectModal(subject = null) {
+        const modal = document.getElementById('subjectModal');
+        const title = document.getElementById('subjectModalTitle');
+        const form = document.getElementById('subjectForm');
+        
+        if (subject) {
+            // Editing existing subject
+            title.textContent = 'Edit Subject';
+            document.getElementById('subjectName').value = subject.name;
+            document.getElementById('subjectDescription').value = subject.description || '';
+            document.getElementById('subjectIcon').value = subject.icon;
+            form.dataset.editingId = subject.id;
+        } else {
+            // Adding new subject
+            title.textContent = 'Add New Subject';
+            form.reset();
+            delete form.dataset.editingId;
+        }
+        
+        modal.classList.add('show');
+        this.clearSubjectMessages();
+    }
+
+    hideSubjectModal() {
+        const modal = document.getElementById('subjectModal');
+        modal.classList.remove('show');
+        document.getElementById('subjectForm').reset();
+        delete document.getElementById('subjectForm').dataset.editingId;
+        this.clearSubjectMessages();
+    }
+
+    saveSubject() {
+        const form = document.getElementById('subjectForm');
+        const name = document.getElementById('subjectName').value.trim();
+        const description = document.getElementById('subjectDescription').value.trim();
+        const icon = document.getElementById('subjectIcon').value.trim();
+        const isEditing = form.dataset.editingId;
+
+        if (!name || !icon) {
+            this.showSubjectError('Please fill in all required fields.');
+            return;
+        }
+
+        // Check if subject name already exists (excluding current subject if editing)
+        const existingSubject = this.subjects.find(s => 
+            s.name.toLowerCase() === name.toLowerCase() && 
+            (!isEditing || s.id !== isEditing)
+        );
+        
+        if (existingSubject) {
+            this.showSubjectError('A subject with this name already exists.');
+            return;
+        }
+
+        if (isEditing) {
+            // Update existing subject
+            const subjectIndex = this.subjects.findIndex(s => s.id === isEditing);
+            if (subjectIndex !== -1) {
+                this.subjects[subjectIndex] = {
+                    ...this.subjects[subjectIndex],
+                    name: name,
+                    description: description,
+                    icon: icon
+                };
+                this.showSubjectSuccess('Subject updated successfully!');
+            }
+        } else {
+            // Add new subject
+            const newSubject = {
+                id: name.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+                name: name,
+                description: description,
+                icon: icon,
+                color: this.getRandomColor(),
+                courses: []
+            };
+            this.subjects.push(newSubject);
+            this.showSubjectSuccess('Subject added successfully!');
+        }
+
+        // Refresh the subjects display
+        this.displaySubjects();
+        
+        // Close modal after a short delay
+        setTimeout(() => {
+            this.hideSubjectModal();
+        }, 1500);
+    }
+
+    getRandomColor() {
+        const colors = ['#e74c3c', '#3498db', '#f39c12', '#2ecc71', '#9b59b6', '#1abc9c', '#34495e', '#e67e22'];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    editSubject(subject) {
+        this.showSubjectModal(subject);
+    }
+
+    deleteSubject(subjectId) {
+        if (confirm('Are you sure you want to delete this subject? This action cannot be undone.')) {
+            // Check if subject has courses
+            const subjectCourses = this.courses.filter(course => course.subject === subjectId);
+            if (subjectCourses.length > 0) {
+                alert('Cannot delete subject with existing courses. Please delete or move the courses first.');
+                return;
+            }
+
+            // Remove subject
+            this.subjects = this.subjects.filter(s => s.id !== subjectId);
+            this.displaySubjects();
+            this.showSubjectSuccess('Subject deleted successfully!');
+        }
+    }
+
+    showSubjectError(message) {
+        const errorDiv = document.getElementById('subjectError');
+        errorDiv.textContent = message;
+        errorDiv.classList.add('show');
+        setTimeout(() => errorDiv.classList.remove('show'), 5000);
+    }
+
+    showSubjectSuccess(message) {
+        const successDiv = document.getElementById('subjectSuccess');
+        successDiv.textContent = message;
+        successDiv.classList.add('show');
+        setTimeout(() => successDiv.classList.remove('show'), 3000);
+    }
+
+    clearSubjectMessages() {
+        document.getElementById('subjectError').classList.remove('show');
+        document.getElementById('subjectSuccess').classList.remove('show');
     }
 
     contactAdmin() {

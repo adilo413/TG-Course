@@ -352,6 +352,76 @@ body {
     font-size: 0.9rem;
 }
 
+/* Subject Card Header and Actions */
+.subject-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.subject-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+
+.subject-info i {
+    font-size: 2.5rem;
+    margin-bottom: 0;
+}
+
+.subject-info h3 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.subject-actions {
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.subject-card:hover .subject-actions {
+    opacity: 1;
+}
+
+.subject-actions button {
+    padding: 8px 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+}
+
+.subject-actions .btn-edit {
+    background: var(--color-accent-3);
+    color: var(--text-white);
+}
+
+.subject-actions .btn-edit:hover {
+    background: var(--color-primary);
+    transform: translateY(-1px);
+}
+
+.subject-actions .btn-delete {
+    background: var(--color-accent-1);
+    color: var(--text-white);
+}
+
+.subject-actions .btn-delete:hover {
+    background: #cc0000;
+    transform: translateY(-1px);
+}
+
 .course-count {
     background: var(--color-primary);
     color: var(--text-white);
@@ -397,7 +467,7 @@ body {
     color: var(--text-primary);
 }
 
-.form-group input, .form-group select {
+.form-group input, .form-group select, .form-group textarea {
     width: 100%;
     padding: 12px 15px;
     border: 2px solid var(--border-light);
@@ -408,11 +478,25 @@ body {
     box-sizing: border-box;
     background: var(--color-medium-gray);
     color: var(--text-primary);
+    font-family: inherit;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 5px;
+    color: var(--text-light);
+    font-size: 0.85rem;
 }
 
 /* Light theme form inputs */
 [data-theme="light"] .form-group input,
-[data-theme="light"] .form-group select {
+[data-theme="light"] .form-group select,
+[data-theme="light"] .form-group textarea {
     background: #ffffff;
     color: #1a1a1a;
     border: 2px solid #e0e0e0;
@@ -930,7 +1014,73 @@ body {
     font-size: 1.1rem;
 }
 
-/* Link Modal */
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 0;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 50px rgba(8, 7, 7, 0.4);
+    animation: modalSlideIn 0.3s ease;
+    border: 2px solid var(--border-light);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 30px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.3rem;
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.close-modal:hover {
+    background: var(--color-light-gray);
+    color: var(--text-primary);
+}
+
+/* Link Modal (Legacy) */
 .link-modal {
     position: fixed;
     top: 0;

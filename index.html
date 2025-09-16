@@ -40,6 +40,10 @@
             <div class="header-content">
                 <h1><i class="fas fa-graduation-cap"></i> Course Manager</h1>
                 <div class="header-actions">
+                    <button id="manageSubjectsBtn" class="btn-secondary">
+                        <i class="fas fa-tags"></i>
+                        Manage Subjects
+                    </button>
                     <button id="createCourseBtn" class="btn-primary">
                         <i class="fas fa-plus"></i>
                         New Course
@@ -380,6 +384,47 @@
                 <div class="spinner"></div>
                 <h2>Loading Course...</h2>
                 <p>Please wait while we verify your access</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subject Management Modal -->
+    <div id="subjectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="subjectModalTitle">Add New Subject</h3>
+                <button class="close-modal" id="closeSubjectModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="subjectForm">
+                    <div class="form-group">
+                        <label for="subjectName">Subject Name</label>
+                        <input type="text" id="subjectName" placeholder="e.g., Mathematics, English, Science" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectDescription">Description</label>
+                        <textarea id="subjectDescription" placeholder="Brief description of the subject" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectIcon">Icon Class (FontAwesome)</label>
+                        <input type="text" id="subjectIcon" placeholder="e.g., fas fa-calculator" required>
+                        <small>Use FontAwesome icon classes (e.g., fas fa-book, fas fa-calculator, fas fa-flask)</small>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancelSubject">
+                            <i class="fas fa-times"></i>
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn-primary" id="saveSubject">
+                            <i class="fas fa-save"></i>
+                            Save Subject
+                        </button>
+                    </div>
+                </form>
+                <div id="subjectError" class="error-message"></div>
+                <div id="subjectSuccess" class="success-message"></div>
             </div>
         </div>
     </div>
