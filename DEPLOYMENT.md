@@ -53,7 +53,7 @@ The channel membership verification requires a Supabase Edge Function. Here's ho
 ### **2. Test the Implementation**
 
 1. **Generate a course link** from the admin panel
-2. **Share it in your private channel** (ID: -1002798244043)
+2. **Share it in your private channel** (ID: -1003004502647)
 3. **Test with different users:**
    - **Channel members** → Should see course content
    - **Non-members** → Should see "Access Denied" with channel membership message
@@ -80,7 +80,7 @@ The channel membership verification requires a Supabase Edge Function. Here's ho
 #### **If membership check fails:**
 - Check that the bot is added to your private channel
 - Verify the bot has admin permissions in the channel
-- Ensure the channel ID is correct (-1002798244043)
+- Ensure the channel ID is correct (-1003004502647)
 - Check the bot token is valid
 
 #### **If Edge Function doesn't work:**

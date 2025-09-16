@@ -915,7 +915,7 @@ class CourseManager {
             const result = await this.api.postCourseToChannel(
                 courseTitle, 
                 courseLink, 
-                '-1002798244043' // Your channel ID
+                '-1003004502647' // Your channel ID
             );
             
             if (result.success) {
@@ -1249,7 +1249,7 @@ class CourseManager {
             console.log('🔍 Checking channel membership...');
             const membershipResult = await this.api.checkChannelMembership(
                 this.telegramUser.id, 
-                '-1002798244043' // Your channel ID from important-links
+                '-1003004502647' // Your channel ID from important-links
             );
             
             if (!membershipResult.success || !membershipResult.isMember) {
@@ -1468,10 +1468,10 @@ class CourseManager {
     }
 
     setupWatermark() {
-        // The watermark is now handled purely by CSS
-        // No need for additional JavaScript watermark instances
-        // The single large watermark in CSS matches the Word document style
-        console.log('✅ Watermark setup complete - using Word-style watermark');
+        // The watermark is now handled purely by CSS pseudo-element
+        // The ::after pseudo-element creates the watermark automatically
+        // No JavaScript needed - it's all CSS-based
+        console.log('✅ Watermark setup complete - using CSS pseudo-element method');
     }
 
     contactAdmin() {
