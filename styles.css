@@ -1513,7 +1513,7 @@ body {
 }
 
 .watermarked-container::after {
-    content: 'A+Tutor'; /* The text for your watermark */
+    content: 'Bright Freshman Tutorial'; /* The text for your watermark */
     
     /* Positioning and size to cover the container */
     position: absolute;

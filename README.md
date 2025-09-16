@@ -1,6 +1,6 @@
-# Course Management Backend API
+# Bright Freshman Tutorial - Backend API
 
-A Node.js backend API for the Telegram Mini App Course Management System.
+A Node.js backend API for the Bright Freshman Tutorial Telegram Mini App Course Management System.
 
 ## Features
 

@@ -2,12 +2,8 @@
 class CourseManager {
     constructor() {
         this.currentScreen = 'login';
-        this.subjects = [
-            { id: 'amharic', name: 'Amharic', icon: 'fas fa-book', color: '#e74c3c', courses: [] },
-            { id: 'english', name: 'English', icon: 'fas fa-language', color: '#3498db', courses: [] },
-            { id: 'math', name: 'Math', icon: 'fas fa-calculator', color: '#f39c12', courses: [] },
-            { id: 'science', name: 'Science', icon: 'fas fa-flask', color: '#2ecc71', courses: [] }
-        ];
+        // Load subjects from localStorage or use defaults
+        this.subjects = this.loadSubjectsFromStorage();
         this.courses = [];
         this.currentSubject = null;
         this.currentCourse = null;
@@ -1601,8 +1597,11 @@ class CourseManager {
             this.showSubjectSuccess('Subject added successfully!');
         }
 
+        // Save subjects to localStorage
+        this.saveSubjectsToStorage();
+        
         // Refresh the subjects display
-        this.displaySubjects();
+        this.loadSubjects();
         
         // Close modal after a short delay
         setTimeout(() => {
@@ -1630,7 +1629,12 @@ class CourseManager {
 
             // Remove subject
             this.subjects = this.subjects.filter(s => s.id !== subjectId);
-            this.displaySubjects();
+            
+            // Save subjects to localStorage
+            this.saveSubjectsToStorage();
+            
+            // Refresh the subjects display
+            this.loadSubjects();
             this.showSubjectSuccess('Subject deleted successfully!');
         }
     }
@@ -1652,6 +1656,35 @@ class CourseManager {
     clearSubjectMessages() {
         document.getElementById('subjectError').classList.remove('show');
         document.getElementById('subjectSuccess').classList.remove('show');
+    }
+
+    // Subject Persistence Methods
+    loadSubjectsFromStorage() {
+        try {
+            const stored = localStorage.getItem('courseManager_subjects');
+            if (stored) {
+                return JSON.parse(stored);
+            }
+        } catch (error) {
+            console.error('Error loading subjects from storage:', error);
+        }
+        
+        // Return default subjects if no stored data
+        return [
+            { id: 'amharic', name: 'Amharic', icon: 'fas fa-book', color: '#e74c3c', courses: [] },
+            { id: 'english', name: 'English', icon: 'fas fa-language', color: '#3498db', courses: [] },
+            { id: 'math', name: 'Math', icon: 'fas fa-calculator', color: '#f39c12', courses: [] },
+            { id: 'science', name: 'Science', icon: 'fas fa-flask', color: '#2ecc71', courses: [] }
+        ];
+    }
+
+    saveSubjectsToStorage() {
+        try {
+            localStorage.setItem('courseManager_subjects', JSON.stringify(this.subjects));
+            console.log('✅ Subjects saved to localStorage');
+        } catch (error) {
+            console.error('Error saving subjects to storage:', error);
+        }
     }
 
     contactAdmin() {
