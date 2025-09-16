@@ -1554,9 +1554,84 @@ class CourseManager {
     }
 }
 
+// Theme Management
+class ThemeManager {
+    constructor() {
+        this.currentTheme = localStorage.getItem('theme') || 'dark';
+        this.init();
+    }
+
+    init() {
+        this.applyTheme(this.currentTheme);
+        this.setupThemeToggle();
+    }
+
+    applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        this.currentTheme = theme;
+        localStorage.setItem('theme', theme);
+        
+        // Update toggle state
+        const toggle = document.getElementById('themeToggle');
+        if (toggle) {
+            toggle.classList.toggle('active', theme === 'light');
+        }
+    }
+
+    toggleTheme() {
+        const newTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
+        this.applyTheme(newTheme);
+        
+        // Show feedback
+        this.showThemeFeedback(newTheme);
+    }
+
+    showThemeFeedback(theme) {
+        // Create a temporary feedback element
+        const feedback = document.createElement('div');
+        feedback.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--color-primary);
+            color: var(--text-white);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        `;
+        feedback.textContent = `Theme changed to ${theme} mode`;
+        
+        document.body.appendChild(feedback);
+        
+        // Remove after 2 seconds
+        setTimeout(() => {
+            feedback.style.opacity = '0';
+            feedback.style.transform = 'translateY(-20px)';
+            setTimeout(() => {
+                if (feedback.parentNode) {
+                    feedback.parentNode.removeChild(feedback);
+                }
+            }, 300);
+        }, 2000);
+    }
+
+    setupThemeToggle() {
+        const toggle = document.getElementById('themeToggle');
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                this.toggleTheme();
+            });
+        }
+    }
+}
+
 // Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.courseManager = new CourseManager();
+    window.themeManager = new ThemeManager();
 });
 
 // Handle window resize for responsive design

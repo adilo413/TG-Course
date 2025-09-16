@@ -1,38 +1,65 @@
-/* CSS Custom Properties - Black Theme */
+/* CSS Custom Properties - Theme System */
 :root {
-    /* Primary Colors */
-    --color-primary: #e9971a;      /* Orange - Main brand color (kept for accents) */
+    /* Primary Colors - Same for both themes */
+    --color-primary: #e9971a;      /* Orange - Main brand color */
     --color-primary-dark: #d17a0a;  /* Darker orange for hover states */
     --color-primary-light: #f5b84d; /* Lighter orange for backgrounds */
     
-    /* Black Theme Colors */
+    /* Accent Colors - Same for both themes */
+    --color-accent-1: #ff4444;      /* Red accent */
+    --color-accent-2: #00ff88;      /* Green accent */
+    --color-accent-3: #4488ff;      /* Blue accent */
+    
+    /* Dark Theme Colors (Default) */
     --color-black: #000000;         /* Pure black */
     --color-dark-gray: #1a1a1a;     /* Very dark gray */
     --color-medium-gray: #2d2d2d;   /* Medium dark gray */
     --color-light-gray: #404040;    /* Light dark gray */
     --color-lighter-gray: #555555;  /* Lighter gray for borders */
     
-    /* Accent Colors for Black Theme */
-    --color-accent-1: #ff4444;      /* Red accent */
-    --color-accent-2: #00ff88;      /* Green accent */
-    --color-accent-3: #4488ff;      /* Blue accent */
-    
-    /* Background Colors */
+    /* Background Colors - Dark Theme */
     --bg-primary: linear-gradient(135deg, var(--color-black) 0%, var(--color-dark-gray) 100%);
     --bg-secondary: linear-gradient(135deg, var(--color-dark-gray) 0%, var(--color-medium-gray) 100%);
     --bg-card: rgba(26, 26, 26, 0.95);
     --bg-overlay: rgba(0, 0, 0, 0.8);
     
-    /* Text Colors */
+    /* Text Colors - Dark Theme */
     --text-primary: #ffffff;        /* White text */
     --text-secondary: #e0e0e0;      /* Light gray text */
     --text-light: #b0b0b0;          /* Medium gray text */
     --text-white: #ffffff;          /* Pure white */
     
-    /* Border Colors */
+    /* Border Colors - Dark Theme */
     --border-light: rgba(255, 255, 255, 0.1);
     --border-medium: rgba(255, 255, 255, 0.2);
     --border-dark: rgba(255, 255, 255, 0.3);
+}
+
+/* Light Theme Variables */
+[data-theme="light"] {
+    /* Light Theme Colors */
+    --color-black: #ffffff;         /* Pure white */
+    --color-dark-gray: #f8f9fa;     /* Very light gray */
+    --color-medium-gray: #ffffff;   /* White */
+    --color-light-gray: #e9ecef;    /* Light gray */
+    --color-lighter-gray: #dee2e6;  /* Lighter gray for borders */
+    
+    /* Background Colors - Light Theme */
+    --bg-primary: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    --bg-secondary: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    --bg-card: rgba(255, 255, 255, 0.95);
+    --bg-overlay: rgba(255, 255, 255, 0.8);
+    
+    /* Text Colors - Light Theme */
+    --text-primary: #212529;        /* Dark text */
+    --text-secondary: #495057;      /* Medium dark text */
+    --text-light: #6c757d;          /* Light gray text */
+    --text-white: #ffffff;          /* Pure white */
+    
+    /* Border Colors - Light Theme */
+    --border-light: rgba(0, 0, 0, 0.1);
+    --border-medium: rgba(0, 0, 0, 0.2);
+    --border-dark: rgba(0, 0, 0, 0.3);
 }
 
 /* Reset and Base Styles */
@@ -534,6 +561,100 @@ body {
     margin: 0 auto;
 }
 
+/* Theme Switcher */
+.theme-switcher {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: var(--bg-card);
+    border-radius: 15px;
+    border: 2px solid var(--border-light);
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+.theme-switcher:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 5px 15px rgba(233, 151, 26, 0.1);
+}
+
+.theme-switcher-info {
+    flex: 1;
+}
+
+.theme-switcher-info h3 {
+    color: var(--text-primary);
+    margin: 0 0 5px 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.theme-switcher-info p {
+    color: var(--text-light);
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.theme-toggle {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    background: var(--color-light-gray);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid var(--border-medium);
+}
+
+.theme-toggle.active {
+    background: var(--color-primary);
+}
+
+.theme-toggle::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 22px;
+    height: 22px;
+    background: var(--text-white);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle.active::before {
+    transform: translateX(30px);
+}
+
+.theme-toggle-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: var(--text-white);
+    transition: all 0.3s ease;
+}
+
+.theme-toggle-icon.sun {
+    left: 6px;
+    opacity: 1;
+}
+
+.theme-toggle-icon.moon {
+    right: 6px;
+    opacity: 0;
+}
+
+.theme-toggle.active .theme-toggle-icon.sun {
+    opacity: 0;
+}
+
+.theme-toggle.active .theme-toggle-icon.moon {
+    opacity: 1;
+}
+
 .settings-card {
     background: var(--bg-card);
     backdrop-filter: blur(10px);
@@ -558,9 +679,12 @@ body {
 
 .courses-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: 1fr;
     gap: 25px;
     margin-top: 20px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .course-card {
@@ -1201,7 +1325,7 @@ body {
     left: 50%;
     
     /* Text and styling properties */
-    color: rgba(255, 255, 255, 0.05); /* White watermark for black theme */
+    color: rgba(0, 0, 0, 0.05); /* Dark watermark for light theme */
     font-size: 6rem;
     font-weight: 300;
     text-transform: uppercase;
@@ -1220,6 +1344,11 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     letter-spacing: 0.1em;
     white-space: nowrap;
+}
+
+/* Light theme watermark */
+[data-theme="light"] .watermarked-container::after {
+    color: rgba(0, 0, 0, 0.05); /* Dark watermark for light theme */
 }
 
 /* Access Denied Screen */
@@ -1374,6 +1503,25 @@ body {
 
 .error-message.show, .success-message.show {
     display: block;
+}
+
+/* Desktop Responsive - Multiple columns for larger screens */
+@media (min-width: 1200px) {
+    .courses-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        max-width: none;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+    .courses-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        max-width: none;
+        margin-left: 0;
+        margin-right: 0;
+    }
 }
 
 /* Mobile Responsive */
