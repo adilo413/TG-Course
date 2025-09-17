@@ -1009,17 +1009,18 @@ class CourseManager {
                         position: absolute;
                         top: 50%;
                         left: 50%;
-                        color: rgba(0, 0, 0, 0.05);
+                        color: rgba(0, 0, 0, 0.2);
                         font-size: 4rem;
-                        font-weight: 300;
+                        font-weight: 900;
                         text-transform: uppercase;
                         transform: translate(-50%, -50%) rotate(-45deg);
                         z-index: -1;
                         user-select: none;
                         pointer-events: none;
                         font-family: Arial, sans-serif;
-                        letter-spacing: 0.1em;
+                        letter-spacing: 0.2em;
                         white-space: nowrap;
+                        text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                     }
                 </style>
             </head>

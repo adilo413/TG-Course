@@ -1946,7 +1946,7 @@ body {
     -ms-user-select: none;
     position: relative;
     z-index: 1;
-    background: var(--color-medium-gray);
+    /* Removed background to allow watermark to show through */
     padding: 20px;
     border-radius: 12px;
     margin: 20px;
@@ -1955,7 +1955,7 @@ body {
 
 /* Light theme course content */
 [data-theme="light"] .course-content {
-    background: #ffffff;
+    /* Removed background to allow watermark to show through */
     color: #1a1a1a;
     text-shadow: none;
 }
@@ -2052,10 +2052,10 @@ body {
     top: 50%;
     left: 50%;
     
-    /* Text and styling properties */
-    color: rgba(0, 0, 0, 0.05); /* Dark watermark for light theme */
-    font-size: 6rem;
-    font-weight: 300;
+    /* Text and styling properties - Much more visible */
+    color: rgba(255, 255, 255, 0.25); /* More visible white watermark for dark theme */
+    font-size: 5rem;
+    font-weight: 900; /* Much bolder */
     text-transform: uppercase;
     
     /* Transform for rotation and centering */
@@ -2070,13 +2070,17 @@ body {
     
     /* Additional styling */
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.2em;
     white-space: nowrap;
+    
+    /* Add text shadow for better visibility */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 /* Light theme watermark */
 [data-theme="light"] .watermarked-container::after {
-    color: rgba(0, 0, 0, 0.05); /* Dark watermark for light theme */
+    color: rgba(0, 0, 0, 0.2); /* Much more visible dark watermark for light theme */
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 }
 
 /* Access Denied Screen */
