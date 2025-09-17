@@ -15,7 +15,7 @@ supabase login
 
 # Link to project
 echo "🔗 Linking to project..."
-supabase link --project-ref vfzyxiuhrjrqhoxbdxwg
+supabase link --project-ref jakqyuawjtkoupackdmo
 
 # Deploy functions
 echo "📦 Deploying check-membership function..."
