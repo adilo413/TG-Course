@@ -585,6 +585,8 @@ class CourseManager {
         // Load content based on screen
         if (screenName === 'dashboard') {
             this.loadSubjects();
+        } else if (screenName === 'courseCreation') {
+            this.updateCourseSubjectDropdown();
         } else if (screenName === 'chaptersList') {
             this.loadChapters();
         } else if (screenName === 'coursesList') {
@@ -649,6 +651,9 @@ class CourseManager {
 
             subjectsGrid.appendChild(subjectCard);
         });
+        
+        // Update course creation dropdown with latest subjects
+        this.updateCourseSubjectDropdown();
     }
 
     loadChapters() {
@@ -1746,6 +1751,9 @@ class CourseManager {
         // Refresh the subjects display
         this.loadSubjects();
         
+        // Update course creation dropdown
+        this.updateCourseSubjectDropdown();
+        
         // Close modal after a short delay
         setTimeout(() => {
             this.hideSubjectModal();
@@ -1790,6 +1798,10 @@ class CourseManager {
             
             // Refresh the subjects display
             this.loadSubjects();
+            
+            // Update course creation dropdown
+            this.updateCourseSubjectDropdown();
+            
             this.showSubjectSuccess('Subject deleted successfully!');
         }
     }
@@ -1966,6 +1978,22 @@ class CourseManager {
         }
     }
 
+
+    updateCourseSubjectDropdown() {
+        const subjectSelect = document.getElementById('courseSubject');
+        if (!subjectSelect) return;
+        
+        // Clear existing options except the first one
+        subjectSelect.innerHTML = '<option value="">Select Subject</option>';
+        
+        // Add all subjects as options
+        this.subjects.forEach(subject => {
+            const option = document.createElement('option');
+            option.value = subject.id;
+            option.textContent = subject.name;
+            subjectSelect.appendChild(option);
+        });
+    }
 
     updateChapterDropdown(subjectId) {
         const chapterSelect = document.getElementById('courseChapter');
