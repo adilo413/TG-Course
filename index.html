@@ -46,20 +46,43 @@
                 </div>
                 <h1>Bright Freshman Tutorial</h1>
                 <div class="header-actions">
-                    <button id="manageSubjectsBtn" class="btn-secondary">
+                    <button id="manageSubjectsBtn" class="btn-secondary desktop-only">
                         <i class="fas fa-tags"></i>
                         Manage Subjects
                     </button>
                     <button id="createCourseBtn" class="btn-primary">
                         <i class="fas fa-plus"></i>
-                        New Course
+                        <span class="desktop-only">New Course</span>
                     </button>
-                    <button id="settingsBtn" class="btn-secondary">
+                    <button id="settingsBtn" class="btn-secondary desktop-only">
                         <i class="fas fa-cog"></i>
                     </button>
-                    <button id="logoutBtn" class="btn-secondary">
+                    <button id="logoutBtn" class="btn-secondary desktop-only">
                         <i class="fas fa-sign-out-alt"></i>
                     </button>
+                    
+                    <!-- Mobile Burger Menu -->
+                    <div class="mobile-menu">
+                        <button id="burgerMenuBtn" class="burger-menu-btn">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                        <div id="mobileMenu" class="mobile-menu-content">
+                            <button id="mobileManageSubjectsBtn" class="mobile-menu-item">
+                                <i class="fas fa-tags"></i>
+                                Manage Subjects
+                            </button>
+                            <button id="mobileSettingsBtn" class="mobile-menu-item">
+                                <i class="fas fa-cog"></i>
+                                Settings
+                            </button>
+                            <button id="mobileLogoutBtn" class="mobile-menu-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>

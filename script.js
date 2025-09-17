@@ -118,6 +118,36 @@ class CourseManager {
             this.logout();
         });
 
+        // Mobile menu functionality
+        document.getElementById('burgerMenuBtn').addEventListener('click', () => {
+            this.toggleMobileMenu();
+        });
+
+        // Mobile menu items
+        document.getElementById('mobileManageSubjectsBtn').addEventListener('click', () => {
+            this.showSubjectModal();
+            this.closeMobileMenu();
+        });
+
+        document.getElementById('mobileSettingsBtn').addEventListener('click', () => {
+            this.showScreen('settings');
+            this.closeMobileMenu();
+        });
+
+        document.getElementById('mobileLogoutBtn').addEventListener('click', () => {
+            this.logout();
+            this.closeMobileMenu();
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const burgerBtn = document.getElementById('burgerMenuBtn');
+            if (mobileMenu && !mobileMenu.contains(e.target) && !burgerBtn.contains(e.target)) {
+                this.closeMobileMenu();
+            }
+        });
+
         document.getElementById('backToDashboard').addEventListener('click', () => {
             this.showScreen('dashboard');
         });
@@ -564,6 +594,33 @@ class CourseManager {
             // Still show login screen even if logout fails
             this.showScreen('login');
         }
+    }
+
+    toggleMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        const burgerBtn = document.getElementById('burgerMenuBtn');
+        
+        if (mobileMenu.classList.contains('show')) {
+            this.closeMobileMenu();
+        } else {
+            this.openMobileMenu();
+        }
+    }
+
+    openMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        const burgerBtn = document.getElementById('burgerMenuBtn');
+        
+        mobileMenu.classList.add('show');
+        burgerBtn.classList.add('active');
+    }
+
+    closeMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        const burgerBtn = document.getElementById('burgerMenuBtn');
+        
+        mobileMenu.classList.remove('show');
+        burgerBtn.classList.remove('active');
     }
 
     showScreen(screenName) {
