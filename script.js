@@ -1661,11 +1661,13 @@ class CourseManager {
             document.getElementById('subjectName').value = subject.name;
             document.getElementById('subjectDescription').value = subject.description || '';
             document.getElementById('subjectIcon').value = subject.icon;
+            document.getElementById('subjectChapters').value = subject.chapters ? subject.chapters.length : 6;
             form.dataset.editingId = subject.id;
         } else {
             // Adding new subject
             title.textContent = 'Add New Subject';
             form.reset();
+            document.getElementById('subjectChapters').value = 6; // Default to 6 chapters
             delete form.dataset.editingId;
         }
         
@@ -1686,10 +1688,11 @@ class CourseManager {
         const name = document.getElementById('subjectName').value.trim();
         const description = document.getElementById('subjectDescription').value.trim();
         const icon = document.getElementById('subjectIcon').value.trim();
+        const chapterCount = parseInt(document.getElementById('subjectChapters').value);
         const isEditing = form.dataset.editingId;
 
-        if (!name || !icon) {
-            this.showSubjectError('Please fill in all required fields.');
+        if (!name || !icon || !chapterCount) {
+            this.showSubjectError('Please fill in all required fields including number of chapters.');
             return;
         }
 
@@ -1708,11 +1711,17 @@ class CourseManager {
             // Update existing subject
             const subjectIndex = this.subjects.findIndex(s => s.id === isEditing);
             if (subjectIndex !== -1) {
+                const currentSubject = this.subjects[subjectIndex];
+                const currentChapterCount = currentSubject.chapters ? currentSubject.chapters.length : 0;
+                
                 this.subjects[subjectIndex] = {
-                    ...this.subjects[subjectIndex],
+                    ...currentSubject,
                     name: name,
                     description: description,
-                    icon: icon
+                    icon: icon,
+                    chapters: chapterCount !== currentChapterCount ? 
+                        this.generateChapters(isEditing, chapterCount) : 
+                        currentSubject.chapters
                 };
                 this.showSubjectSuccess('Subject updated successfully!');
             }
@@ -1724,7 +1733,8 @@ class CourseManager {
                 description: description,
                 icon: icon,
                 color: this.getRandomColor(),
-                courses: []
+                courses: [],
+                chapters: this.generateChapters(name.toLowerCase().replace(/[^a-z0-9]/g, '_'), chapterCount)
             };
             this.subjects.push(newSubject);
             this.showSubjectSuccess('Subject added successfully!');
@@ -1740,6 +1750,18 @@ class CourseManager {
         setTimeout(() => {
             this.hideSubjectModal();
         }, 1500);
+    }
+
+    generateChapters(subjectId, count) {
+        const chapters = [];
+        for (let i = 1; i <= count; i++) {
+            chapters.push({
+                id: `${subjectId}_ch${i}`,
+                name: `Chapter ${i}`,
+                number: i
+            });
+        }
+        return chapters;
     }
 
     getRandomColor() {
