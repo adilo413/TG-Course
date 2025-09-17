@@ -592,37 +592,27 @@ class CourseManager {
             const courseCount = this.courses.filter(course => course.subject === subject.id).length;
 
             subjectCard.innerHTML = `
-                <div class="subject-header">
-                    <span class="subject-title">${subject.name}</span>
-                    <span class="subject-price">${courseCount} Courses</span>
+                <div class="folder-icon">
+                    <div class="pencil"></div>
+                    <div class="folder">
+                        <div class="top">
+                            <svg viewBox="0 0 24 27">
+                                <path d="M1,0 L23,0 C23.5522847,-1.01453063e-16 24,0.44771525 24,1 L24,8.17157288 C24,8.70200585 23.7892863,9.21071368 23.4142136,9.58578644 L20.5857864,12.4142136 C20.2107137,12.7892863 20,13.2979941 20,13.8284271 L20,26 C20,26.5522847 19.5522847,27 19,27 L1,27 C0.44771525,27 6.76353751e-17,26.5522847 0,26 L0,1 C-6.76353751e-17,0.44771525 0.44771525,1.01453063e-16 1,0 Z"></path>
+                            </svg>
+                        </div>
+                        <div class="paper"></div>
+                    </div>
                 </div>
-                <p class="subject-desc">${subject.description || `Manage your ${subject.name.toLowerCase()} courses`}</p>
-                <ul class="subject-lists">
-                    <li class="subject-list">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                        </svg>
-                        <span>Interactive Learning</span>
-                    </li>
-                    <li class="subject-list">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                        </svg>
-                        <span>Progress Tracking</span>
-                    </li>
-                    <li class="subject-list">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                        </svg>
-                        <span>Expert Content</span>
-                    </li>
-                </ul>
+                <div class="subject-info">
+                    <h3>${subject.name}</h3>
+                    <p>${courseCount} courses • ${subject.chapters || 10} chapters</p>
+                </div>
                 <div class="subject-actions">
-                    <button class="btn-action btn-edit" onclick="event.stopPropagation(); window.courseManager.editSubject(${JSON.stringify(subject).replace(/"/g, '&quot;')})" title="Edit Subject">
-                        <i class="fas fa-edit"></i> Edit
+                    <button class="btn-edit" onclick="event.stopPropagation(); window.courseManager.editSubject(${JSON.stringify(subject).replace(/"/g, '&quot;')})" title="Edit Subject">
+                        <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn-action btn-delete" onclick="event.stopPropagation(); window.courseManager.deleteSubject('${subject.id}')" title="Delete Subject">
-                        <i class="fas fa-trash"></i> Delete
+                    <button class="btn-delete" onclick="event.stopPropagation(); window.courseManager.deleteSubject('${subject.id}')" title="Delete Subject">
+                        <i class="fas fa-trash"></i>
                     </button>
                 </div>
             `;
@@ -1545,11 +1535,13 @@ class CourseManager {
             document.getElementById('subjectName').value = subject.name;
             document.getElementById('subjectDescription').value = subject.description || '';
             document.getElementById('subjectIcon').value = subject.icon;
+            document.getElementById('subjectChapters').value = subject.chapters || 10;
             form.dataset.editingId = subject.id;
         } else {
             // Adding new subject
             title.textContent = 'Add New Subject';
             form.reset();
+            document.getElementById('subjectChapters').value = 10; // Default value
             delete form.dataset.editingId;
         }
         
@@ -1570,6 +1562,7 @@ class CourseManager {
         const name = document.getElementById('subjectName').value.trim();
         const description = document.getElementById('subjectDescription').value.trim();
         const icon = document.getElementById('subjectIcon').value.trim();
+        const chapters = parseInt(document.getElementById('subjectChapters').value) || 10;
         const isEditing = form.dataset.editingId;
 
         if (!name || !icon) {
@@ -1596,7 +1589,8 @@ class CourseManager {
                     ...this.subjects[subjectIndex],
                     name: name,
                     description: description,
-                    icon: icon
+                    icon: icon,
+                    chapters: chapters
                 };
                 this.showSubjectSuccess('Subject updated successfully!');
             }
@@ -1608,6 +1602,7 @@ class CourseManager {
                 description: description,
                 icon: icon,
                 color: this.getRandomColor(),
+                chapters: chapters,
                 courses: []
             };
             this.subjects.push(newSubject);
@@ -1688,10 +1683,10 @@ class CourseManager {
         
         // Return default subjects if no stored data
         return [
-            { id: 'amharic', name: 'Amharic', icon: 'fas fa-book', color: '#e74c3c', courses: [] },
-            { id: 'english', name: 'English', icon: 'fas fa-language', color: '#3498db', courses: [] },
-            { id: 'math', name: 'Math', icon: 'fas fa-calculator', color: '#f39c12', courses: [] },
-            { id: 'science', name: 'Science', icon: 'fas fa-flask', color: '#2ecc71', courses: [] }
+            { id: 'amharic', name: 'Amharic', icon: 'fas fa-book', color: '#e74c3c', chapters: 12, courses: [] },
+            { id: 'english', name: 'English', icon: 'fas fa-language', color: '#3498db', chapters: 15, courses: [] },
+            { id: 'math', name: 'Math', icon: 'fas fa-calculator', color: '#f39c12', chapters: 20, courses: [] },
+            { id: 'science', name: 'Science', icon: 'fas fa-flask', color: '#2ecc71', chapters: 18, courses: [] }
         ];
     }
 

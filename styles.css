@@ -350,81 +350,227 @@ body {
     margin-top: 20px;
 }
 
-/* Subject Card Design from Uiverse.io */
+/* Subject Folder Design from Uiverse.io by Nawsome */
 .subject-card {
-    margin-left: -1rem;
-    margin-right: -1rem;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: stretch;
-    margin-bottom: 2rem;
-    width: 320px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.25rem;
-    background-color: var(--bg-card);
-    padding: 1.5rem;
+    --color: var(--text-white);
+    --background: var(--color-medium-gray);
+    --background-hover: var(--color-light-gray);
+    --background-left: var(--color-dark-gray);
+    --folder: #F3E9CB;
+    --folder-inner: #BEB393;
+    --paper: #FFFFFF;
+    --paper-lines: #BBC1E1;
+    --paper-behind: #E1E6F9;
+    --pencil-cap: #fff;
+    --pencil-top: #275EFE;
+    --pencil-middle: #fff;
+    --pencil-bottom: #5C86FF;
+    --shadow: rgba(13, 15, 25, .2);
+    border: none;
+    outline: none;
     cursor: pointer;
-    transition: all 0.4s ease;
-    border: 2px solid var(--border-light);
-    text-align: left;
+    position: relative;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 19px;
+    -webkit-appearance: none;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    padding: 17px 29px 17px 69px;
+    transition: background 0.3s;
+    color: var(--color);
+    background: var(--bg, var(--background));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 80px;
+    margin-bottom: 20px;
+}
+
+.subject-card > .folder-icon {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 53px;
+    position: absolute;
+    overflow: hidden;
+    border-radius: 5px 0 0 5px;
+    background: var(--background-left);
+}
+
+.subject-card > .folder-icon .folder {
+    width: 23px;
+    height: 27px;
+    position: absolute;
+    left: 15px;
+    top: 13px;
+}
+
+.subject-card > .folder-icon .folder .top {
+    left: 0;
+    top: 0;
+    z-index: 2;
+    position: absolute;
+    transform: translateX(var(--fx, 0));
+    transition: transform 0.4s ease var(--fd, 0.3s);
+}
+
+.subject-card > .folder-icon .folder .top svg {
+    width: 24px;
+    height: 27px;
+    display: block;
+    fill: var(--folder);
+    transform-origin: 0 50%;
+    transition: transform 0.3s ease var(--fds, 0.45s);
+    transform: perspective(120px) rotateY(var(--fr, 0deg));
+}
+
+.subject-card > .folder-icon .folder:before, .subject-card > .folder-icon .folder:after,
+.subject-card > .folder-icon .folder .paper {
+    content: "";
+    position: absolute;
+    left: var(--l, 0);
+    top: var(--t, 0);
+    width: var(--w, 100%);
+    height: var(--h, 100%);
+    border-radius: 1px;
+    background: var(--b, var(--folder-inner));
+}
+
+.subject-card > .folder-icon .folder:before {
+    box-shadow: 0 1.5px 3px var(--shadow), 0 2.5px 5px var(--shadow), 0 3.5px 7px var(--shadow);
+    transform: translateX(var(--fx, 0));
+    transition: transform 0.4s ease var(--fd, 0.3s);
+}
+
+.subject-card > .folder-icon .folder:after,
+.subject-card > .folder-icon .folder .paper {
+    --l: 1px;
+    --t: 1px;
+    --w: 21px;
+    --h: 25px;
+    --b: var(--paper-behind);
+}
+
+.subject-card > .folder-icon .folder:after {
+    transform: translate(var(--pbx, 0), var(--pby, 0));
+    transition: transform 0.4s ease var(--pbd, 0s);
+}
+
+.subject-card > .folder-icon .folder .paper {
+    z-index: 1;
+    --b: var(--paper);
+}
+
+.subject-card > .folder-icon .folder .paper:before, .subject-card > .folder-icon .folder .paper:after {
+    content: "";
+    width: var(--wp, 14px);
+    height: 2px;
+    border-radius: 1px;
+    transform: scaleY(0.5);
+    left: 3px;
+    top: var(--tp, 3px);
+    position: absolute;
+    background: var(--paper-lines);
+    box-shadow: 0 12px 0 0 var(--paper-lines), 0 24px 0 0 var(--paper-lines);
+}
+
+.subject-card > .folder-icon .folder .paper:after {
+    --tp: 6px;
+    --wp: 10px;
+}
+
+.subject-card > .folder-icon .pencil {
+    height: 2px;
+    width: 3px;
+    border-radius: 1px 1px 0 0;
+    top: 8px;
+    left: 105%;
+    position: absolute;
+    z-index: 3;
+    transform-origin: 50% 19px;
+    background: var(--pencil-cap);
+    transform: translateX(var(--pex, 0)) rotate(35deg);
+    transition: transform 0.4s ease var(--pbd, 0s);
+}
+
+.subject-card > .folder-icon .pencil:before, .subject-card > .folder-icon .pencil:after {
+    content: "";
+    position: absolute;
+    display: block;
+    background: var(--b, linear-gradient(var(--pencil-top) 55%, var(--pencil-middle) 55.1%, var(--pencil-middle) 60%, var(--pencil-bottom) 60.1%));
+    width: var(--w, 5px);
+    height: var(--h, 20px);
+    border-radius: var(--br, 2px 2px 0 0);
+    top: var(--t, 2px);
+    left: var(--l, -1px);
+}
+
+.subject-card > .folder-icon .pencil:before {
+    -webkit-clip-path: polygon(0 5%, 5px 5%, 5px 17px, 50% 20px, 0 17px);
+    clip-path: polygon(0 5%, 5px 5%, 5px 17px, 50% 20px, 0 17px);
+}
+
+.subject-card > .folder-icon .pencil:after {
+    --b: none;
+    --w: 3px;
+    --h: 6px;
+    --br: 0 2px 1px 0;
+    --t: 3px;
+    --l: 3px;
+    border-top: 1px solid var(--pencil-top);
+    border-right: 1px solid var(--pencil-top);
+}
+
+.subject-card:before, .subject-card:after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--color);
+    transform-origin: 9px 1px;
+    transform: translateX(var(--cx, 0)) scale(0.5) rotate(var(--r, -45deg));
+    top: 26px;
+    right: 16px;
+    transition: transform 0.3s;
+}
+
+.subject-card:after {
+    --r: 45deg;
 }
 
 .subject-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 25px 50px rgba(8, 7, 7, 0.25);
-    border-color: var(--color-primary);
+    --cx: 2px;
+    --bg: var(--background-hover);
+    --fx: -40px;
+    --fr: -60deg;
+    --fd: .15s;
+    --fds: 0s;
+    --pbx: 3px;
+    --pby: -3px;
+    --pbd: .15s;
+    --pex: -24px;
 }
 
-.subject-header {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-}
-
-.subject-title {
-    font-size: 1.5rem;
-    line-height: 2rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0;
+.subject-info {
     flex: 1;
+    margin-left: 20px;
 }
 
-.subject-price {
-    font-size: 3.75rem;
-    line-height: 1;
-    font-weight: 700;
+.subject-info h3 {
+    margin: 0 0 5px 0;
     color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.subject-info p {
     margin: 0;
-}
-
-.subject-desc {
-    margin-top: 0.75rem;
-    margin-bottom: 0.75rem;
-    line-height: 1.625;
     color: var(--text-secondary);
-    opacity: 0.9;
-}
-
-.subject-lists {
-    margin-bottom: 1.5rem;
-    flex: 1 1 0%;
-    color: var(--text-secondary);
-}
-
-.subject-lists .subject-list {
-    margin-bottom: 0.5rem;
-    display: flex;
-    margin-left: 0.5rem;
-}
-
-.subject-lists .subject-list svg {
-    height: 1.5rem;
-    width: 1.5rem;
-    flex-shrink: 0;
-    margin-right: 0.5rem;
-    color: var(--color-primary);
+    font-size: 0.9rem;
+    opacity: 0.8;
 }
 
 /* Subject Card Header and Actions */
@@ -465,45 +611,46 @@ body {
 
 .subject-actions {
     display: flex;
-    gap: 10px;
-    margin-top: 15px;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-.subject-actions .btn-action {
+.subject-card:hover .subject-actions {
+    opacity: 1;
+}
+
+.subject-actions button {
+    padding: 6px 8px;
     border: none;
-    outline: none;
-    display: inline-block;
-    border-radius: 0.25rem;
-    background-color: var(--color-primary);
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-    text-align: center;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    color: var(--text-white);
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    min-width: 120px;
+    transition: all 0.2s ease;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    flex: 1;
+    min-width: 32px;
+    height: 32px;
+    background: var(--color-primary);
+    color: var(--text-white);
 }
 
-.subject-actions .btn-action:hover {
+.subject-actions button:hover {
     background: var(--color-primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(233, 151, 26, 0.3);
-    color: var(--text-white);
 }
 
 .subject-actions .btn-delete {
-    background-color: var(--color-accent-1);
+    background: var(--color-accent-1);
 }
 
 .subject-actions .btn-delete:hover {
     background: #cc3333;
+}
+
+.subject-actions button i {
+    font-size: 0.8rem !important;
 }
 
 .subject-actions .btn-edit {
