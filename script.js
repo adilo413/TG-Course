@@ -592,22 +592,39 @@ class CourseManager {
             const courseCount = this.courses.filter(course => course.subject === subject.id).length;
 
             subjectCard.innerHTML = `
-                <div class="subject-card-header">
-                    <div class="subject-info">
-                        <i class="${subject.icon}" style="color: ${subject.color}"></i>
-                        <h3>${subject.name}</h3>
-                    </div>
-                    <div class="subject-actions">
-                        <button class="btn-edit" onclick="event.stopPropagation(); window.courseManager.editSubject(${JSON.stringify(subject).replace(/"/g, '&quot;')})" title="Edit Subject">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn-delete" onclick="event.stopPropagation(); window.courseManager.deleteSubject('${subject.id}')" title="Delete Subject">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
+                <div class="subject-header">
+                    <span class="subject-title">${subject.name}</span>
+                    <span class="subject-price">${courseCount} Courses</span>
                 </div>
-                <p>${subject.description || `Manage your ${subject.name.toLowerCase()} courses`}</p>
-                <div class="course-count">${courseCount} courses</div>
+                <p class="subject-desc">${subject.description || `Manage your ${subject.name.toLowerCase()} courses`}</p>
+                <ul class="subject-lists">
+                    <li class="subject-list">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Interactive Learning</span>
+                    </li>
+                    <li class="subject-list">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Progress Tracking</span>
+                    </li>
+                    <li class="subject-list">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Expert Content</span>
+                    </li>
+                </ul>
+                <div class="subject-actions">
+                    <button class="btn-action btn-edit" onclick="event.stopPropagation(); window.courseManager.editSubject(${JSON.stringify(subject).replace(/"/g, '&quot;')})" title="Edit Subject">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn-action btn-delete" onclick="event.stopPropagation(); window.courseManager.deleteSubject('${subject.id}')" title="Delete Subject">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
             `;
             
             // Add click handler for the main card area (excluding buttons)
@@ -651,30 +668,17 @@ class CourseManager {
             courseCard.className = 'course-card';
             courseCard.innerHTML = `
                 <div class="course-header">
-                    <span class="course-title">${course.title}</span>
-                    <span class="course-price">${course.is_active !== false ? 'Active' : 'Inactive'}</span>
+                    <h3>${course.title}</h3>
+                    <div class="course-status ${course.is_active !== false ? 'active' : 'inactive'}">
+                        <i class="fas fa-circle"></i>
+                        ${course.is_active !== false ? 'Active' : 'Inactive'}
+                    </div>
                 </div>
-                <p class="course-desc">${course.content.replace(/<[^>]*>/g, '').substring(0, 120)}...</p>
-                <ul class="course-lists">
-                    <li class="course-list">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                        </svg>
-                        <span>Created: ${new Date(course.created_at).toLocaleDateString()}</span>
-                    </li>
-                    <li class="course-list">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                        </svg>
-                        <span>Link Available</span>
-                    </li>
-                    <li class="course-list">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                        </svg>
-                        <span>Ready to Share</span>
-                    </li>
-                </ul>
+                <p>${course.content.replace(/<[^>]*>/g, '').substring(0, 120)}...</p>
+                <div class="course-meta">
+                    <span><i class="fas fa-calendar"></i> ${new Date(course.created_at).toLocaleDateString()}</span>
+                    <span><i class="fas fa-link"></i> Link Available</span>
+                </div>
                 <div class="course-actions">
                     <button class="btn-action btn-edit" onclick="event.stopPropagation(); window.courseManager.editCourse('${course.course_id}')">
                         <i class="fas fa-edit"></i> Edit
