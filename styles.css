@@ -81,6 +81,9 @@ body {
 .screen {
     display: none;
     min-height: 100vh;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
 .screen.active {
@@ -768,6 +771,8 @@ body {
     background: var(--color-medium-gray);
     color: var(--text-primary);
     font-family: inherit;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .form-group textarea {
@@ -885,6 +890,8 @@ body {
 
 .rich-text-editor {
     min-height: 300px;
+    max-width: 100%;
+    width: 100%;
     padding: 15px;
     border: 2px solid var(--border-light);
     border-radius: 10px;
@@ -893,6 +900,11 @@ body {
     background: var(--color-medium-gray);
     color: var(--text-primary);
     transition: all 0.3s ease;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: pre-wrap;
+    box-sizing: border-box;
 }
 
 /* Light theme rich text editor */
@@ -1951,6 +1963,11 @@ body {
     border-radius: 12px;
     margin: 20px;
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    box-sizing: border-box;
 }
 
 /* Light theme course content */
