@@ -2046,21 +2046,21 @@ body {
 
 /* Multiple watermarks using ::before and ::after */
 .watermarked-container::before {
-    content: 'BRIGHT\A FRESHMAN'; /* First watermark */
+    content: 'BRIGHT\A FRESH'; /* First watermark - Top Left */
     
     /* Positioning - Top left area */
     position: absolute;
-    top: 20%;
-    left: 20%;
+    top: 15%;
+    left: 15%;
     
     /* Text and styling properties */
     color: rgba(255, 255, 255, 0.2);
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 900;
     text-transform: uppercase;
     
-    /* Transform for rotation */
-    transform: rotate(-45deg);
+    /* Transform for rotation - Lower angle */
+    transform: rotate(-15deg);
     
     /* Ensure behind content */
     z-index: -1;
@@ -2069,29 +2069,29 @@ body {
     
     /* Styling */
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    letter-spacing: 0.15em;
-    white-space: pre;
-    line-height: 0.8;
+    letter-spacing: 0.1em;
+    white-space: pre-line; /* Use pre-line for proper line breaks */
+    line-height: 0.9;
     text-align: center;
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
 }
 
 .watermarked-container::after {
-    content: 'BRIGHT\A FRESHMAN'; /* Center watermark */
+    content: 'BRIGHT\A FRESH'; /* Second watermark - Bottom Right */
     
-    /* Positioning - Center right area */
+    /* Positioning - Bottom right area */
     position: absolute;
-    top: 60%;
+    bottom: 15%;
     right: 15%;
     
     /* Text and styling properties */
     color: rgba(255, 255, 255, 0.2);
-    font-size: 2.8rem;
+    font-size: 2.2rem;
     font-weight: 900;
     text-transform: uppercase;
     
-    /* Transform for rotation */
-    transform: rotate(-45deg);
+    /* Transform for rotation - Lower angle */
+    transform: rotate(-15deg);
     
     /* Ensure behind content */
     z-index: -1;
@@ -2100,11 +2100,41 @@ body {
     
     /* Styling */
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    letter-spacing: 0.15em;
-    white-space: pre;
-    line-height: 0.8;
+    letter-spacing: 0.1em;
+    white-space: pre-line; /* Use pre-line for proper line breaks */
+    line-height: 0.9;
     text-align: center;
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+}
+
+/* Additional watermarks (3 and 4) */
+.additional-watermark {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 2.2rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    z-index: -1;
+    user-select: none;
+    pointer-events: none;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: 0.1em;
+    line-height: 0.9;
+    text-align: center;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+    transform: rotate(-15deg);
+}
+
+.watermark-3 {
+    /* Top Right */
+    top: 15%;
+    right: 15%;
+}
+
+.watermark-4 {
+    /* Bottom Left */
+    bottom: 15%;
+    left: 15%;
 }
 
 /* Light theme watermarks */
@@ -2114,6 +2144,11 @@ body {
 }
 
 [data-theme="light"] .watermarked-container::after {
+    color: rgba(0, 0, 0, 0.15);
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .additional-watermark {
     color: rgba(0, 0, 0, 0.15);
     text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }

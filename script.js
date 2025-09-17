@@ -635,16 +635,40 @@ class CourseManager {
         if (courseContent.classList.contains('watermarked-container')) {
             // Remove watermark
             courseContent.classList.remove('watermarked-container');
+            this.removeAdditionalWatermarks(courseContent);
             watermarkBtn.classList.remove('active');
             watermarkBtn.title = 'Show Watermark Preview';
             console.log('🔍 Watermark preview hidden');
         } else {
             // Add watermark
             courseContent.classList.add('watermarked-container');
+            this.addAdditionalWatermarks(courseContent);
             watermarkBtn.classList.add('active');
             watermarkBtn.title = 'Hide Watermark Preview';
             console.log('🔍 Watermark preview shown');
         }
+    }
+
+    addAdditionalWatermarks(container) {
+        // Remove any existing additional watermarks first
+        this.removeAdditionalWatermarks(container);
+        
+        // Create watermark 3 - Top Right
+        const watermark3 = document.createElement('div');
+        watermark3.className = 'additional-watermark watermark-3';
+        watermark3.innerHTML = 'BRIGHT<br>FRESH';
+        container.appendChild(watermark3);
+        
+        // Create watermark 4 - Bottom Left
+        const watermark4 = document.createElement('div');
+        watermark4.className = 'additional-watermark watermark-4';
+        watermark4.innerHTML = 'BRIGHT<br>FRESH';
+        container.appendChild(watermark4);
+    }
+
+    removeAdditionalWatermarks(container) {
+        const existingWatermarks = container.querySelectorAll('.additional-watermark');
+        existingWatermarks.forEach(watermark => watermark.remove());
     }
 
     showScreen(screenName) {
@@ -1005,43 +1029,81 @@ class CourseManager {
                     }
                     
                     .watermarked-container::before {
-                        content: 'BRIGHT\A FRESHMAN';
+                        content: 'BRIGHT\A FRESH';
                         position: absolute;
-                        top: 20%;
-                        left: 20%;
+                        top: 15%;
+                        left: 15%;
                         color: rgba(0, 0, 0, 0.15);
-                        font-size: 2.5rem;
+                        font-size: 2.2rem;
                         font-weight: 900;
                         text-transform: uppercase;
-                        transform: rotate(-45deg);
+                        transform: rotate(-15deg);
                         z-index: -1;
                         user-select: none;
                         pointer-events: none;
                         font-family: Arial, sans-serif;
-                        letter-spacing: 0.15em;
-                        white-space: pre;
-                        line-height: 0.8;
+                        letter-spacing: 0.1em;
+                        white-space: pre-line;
+                        line-height: 0.9;
                         text-align: center;
                         text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
                     }
                     
                     .watermarked-container::after {
-                        content: 'BRIGHT\A FRESHMAN';
+                        content: 'BRIGHT\A FRESH';
                         position: absolute;
-                        top: 60%;
+                        bottom: 15%;
                         right: 15%;
                         color: rgba(0, 0, 0, 0.15);
-                        font-size: 2.8rem;
+                        font-size: 2.2rem;
                         font-weight: 900;
                         text-transform: uppercase;
-                        transform: rotate(-45deg);
+                        transform: rotate(-15deg);
                         z-index: -1;
                         user-select: none;
                         pointer-events: none;
                         font-family: Arial, sans-serif;
-                        letter-spacing: 0.15em;
-                        white-space: pre;
-                        line-height: 0.8;
+                        letter-spacing: 0.1em;
+                        white-space: pre-line;
+                        line-height: 0.9;
+                        text-align: center;
+                        text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+                    }
+                    
+                    .watermark-3 {
+                        position: absolute;
+                        top: 15%;
+                        right: 15%;
+                        color: rgba(0, 0, 0, 0.15);
+                        font-size: 2.2rem;
+                        font-weight: 900;
+                        text-transform: uppercase;
+                        transform: rotate(-15deg);
+                        z-index: -1;
+                        user-select: none;
+                        pointer-events: none;
+                        font-family: Arial, sans-serif;
+                        letter-spacing: 0.1em;
+                        line-height: 0.9;
+                        text-align: center;
+                        text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+                    }
+                    
+                    .watermark-4 {
+                        position: absolute;
+                        bottom: 15%;
+                        left: 15%;
+                        color: rgba(0, 0, 0, 0.15);
+                        font-size: 2.2rem;
+                        font-weight: 900;
+                        text-transform: uppercase;
+                        transform: rotate(-15deg);
+                        z-index: -1;
+                        user-select: none;
+                        pointer-events: none;
+                        font-family: Arial, sans-serif;
+                        letter-spacing: 0.1em;
+                        line-height: 0.9;
                         text-align: center;
                         text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
                     }
@@ -1049,7 +1111,11 @@ class CourseManager {
             </head>
             <body>
                 <h1>${title}</h1>
-                <div class="watermarked-container">${content}</div>
+                <div class="watermarked-container">
+                    ${content}
+                    <div class="watermark-3">BRIGHT<br>FRESH</div>
+                    <div class="watermark-4">BRIGHT<br>FRESH</div>
+                </div>
             </body>
             </html>
         `);
