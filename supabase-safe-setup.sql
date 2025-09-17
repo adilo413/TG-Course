@@ -26,7 +26,17 @@ CREATE TABLE IF NOT EXISTS admin_users (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 3. Add chapter column to courses if it doesn't exist
+-- 3. Create tokens table (if not exists)
+CREATE TABLE IF NOT EXISTS tokens (
+    id SERIAL PRIMARY KEY,
+    course_id TEXT NOT NULL,
+    token TEXT UNIQUE NOT NULL,
+    expires_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE
+);
+
+-- 4. Add chapter column to courses if it doesn't exist
 DO $$ 
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
@@ -35,7 +45,7 @@ BEGIN
     END IF;
 END $$;
 
--- 4. Create or replace verify_admin_password function
+-- 5. Create or replace verify_admin_password function
 CREATE OR REPLACE FUNCTION verify_admin_password(
     input_username TEXT,
     input_password TEXT
@@ -74,7 +84,7 @@ BEGIN
 END;
 $$;
 
--- 5. Create or replace generate_course_id function
+-- 6. Create or replace generate_course_id function
 CREATE OR REPLACE FUNCTION generate_course_id()
 RETURNS TEXT
 LANGUAGE plpgsql
@@ -102,22 +112,25 @@ BEGIN
 END;
 $$;
 
--- 6. Insert default admin user (ignore if exists)
+-- 7. Insert default admin user (ignore if exists)
 INSERT INTO admin_users (username, password_hash, email, is_active)
 VALUES ('admin', 'admin123secure', 'admin@example.com', true)
 ON CONFLICT (username) DO NOTHING;
 
--- 7. Create indexes (if not exists)
+-- 8. Create indexes (if not exists)
 CREATE INDEX IF NOT EXISTS idx_courses_subject ON courses(subject);
 CREATE INDEX IF NOT EXISTS idx_courses_chapter ON courses(chapter);
 CREATE INDEX IF NOT EXISTS idx_courses_active ON courses(is_active);
 CREATE INDEX IF NOT EXISTS idx_courses_created_at ON courses(created_at);
+CREATE INDEX IF NOT EXISTS idx_tokens_course_id ON tokens(course_id);
+CREATE INDEX IF NOT EXISTS idx_tokens_token ON tokens(token);
 
--- 8. Enable Row Level Security (RLS)
+-- 9. Enable Row Level Security (RLS)
 ALTER TABLE courses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE admin_users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE tokens ENABLE ROW LEVEL SECURITY;
 
--- 9. Drop and recreate policies to avoid conflicts
+-- 10. Drop and recreate policies to avoid conflicts
 DROP POLICY IF EXISTS "Allow all operations on courses" ON courses;
 CREATE POLICY "Allow all operations on courses" ON courses
     FOR ALL USING (true);
@@ -126,7 +139,11 @@ DROP POLICY IF EXISTS "Allow all operations on admin_users" ON admin_users;
 CREATE POLICY "Allow all operations on admin_users" ON admin_users
     FOR ALL USING (true);
 
--- 10. Create or replace update_updated_at_column function
+DROP POLICY IF EXISTS "Allow all operations on tokens" ON tokens;
+CREATE POLICY "Allow all operations on tokens" ON tokens
+    FOR ALL USING (true);
+
+-- 11. Create or replace update_updated_at_column function
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -135,7 +152,7 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
--- 11. Drop and recreate triggers
+-- 12. Drop and recreate triggers
 DROP TRIGGER IF EXISTS update_courses_updated_at ON courses;
 DROP TRIGGER IF EXISTS update_admin_users_updated_at ON admin_users;
 
@@ -145,13 +162,13 @@ CREATE TRIGGER update_courses_updated_at BEFORE UPDATE ON courses
 CREATE TRIGGER update_admin_users_updated_at BEFORE UPDATE ON admin_users
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- 12. Grant necessary permissions
+-- 13. Grant necessary permissions
 GRANT USAGE ON SCHEMA public TO anon, authenticated;
 GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated;
 GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated;
 GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO anon, authenticated;
 
--- 13. Verify setup
+-- 14. Verify setup
 SELECT 'Database setup completed successfully!' as status;
 SELECT 'Tables:' as info, table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE';
 SELECT 'Functions:' as info, routine_name FROM information_schema.routines WHERE routine_schema = 'public' AND routine_type = 'FUNCTION';
