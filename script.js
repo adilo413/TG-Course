@@ -1050,7 +1050,7 @@ class CourseManager {
                     
                     <p class="link-note">Share the Telegram link with your students. They can only access it if they're channel members.</p>
                     
-                    <div class="modal-footer" style="margin-top: 30px; text-align: center;">
+                    <div class="modal-footer" style="margin-top: 30px; text-align: center; padding: 20px 0; border-top: 1px solid var(--border-light); position: sticky; bottom: 0; background: var(--text-white);">
                         <button class="btn btn-secondary" onclick="this.closest('.link-modal').remove()" style="padding: 12px 30px;">
                             <i class="fas fa-times"></i> Close
                         </button>
