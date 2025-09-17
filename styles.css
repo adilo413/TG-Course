@@ -954,7 +954,7 @@ body {
 .toolbar-color {
     width: 36px;
     height: 36px;
-    border: none;
+    border: 2px solid var(--color-border);
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -964,6 +964,75 @@ body {
 .toolbar-color:hover {
     transform: scale(1.1);
     box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+    border-color: var(--color-primary);
+}
+
+.color-picker-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0 2px;
+}
+
+.color-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.color-presets {
+    display: flex;
+    gap: 2px;
+    margin: 0 4px;
+}
+
+.color-preset {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.color-preset:hover {
+    transform: scale(1.2);
+    border-color: var(--color-primary);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.color-preset:active {
+    transform: scale(0.95);
+}
+
+/* Mobile responsive styles for color picker */
+@media (max-width: 768px) {
+    .color-picker-group {
+        flex-direction: column;
+        gap: 2px;
+        margin: 0 1px;
+    }
+    
+    .color-label {
+        font-size: 10px;
+    }
+    
+    .toolbar-color {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .color-presets {
+        gap: 1px;
+        margin: 0 2px;
+    }
+    
+    .color-preset {
+        width: 20px;
+        height: 20px;
+    }
 }
 
 .toolbar-divider {

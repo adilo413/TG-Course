@@ -253,10 +253,33 @@
                                 <div class="toolbar-divider"></div>
                                 
                                 <!-- Text Color -->
-                                <input type="color" class="toolbar-color" id="textColor" title="Text Color" value="#000000">
+                                <div class="color-picker-group">
+                                    <label for="textColor" class="color-label">Text:</label>
+                                    <input type="color" class="toolbar-color" id="textColor" title="Text Color" value="#000000">
+                                </div>
                                 
                                 <!-- Background Color -->
-                                <input type="color" class="toolbar-color" id="backgroundColor" title="Background Color" value="#ffffff">
+                                <div class="color-picker-group">
+                                    <label for="backgroundColor" class="color-label">BG:</label>
+                                    <input type="color" class="toolbar-color" id="backgroundColor" title="Background Color" value="#ffffff">
+                                </div>
+                                
+                                <!-- Quick Color Presets -->
+                                <div class="color-presets">
+                                    <button type="button" class="color-preset" data-color="#000000" title="Black Text" style="background: #000000;"></button>
+                                    <button type="button" class="color-preset" data-color="#ffffff" title="White Text" style="background: #ffffff; border: 1px solid #ccc;"></button>
+                                    <button type="button" class="color-preset" data-color="#ff0000" title="Red Text" style="background: #ff0000;"></button>
+                                    <button type="button" class="color-preset" data-color="#00ff00" title="Green Text" style="background: #00ff00;"></button>
+                                    <button type="button" class="color-preset" data-color="#0000ff" title="Blue Text" style="background: #0000ff;"></button>
+                                    <button type="button" class="color-preset" data-color="#ffff00" title="Yellow Text" style="background: #ffff00;"></button>
+                                </div>
+                                
+                                <div class="toolbar-divider"></div>
+                                
+                                <!-- Remove Formatting -->
+                                <button type="button" class="toolbar-btn" id="removeFormatting" title="Remove Formatting">
+                                    <span class="toolbar-icon">🧹</span>
+                                </button>
                                 
                                 <div class="toolbar-divider"></div>
                                 

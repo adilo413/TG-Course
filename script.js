@@ -261,6 +261,51 @@ class CourseManager {
             document.execCommand('backColor', false, color);
         });
 
+        // Color preset buttons
+        document.querySelectorAll('.color-preset').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const color = e.target.getAttribute('data-color');
+                document.execCommand('foreColor', false, color);
+                
+                // Update the text color picker to match
+                document.getElementById('textColor').value = color;
+                
+                // Add visual feedback
+                e.target.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    e.target.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+
+        // Remove formatting button
+        document.getElementById('removeFormatting').addEventListener('click', () => {
+            // Remove all formatting from selected text
+            document.execCommand('removeFormat', false, null);
+            
+            // Also remove any inline styles that might cause issues
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                const container = range.commonAncestorContainer;
+                
+                // If we have a text node, get its parent element
+                const element = container.nodeType === Node.TEXT_NODE ? container.parentElement : container;
+                
+                if (element && element.style) {
+                    // Remove problematic styles
+                    element.style.color = '';
+                    element.style.backgroundColor = '';
+                    element.style.fontSize = '';
+                    element.style.fontFamily = '';
+                }
+            }
+            
+            // Reset color pickers to default
+            document.getElementById('textColor').value = '#000000';
+            document.getElementById('backgroundColor').value = '#ffffff';
+        });
+
         // Real-time preview
         editor.addEventListener('input', () => {
             this.updatePreview();
