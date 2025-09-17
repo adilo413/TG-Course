@@ -133,74 +133,31 @@ class SupabaseAPI {
     // Subject Management
     async getSubjects() {
         try {
-            // For now, return default subjects since we don't have a subjects table
-            // In the future, this could be expanded to use a subjects table
-            const defaultSubjects = [
-                { 
-                    id: 'amharic', 
-                    name: 'Amharic', 
-                    icon: 'fas fa-book', 
-                    color: '#e74c3c', 
-                    courses: [],
-                    chapters: [
-                        { id: 'amharic_ch1', name: 'Chapter 1', number: 1 },
-                        { id: 'amharic_ch2', name: 'Chapter 2', number: 2 },
-                        { id: 'amharic_ch3', name: 'Chapter 3', number: 3 },
-                        { id: 'amharic_ch4', name: 'Chapter 4', number: 4 },
-                        { id: 'amharic_ch5', name: 'Chapter 5', number: 5 },
-                        { id: 'amharic_ch6', name: 'Chapter 6', number: 6 }
-                    ]
-                },
-                { 
-                    id: 'english', 
-                    name: 'English', 
-                    icon: 'fas fa-language', 
-                    color: '#3498db', 
-                    courses: [],
-                    chapters: [
-                        { id: 'english_ch1', name: 'Chapter 1', number: 1 },
-                        { id: 'english_ch2', name: 'Chapter 2', number: 2 },
-                        { id: 'english_ch3', name: 'Chapter 3', number: 3 },
-                        { id: 'english_ch4', name: 'Chapter 4', number: 4 },
-                        { id: 'english_ch5', name: 'Chapter 5', number: 5 },
-                        { id: 'english_ch6', name: 'Chapter 6', number: 6 }
-                    ]
-                },
-                { 
-                    id: 'math', 
-                    name: 'Math', 
-                    icon: 'fas fa-calculator', 
-                    color: '#f39c12', 
-                    courses: [],
-                    chapters: [
-                        { id: 'math_ch1', name: 'Chapter 1', number: 1 },
-                        { id: 'math_ch2', name: 'Chapter 2', number: 2 },
-                        { id: 'math_ch3', name: 'Chapter 3', number: 3 },
-                        { id: 'math_ch4', name: 'Chapter 4', number: 4 },
-                        { id: 'math_ch5', name: 'Chapter 5', number: 5 },
-                        { id: 'math_ch6', name: 'Chapter 6', number: 6 }
-                    ]
-                },
-                { 
-                    id: 'science', 
-                    name: 'Science', 
-                    icon: 'fas fa-flask', 
-                    color: '#2ecc71', 
-                    courses: [],
-                    chapters: [
-                        { id: 'science_ch1', name: 'Chapter 1', number: 1 },
-                        { id: 'science_ch2', name: 'Chapter 2', number: 2 },
-                        { id: 'science_ch3', name: 'Chapter 3', number: 3 },
-                        { id: 'science_ch4', name: 'Chapter 4', number: 4 },
-                        { id: 'science_ch5', name: 'Chapter 5', number: 5 },
-                        { id: 'science_ch6', name: 'Chapter 6', number: 6 }
-                    ]
-                }
-            ];
+            console.log('🔄 Fetching subjects from database...');
             
-            return { success: true, data: defaultSubjects };
+            // Use the custom function to get subjects with chapters
+            const { data, error } = await this.client.rpc('get_subjects_with_chapters');
+            
+            if (error) {
+                console.error('❌ Error fetching subjects:', error);
+                return { success: false, error: error.message };
+            }
+            
+            // Transform the data to match expected format
+            const subjects = data.map(row => ({
+                id: row.subject_id,
+                name: row.subject_name,
+                description: row.subject_description,
+                icon: row.subject_icon,
+                color: row.subject_color,
+                courses: [], // Will be populated separately
+                chapters: row.chapters || []
+            }));
+            
+            console.log('✅ Subjects fetched successfully:', subjects.length);
+            return { success: true, data: subjects };
         } catch (error) {
-            console.error('Error fetching subjects:', error);
+            console.error('❌ Error fetching subjects:', error);
             return { success: false, error: error.message };
         }
     }
@@ -208,11 +165,26 @@ class SupabaseAPI {
     async createSubject(subjectData) {
         try {
             console.log('💾 Supabase createSubject called with data:', subjectData);
-            // For now, just return success since we're using default subjects
-            // In the future, this could save to a subjects table
-            return { success: true, data: subjectData };
+            
+            // Use the custom function to create subject with chapters
+            const { data, error } = await this.client.rpc('create_subject_with_chapters', {
+                p_id: subjectData.id,
+                p_name: subjectData.name,
+                p_description: subjectData.description,
+                p_icon: subjectData.icon,
+                p_color: subjectData.color,
+                p_chapter_count: subjectData.chapters ? subjectData.chapters.length : 6
+            });
+            
+            if (error) {
+                console.error('❌ Error creating subject:', error);
+                return { success: false, error: error.message };
+            }
+            
+            console.log('✅ Subject created successfully:', data);
+            return { success: true, data: data };
         } catch (error) {
-            console.error('Error creating subject:', error);
+            console.error('❌ Error creating subject:', error);
             return { success: false, error: error.message };
         }
     }
@@ -220,11 +192,26 @@ class SupabaseAPI {
     async updateSubject(subjectId, subjectData) {
         try {
             console.log('💾 Supabase updateSubject called with:', { subjectId, subjectData });
-            // For now, just return success since we're using default subjects
-            // In the future, this could update a subjects table
-            return { success: true, data: subjectData };
+            
+            // Use the custom function to update subject with chapters
+            const { data, error } = await this.client.rpc('update_subject_with_chapters', {
+                p_id: subjectId,
+                p_name: subjectData.name,
+                p_description: subjectData.description,
+                p_icon: subjectData.icon,
+                p_color: subjectData.color,
+                p_chapter_count: subjectData.chapters ? subjectData.chapters.length : 6
+            });
+            
+            if (error) {
+                console.error('❌ Error updating subject:', error);
+                return { success: false, error: error.message };
+            }
+            
+            console.log('✅ Subject updated successfully:', data);
+            return { success: true, data: data };
         } catch (error) {
-            console.error('Error updating subject:', error);
+            console.error('❌ Error updating subject:', error);
             return { success: false, error: error.message };
         }
     }
@@ -232,11 +219,22 @@ class SupabaseAPI {
     async deleteSubject(subjectId) {
         try {
             console.log('💾 Supabase deleteSubject called with:', subjectId);
-            // For now, just return success since we're using default subjects
-            // In the future, this could delete from a subjects table
+            
+            // Delete the subject (chapters will be deleted automatically due to CASCADE)
+            const { error } = await this.client
+                .from('subjects')
+                .delete()
+                .eq('id', subjectId);
+            
+            if (error) {
+                console.error('❌ Error deleting subject:', error);
+                return { success: false, error: error.message };
+            }
+            
+            console.log('✅ Subject deleted successfully');
             return { success: true };
         } catch (error) {
-            console.error('Error deleting subject:', error);
+            console.error('❌ Error deleting subject:', error);
             return { success: false, error: error.message };
         }
     }
