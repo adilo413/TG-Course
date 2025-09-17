@@ -2,8 +2,8 @@
 class CourseManager {
     constructor() {
         this.currentScreen = 'login';
-        // Load subjects from localStorage or use defaults
-        this.subjects = this.loadSubjectsFromStorage();
+        // Initialize subjects as empty array - will be loaded from database
+        this.subjects = [];
         this.courses = [];
         this.currentSubject = null;
         this.currentCourse = null;
@@ -17,13 +17,22 @@ class CourseManager {
         this.init();
     }
 
-    init() {
+    async init() {
         this.setupEventListeners();
         this.setupHashRouting();
         this.setupStudentSection();
         this.setupSubjectManagement(); // Setup subject management functionality
         this.detectUserRole();
         this.initializeAPI(); // Initialize API and handle deep links
+        
+        // Load subjects from database after API is ready
+        if (window.supabaseAPI) {
+            this.subjects = await this.loadSubjectsFromDatabase();
+        } else {
+            // Fallback to default subjects if API not ready
+            this.subjects = this.getDefaultSubjects();
+        }
+        
         this.loadCourses();
     }
 
@@ -1924,7 +1933,7 @@ class CourseManager {
         this.clearSubjectMessages();
     }
 
-    saveSubject() {
+    async saveSubject() {
         const form = document.getElementById('subjectForm');
         const name = document.getElementById('subjectName').value.trim();
         const description = document.getElementById('subjectDescription').value.trim();
@@ -1948,52 +1957,72 @@ class CourseManager {
             return;
         }
 
-        if (isEditing) {
-            // Update existing subject
-            const subjectIndex = this.subjects.findIndex(s => s.id === isEditing);
-            if (subjectIndex !== -1) {
-                const currentSubject = this.subjects[subjectIndex];
-                const currentChapterCount = currentSubject.chapters ? currentSubject.chapters.length : 0;
-                
-                this.subjects[subjectIndex] = {
-                    ...currentSubject,
+        try {
+            if (isEditing) {
+                // Update existing subject in database
+                const subjectData = {
                     name: name,
                     description: description,
                     icon: icon,
-                    chapters: chapterCount !== currentChapterCount ? 
-                        this.generateChapters(isEditing, chapterCount) : 
-                        currentSubject.chapters
+                    color: this.subjects.find(s => s.id === isEditing)?.color || this.getRandomColor(),
+                    chapters: this.generateChapters(isEditing, chapterCount)
                 };
-                this.showSubjectSuccess('Subject updated successfully!');
-            }
-        } else {
-            // Add new subject
-            const newSubject = {
-                id: name.toLowerCase().replace(/[^a-z0-9]/g, '_'),
-                name: name,
-                description: description,
-                icon: icon,
-                color: this.getRandomColor(),
-                courses: [],
-                chapters: this.generateChapters(name.toLowerCase().replace(/[^a-z0-9]/g, '_'), chapterCount)
-            };
-            this.subjects.push(newSubject);
-            this.showSubjectSuccess('Subject added successfully!');
-        }
 
-        // Save subjects to localStorage
-        this.saveSubjectsToStorage();
-        
-        // Refresh the subjects display
-        this.loadSubjects();
-        
-        // Update course creation dropdown
-        this.updateCourseSubjectDropdown();
-        
-        // Close modal after a short delay
-        setTimeout(() => {
-            this.hideSubjectModal();
-        }, 1500);
+                const result = await window.supabaseAPI.updateSubject(isEditing, subjectData);
+                if (result.success) {
+                    // Update local subjects array
+                    const subjectIndex = this.subjects.findIndex(s => s.id === isEditing);
+                    if (subjectIndex !== -1) {
+                        this.subjects[subjectIndex] = {
+                            ...this.subjects[subjectIndex],
+                            name: name,
+                            description: description,
+                            icon: icon,
+                            chapters: subjectData.chapters
+                        };
+                    }
+                    this.showSubjectSuccess('Subject updated successfully!');
+                } else {
+                    this.showSubjectError('Failed to update subject: ' + result.error);
+                    return;
+                }
+            } else {
+                // Create new subject in database
+                const newSubject = {
+                    id: name.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+                    name: name,
+                    description: description,
+                    icon: icon,
+                    color: this.getRandomColor(),
+                    chapters: this.generateChapters(name.toLowerCase().replace(/[^a-z0-9]/g, '_'), chapterCount)
+                };
+
+                const result = await window.supabaseAPI.createSubject(newSubject);
+                if (result.success) {
+                    // Add to local subjects array
+                    this.subjects.push(newSubject);
+                    this.showSubjectSuccess('Subject added successfully!');
+                } else {
+                    this.showSubjectError('Failed to create subject: ' + result.error);
+                    return;
+                }
+            }
+
+            // Refresh the subjects display
+            this.loadSubjects();
+            
+            // Update course creation dropdown
+            this.updateCourseSubjectDropdown();
+            
+            // Close modal after a short delay
+            setTimeout(() => {
+                this.hideSubjectModal();
+            }, 1500);
+
+        } catch (error) {
+            console.error('Error saving subject:', error);
+            this.showSubjectError('An error occurred while saving the subject.');
+        }
     }
 
     generateChapters(subjectId, count) {
@@ -2017,7 +2046,7 @@ class CourseManager {
         this.showSubjectModal(subject);
     }
 
-    deleteSubject(subjectId) {
+    async deleteSubject(subjectId) {
         if (confirm('Are you sure you want to delete this subject? This action cannot be undone.')) {
             // Check if subject has courses
             const subjectCourses = this.courses.filter(course => course.subject === subjectId);
@@ -2026,19 +2055,27 @@ class CourseManager {
                 return;
             }
 
-            // Remove subject
-            this.subjects = this.subjects.filter(s => s.id !== subjectId);
-            
-            // Save subjects to localStorage
-            this.saveSubjectsToStorage();
-            
-            // Refresh the subjects display
-            this.loadSubjects();
-            
-            // Update course creation dropdown
-            this.updateCourseSubjectDropdown();
-            
-            this.showSubjectSuccess('Subject deleted successfully!');
+            try {
+                // Delete subject from database
+                const result = await window.supabaseAPI.deleteSubject(subjectId);
+                if (result.success) {
+                    // Remove subject from local array
+                    this.subjects = this.subjects.filter(s => s.id !== subjectId);
+                    
+                    // Refresh the subjects display
+                    this.loadSubjects();
+                    
+                    // Update course creation dropdown
+                    this.updateCourseSubjectDropdown();
+                    
+                    this.showSubjectSuccess('Subject deleted successfully!');
+                } else {
+                    this.showSubjectError('Failed to delete subject: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error deleting subject:', error);
+                this.showSubjectError('An error occurred while deleting the subject.');
+            }
         }
     }
 
@@ -2061,18 +2098,30 @@ class CourseManager {
         document.getElementById('subjectSuccess').classList.remove('show');
     }
 
-    // Subject Persistence Methods
-    loadSubjectsFromStorage() {
+    // Subject Persistence Methods - Now using Supabase
+    async loadSubjectsFromDatabase() {
         try {
-            const stored = localStorage.getItem('courseManager_subjects');
-            if (stored) {
-                return JSON.parse(stored);
+            if (!window.supabaseAPI) {
+                console.error('❌ Supabase API not available');
+                return this.getDefaultSubjects();
+            }
+
+            const result = await window.supabaseAPI.getSubjects();
+            if (result.success) {
+                console.log('✅ Subjects loaded from database:', result.data);
+                return result.data;
+            } else {
+                console.error('❌ Failed to load subjects from database:', result.error);
+                return this.getDefaultSubjects();
             }
         } catch (error) {
-            console.error('Error loading subjects from storage:', error);
+            console.error('❌ Error loading subjects from database:', error);
+            return this.getDefaultSubjects();
         }
-        
-        // Return default subjects if no stored data
+    }
+
+    getDefaultSubjects() {
+        // Return default subjects if database fails
         return [
             { 
                 id: 'amharic', 
@@ -2137,12 +2186,20 @@ class CourseManager {
         ];
     }
 
-    saveSubjectsToStorage() {
+    async saveSubjectsToDatabase() {
         try {
-            localStorage.setItem('courseManager_subjects', JSON.stringify(this.subjects));
-            console.log('✅ Subjects saved to localStorage');
+            if (!window.supabaseAPI) {
+                console.error('❌ Supabase API not available');
+                return false;
+            }
+
+            // For now, we'll save subjects individually when they're created/updated
+            // This method is kept for compatibility but the actual saving happens in saveSubject()
+            console.log('✅ Subjects are now managed through individual database operations');
+            return true;
         } catch (error) {
-            console.error('Error saving subjects to storage:', error);
+            console.error('❌ Error saving subjects to database:', error);
+            return false;
         }
     }
 

@@ -335,6 +335,198 @@ class SupabaseAPI {
         }
     }
 
+    // Subject Management Methods
+    async getSubjects() {
+        try {
+            const { data, error } = await this.client
+                .from('subjects')
+                .select(`
+                    *,
+                    chapters (
+                        chapter_id,
+                        name,
+                        number,
+                        is_active
+                    )
+                `)
+                .eq('is_active', true)
+                .order('name');
+
+            if (error) throw error;
+            
+            // Transform data to match the expected format
+            const transformedData = (data || []).map(subject => ({
+                id: subject.subject_id,
+                name: subject.name,
+                icon: subject.icon,
+                color: subject.color,
+                courses: [], // Will be populated separately
+                chapters: (subject.chapters || []).map(chapter => ({
+                    id: chapter.chapter_id,
+                    name: chapter.name,
+                    number: chapter.number
+                }))
+            }));
+            
+            return { success: true, data: transformedData };
+        } catch (error) {
+            console.error('Error fetching subjects:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async createSubject(subjectData) {
+        try {
+            const { data, error } = await this.client
+                .from('subjects')
+                .insert([{
+                    subject_id: subjectData.id,
+                    name: subjectData.name,
+                    icon: subjectData.icon,
+                    color: subjectData.color,
+                    is_active: true
+                }])
+                .select();
+
+            if (error) throw error;
+
+            // Create chapters for the subject
+            if (subjectData.chapters && subjectData.chapters.length > 0) {
+                const chapterInserts = subjectData.chapters.map(chapter => ({
+                    chapter_id: chapter.id,
+                    subject_id: subjectData.id,
+                    name: chapter.name,
+                    number: chapter.number,
+                    is_active: true
+                }));
+
+                const { error: chapterError } = await this.client
+                    .from('chapters')
+                    .insert(chapterInserts);
+
+                if (chapterError) throw chapterError;
+            }
+
+            return { success: true, data: data[0] };
+        } catch (error) {
+            console.error('Error creating subject:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async updateSubject(subjectId, subjectData) {
+        try {
+            // Update subject
+            const { data, error } = await this.client
+                .from('subjects')
+                .update({
+                    name: subjectData.name,
+                    icon: subjectData.icon,
+                    color: subjectData.color
+                })
+                .eq('subject_id', subjectId)
+                .select();
+
+            if (error) throw error;
+
+            // Delete existing chapters
+            const { error: deleteError } = await this.client
+                .from('chapters')
+                .delete()
+                .eq('subject_id', subjectId);
+
+            if (deleteError) throw deleteError;
+
+            // Insert new chapters
+            if (subjectData.chapters && subjectData.chapters.length > 0) {
+                const chapterInserts = subjectData.chapters.map(chapter => ({
+                    chapter_id: chapter.id,
+                    subject_id: subjectId,
+                    name: chapter.name,
+                    number: chapter.number,
+                    is_active: true
+                }));
+
+                const { error: chapterError } = await this.client
+                    .from('chapters')
+                    .insert(chapterInserts);
+
+                if (chapterError) throw chapterError;
+            }
+
+            return { success: true, data: data[0] };
+        } catch (error) {
+            console.error('Error updating subject:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async deleteSubject(subjectId) {
+        try {
+            // Delete chapters first (due to foreign key constraint)
+            const { error: chapterError } = await this.client
+                .from('chapters')
+                .delete()
+                .eq('subject_id', subjectId);
+
+            if (chapterError) throw chapterError;
+
+            // Delete subject
+            const { error } = await this.client
+                .from('subjects')
+                .delete()
+                .eq('subject_id', subjectId);
+
+            if (error) throw error;
+
+            return { success: true };
+        } catch (error) {
+            console.error('Error deleting subject:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    // Settings Management Methods
+    async getSettings() {
+        try {
+            const { data, error } = await this.client
+                .from('settings')
+                .select('*');
+
+            if (error) throw error;
+            
+            // Transform array to object
+            const settings = {};
+            (data || []).forEach(setting => {
+                settings[setting.key] = setting.value;
+            });
+            
+            return { success: true, data: settings };
+        } catch (error) {
+            console.error('Error fetching settings:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async updateSetting(key, value) {
+        try {
+            const { data, error } = await this.client
+                .from('settings')
+                .upsert([{
+                    key: key,
+                    value: value,
+                    updated_at: new Date().toISOString()
+                }])
+                .select();
+
+            if (error) throw error;
+            return { success: true, data: data[0] };
+        } catch (error) {
+            console.error('Error updating setting:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
     // File Upload
     async uploadImage(file) {
         try {
