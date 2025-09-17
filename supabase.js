@@ -1,6 +1,6 @@
-// Supabase configuration
-const SUPABASE_URL = 'https://vfzyxiuhrjrqhoxbdxwg.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmenl4aXVocmpycWhveGJkeHdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc4NTE4NTIsImV4cCI6MjA3MzQyNzg1Mn0.IOW_ER_I6UrpTDvn23qgAuLWp0iPzSn0tBVP_lKvRkw';
+// Supabase configuration - NEW ACCOUNT
+const SUPABASE_URL = 'https://jakqyuawjtkoupackdmo.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR_NEW_ANON_KEY_HERE'; // You need to get this from your new Supabase project settings
 
 // Wait for Supabase library to be available
 function initializeSupabase() {
