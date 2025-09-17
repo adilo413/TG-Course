@@ -129,6 +129,10 @@ class CourseManager {
             this.showScreen('dashboard');
         });
 
+        document.getElementById('backToChapters').addEventListener('click', () => {
+            this.showScreen('chaptersList');
+        });
+
         // Course creation
         document.getElementById('saveCourse').addEventListener('click', () => {
             this.saveCourse();
@@ -146,6 +150,11 @@ class CourseManager {
 
         // Rich text editor
         this.setupRichTextEditor();
+
+        // Course subject change handler
+        document.getElementById('courseSubject').addEventListener('change', (e) => {
+            this.updateChapterDropdown(e.target.value);
+        });
     }
 
     setupRichTextEditor() {
@@ -576,6 +585,8 @@ class CourseManager {
         // Load content based on screen
         if (screenName === 'dashboard') {
             this.loadSubjects();
+        } else if (screenName === 'chaptersList') {
+            this.loadChapters();
         } else if (screenName === 'coursesList') {
             this.loadCoursesForSubject();
         }
@@ -592,7 +603,76 @@ class CourseManager {
             const courseCount = this.courses.filter(course => course.subject === subject.id).length;
 
             subjectCard.innerHTML = `
-                <div class="folder-icon">
+                <div class="subject-header">
+                    <span class="subject-title">${subject.name}</span>
+                    <span class="subject-price">${courseCount} Courses</span>
+                </div>
+                <p class="subject-desc">${subject.description || `Manage your ${subject.name.toLowerCase()} courses`}</p>
+                <ul class="subject-lists">
+                    <li class="subject-list">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Interactive Learning</span>
+                    </li>
+                    <li class="subject-list">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Progress Tracking</span>
+                    </li>
+                    <li class="subject-list">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Expert Content</span>
+                    </li>
+                </ul>
+                <div class="subject-actions">
+                    <button class="btn-action btn-edit" onclick="event.stopPropagation(); window.courseManager.editSubject(${JSON.stringify(subject).replace(/"/g, '&quot;')})" title="Edit Subject">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn-action btn-delete" onclick="event.stopPropagation(); window.courseManager.deleteSubject('${subject.id}')" title="Delete Subject">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            `;
+            
+            // Add click handler for the main card area (excluding buttons)
+            subjectCard.addEventListener('click', (e) => {
+                if (!e.target.closest('.subject-actions')) {
+                    this.currentSubject = subject.id;
+                    document.getElementById('chaptersSubjectTitle').textContent = subject.name + ' Chapters';
+                    this.showScreen('chaptersList');
+                }
+            });
+
+            subjectsGrid.appendChild(subjectCard);
+        });
+    }
+
+    loadChapters() {
+        const chaptersList = document.getElementById('chaptersList');
+        chaptersList.innerHTML = '';
+
+        const subject = this.subjects.find(s => s.id === this.currentSubject);
+        if (!subject || !subject.chapters) {
+            chaptersList.innerHTML = '<p>No chapters found for this subject.</p>';
+            return;
+        }
+
+        subject.chapters.forEach(chapter => {
+            const chapterFolder = document.createElement('button');
+            chapterFolder.className = 'chapter-folder';
+            
+            // Count courses for this chapter
+            const chapterCourses = this.courses.filter(course => 
+                course.subject === this.currentSubject && course.chapter === chapter.id
+            );
+            const courseCount = chapterCourses.length;
+
+            chapterFolder.innerHTML = `
+                <div>
                     <div class="pencil"></div>
                     <div class="folder">
                         <div class="top">
@@ -603,30 +683,16 @@ class CourseManager {
                         <div class="paper"></div>
                     </div>
                 </div>
-                <div class="subject-info">
-                    <h3>${subject.name}</h3>
-                    <p>${courseCount} courses • ${subject.chapters || 10} chapters</p>
-                </div>
-                <div class="subject-actions">
-                    <button class="btn-edit" onclick="event.stopPropagation(); window.courseManager.editSubject(${JSON.stringify(subject).replace(/"/g, '&quot;')})" title="Edit Subject">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn-delete" onclick="event.stopPropagation(); window.courseManager.deleteSubject('${subject.id}')" title="Delete Subject">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
+                ${chapter.name} (${courseCount} courses)
             `;
-            
-            // Add click handler for the main card area (excluding buttons)
-            subjectCard.addEventListener('click', (e) => {
-                if (!e.target.closest('.subject-actions')) {
-                    this.currentSubject = subject.id;
-                    document.getElementById('subjectTitle').textContent = subject.name + ' Courses';
-                    this.showScreen('coursesList');
-                }
+
+            chapterFolder.addEventListener('click', () => {
+                this.currentChapter = chapter.id;
+                document.getElementById('coursesChapterTitle').textContent = `${subject.name} - ${chapter.name}`;
+                this.showScreen('coursesList');
             });
 
-            subjectsGrid.appendChild(subjectCard);
+            chaptersList.appendChild(chapterFolder);
         });
     }
 
@@ -634,7 +700,11 @@ class CourseManager {
         const coursesList = document.getElementById('coursesList');
         coursesList.innerHTML = '';
 
-        const subjectCourses = this.courses.filter(course => course.subject === this.currentSubject);
+        // Filter courses by both subject and chapter
+        const subjectCourses = this.courses.filter(course => 
+            course.subject === this.currentSubject && 
+            course.chapter === this.currentChapter
+        );
 
         if (subjectCourses.length === 0) {
             coursesList.innerHTML = `
@@ -693,10 +763,11 @@ class CourseManager {
     async saveCourse() {
         const title = document.getElementById('courseTitle').value.trim();
         const subject = document.getElementById('courseSubject').value;
+        const chapter = document.getElementById('courseChapter').value;
         const content = document.getElementById('courseContent').innerHTML;
 
-        if (!title || !subject || !content.trim()) {
-            this.showMessage('Please fill in all fields', 'error');
+        if (!title || !subject || !chapter || !content.trim()) {
+            this.showMessage('Please fill in all fields including chapter', 'error');
             return;
         }
 
@@ -704,6 +775,7 @@ class CourseManager {
             const courseData = {
                 title,
                 subject,
+                chapter,
                 content,
                 images: [] // We'll add image upload later
             };
@@ -742,6 +814,13 @@ class CourseManager {
         
         document.getElementById('courseTitle').value = course.title;
         document.getElementById('courseSubject').value = course.subject;
+        
+        // Update chapter dropdown and select the course's chapter
+        this.updateChapterDropdown(course.subject);
+        setTimeout(() => {
+            document.getElementById('courseChapter').value = course.chapter || '';
+        }, 100);
+        
         document.getElementById('courseContent').innerHTML = course.content;
         this.updatePreview();
         
@@ -1535,13 +1614,11 @@ class CourseManager {
             document.getElementById('subjectName').value = subject.name;
             document.getElementById('subjectDescription').value = subject.description || '';
             document.getElementById('subjectIcon').value = subject.icon;
-            document.getElementById('subjectChapters').value = subject.chapters || 10;
             form.dataset.editingId = subject.id;
         } else {
             // Adding new subject
             title.textContent = 'Add New Subject';
             form.reset();
-            document.getElementById('subjectChapters').value = 10; // Default value
             delete form.dataset.editingId;
         }
         
@@ -1562,7 +1639,6 @@ class CourseManager {
         const name = document.getElementById('subjectName').value.trim();
         const description = document.getElementById('subjectDescription').value.trim();
         const icon = document.getElementById('subjectIcon').value.trim();
-        const chapters = parseInt(document.getElementById('subjectChapters').value) || 10;
         const isEditing = form.dataset.editingId;
 
         if (!name || !icon) {
@@ -1589,8 +1665,7 @@ class CourseManager {
                     ...this.subjects[subjectIndex],
                     name: name,
                     description: description,
-                    icon: icon,
-                    chapters: chapters
+                    icon: icon
                 };
                 this.showSubjectSuccess('Subject updated successfully!');
             }
@@ -1602,7 +1677,6 @@ class CourseManager {
                 description: description,
                 icon: icon,
                 color: this.getRandomColor(),
-                chapters: chapters,
                 courses: []
             };
             this.subjects.push(newSubject);
@@ -1683,10 +1757,66 @@ class CourseManager {
         
         // Return default subjects if no stored data
         return [
-            { id: 'amharic', name: 'Amharic', icon: 'fas fa-book', color: '#e74c3c', chapters: 12, courses: [] },
-            { id: 'english', name: 'English', icon: 'fas fa-language', color: '#3498db', chapters: 15, courses: [] },
-            { id: 'math', name: 'Math', icon: 'fas fa-calculator', color: '#f39c12', chapters: 20, courses: [] },
-            { id: 'science', name: 'Science', icon: 'fas fa-flask', color: '#2ecc71', chapters: 18, courses: [] }
+            { 
+                id: 'amharic', 
+                name: 'Amharic', 
+                icon: 'fas fa-book', 
+                color: '#e74c3c', 
+                courses: [],
+                chapters: [
+                    { id: 'amharic_ch1', name: 'Chapter 1', number: 1 },
+                    { id: 'amharic_ch2', name: 'Chapter 2', number: 2 },
+                    { id: 'amharic_ch3', name: 'Chapter 3', number: 3 },
+                    { id: 'amharic_ch4', name: 'Chapter 4', number: 4 },
+                    { id: 'amharic_ch5', name: 'Chapter 5', number: 5 },
+                    { id: 'amharic_ch6', name: 'Chapter 6', number: 6 }
+                ]
+            },
+            { 
+                id: 'english', 
+                name: 'English', 
+                icon: 'fas fa-language', 
+                color: '#3498db', 
+                courses: [],
+                chapters: [
+                    { id: 'english_ch1', name: 'Chapter 1', number: 1 },
+                    { id: 'english_ch2', name: 'Chapter 2', number: 2 },
+                    { id: 'english_ch3', name: 'Chapter 3', number: 3 },
+                    { id: 'english_ch4', name: 'Chapter 4', number: 4 },
+                    { id: 'english_ch5', name: 'Chapter 5', number: 5 },
+                    { id: 'english_ch6', name: 'Chapter 6', number: 6 }
+                ]
+            },
+            { 
+                id: 'math', 
+                name: 'Math', 
+                icon: 'fas fa-calculator', 
+                color: '#f39c12', 
+                courses: [],
+                chapters: [
+                    { id: 'math_ch1', name: 'Chapter 1', number: 1 },
+                    { id: 'math_ch2', name: 'Chapter 2', number: 2 },
+                    { id: 'math_ch3', name: 'Chapter 3', number: 3 },
+                    { id: 'math_ch4', name: 'Chapter 4', number: 4 },
+                    { id: 'math_ch5', name: 'Chapter 5', number: 5 },
+                    { id: 'math_ch6', name: 'Chapter 6', number: 6 }
+                ]
+            },
+            { 
+                id: 'science', 
+                name: 'Science', 
+                icon: 'fas fa-flask', 
+                color: '#2ecc71', 
+                courses: [],
+                chapters: [
+                    { id: 'science_ch1', name: 'Chapter 1', number: 1 },
+                    { id: 'science_ch2', name: 'Chapter 2', number: 2 },
+                    { id: 'science_ch3', name: 'Chapter 3', number: 3 },
+                    { id: 'science_ch4', name: 'Chapter 4', number: 4 },
+                    { id: 'science_ch5', name: 'Chapter 5', number: 5 },
+                    { id: 'science_ch6', name: 'Chapter 6', number: 6 }
+                ]
+            }
         ];
     }
 
@@ -1767,6 +1897,23 @@ class CourseManager {
         }
     }
 
+
+    updateChapterDropdown(subjectId) {
+        const chapterSelect = document.getElementById('courseChapter');
+        chapterSelect.innerHTML = '<option value="">Select Chapter</option>';
+        
+        if (!subjectId) return;
+        
+        const subject = this.subjects.find(s => s.id === subjectId);
+        if (subject && subject.chapters) {
+            subject.chapters.forEach(chapter => {
+                const option = document.createElement('option');
+                option.value = chapter.id;
+                option.textContent = chapter.name;
+                chapterSelect.appendChild(option);
+            });
+        }
+    }
 
     showMessage(message, type, elementId = null) {
         const errorDiv = document.getElementById(elementId || 'loginError');

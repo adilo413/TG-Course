@@ -104,6 +104,13 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="courseChapter">Chapter</label>
+                            <select id="courseChapter">
+                                <option value="">Select Chapter</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             <label>Course Content</label>
                             <div class="rich-text-toolbar">
                                 <!-- Font Family -->
@@ -321,15 +328,34 @@
         </main>
     </div>
 
-    <!-- Courses List Screen -->
-    <div id="coursesListScreen" class="screen">
+    <!-- Chapters List Screen -->
+    <div id="chaptersListScreen" class="screen">
         <header class="app-header">
             <div class="header-content">
                 <button id="backToSubjects" class="btn-back">
                     <i class="fas fa-arrow-left"></i>
                     Back
                 </button>
-                <h1 id="subjectTitle">Subject Courses</h1>
+                <h1 id="chaptersSubjectTitle">Chapters</h1>
+            </div>
+        </header>
+
+        <main class="chapters-container">
+            <div id="chaptersList" class="chapters-grid">
+                <!-- Chapters will be dynamically loaded here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Courses List Screen -->
+    <div id="coursesListScreen" class="screen">
+        <header class="app-header">
+            <div class="header-content">
+                <button id="backToChapters" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <h1 id="coursesChapterTitle">Courses</h1>
             </div>
         </header>
 
@@ -479,11 +505,6 @@
                         <label for="subjectIcon">Icon Class (FontAwesome)</label>
                         <input type="text" id="subjectIcon" placeholder="e.g., fas fa-calculator" required>
                         <small>Use FontAwesome icon classes (e.g., fas fa-book, fas fa-calculator, fas fa-flask)</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="subjectChapters">Number of Chapters</label>
-                        <input type="number" id="subjectChapters" placeholder="e.g., 10" min="1" max="50" value="10" required>
-                        <small>How many chapters does this subject have?</small>
                     </div>
                     <div class="form-actions">
                         <button type="button" class="btn-secondary" id="cancelSubject">
