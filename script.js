@@ -106,6 +106,7 @@ class CourseManager {
 
         // Navigation buttons
         document.getElementById('createCourseBtn').addEventListener('click', () => {
+            this.clearCourseForm();
             this.showScreen('courseCreation');
         });
 
@@ -831,6 +832,8 @@ class CourseManager {
                 content,
                 images: [] // We'll add image upload later
             };
+            
+            console.log('💾 Saving course with data:', courseData);
 
             let result;
             if (this.editingCourseId) {
@@ -868,9 +871,12 @@ class CourseManager {
         document.getElementById('courseSubject').value = course.subject;
         
         // Update chapter dropdown and select the course's chapter
+        console.log('📝 Editing course:', course);
+        console.log('📝 Course chapter:', course.chapter);
         this.updateChapterDropdown(course.subject);
         setTimeout(() => {
             document.getElementById('courseChapter').value = course.chapter || '';
+            console.log('📝 Set chapter dropdown to:', course.chapter || '');
         }, 100);
         
         document.getElementById('courseContent').innerHTML = course.content;
@@ -880,6 +886,12 @@ class CourseManager {
         const headerTitle = document.querySelector('#courseCreation header h1');
         if (headerTitle) {
             headerTitle.textContent = 'Edit Course';
+        }
+        
+        // Update save button text
+        const saveBtn = document.getElementById('saveCourse');
+        if (saveBtn) {
+            saveBtn.innerHTML = '<i class="fas fa-save"></i> Update Course';
         }
         
         this.showScreen('courseCreation');
@@ -917,6 +929,7 @@ class CourseManager {
     clearCourseForm() {
         document.getElementById('courseTitle').value = '';
         document.getElementById('courseSubject').value = '';
+        document.getElementById('courseChapter').innerHTML = '<option value="">Select Chapter</option>';
         document.getElementById('courseContent').innerHTML = '';
         this.editingCourseId = null; // Reset editing state
         
@@ -924,6 +937,12 @@ class CourseManager {
         const headerTitle = document.querySelector('#courseCreation header h1');
         if (headerTitle) {
             headerTitle.textContent = 'Create New Course';
+        }
+        
+        // Reset save button text
+        const saveBtn = document.getElementById('saveCourse');
+        if (saveBtn) {
+            saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Course';
         }
         
         this.updatePreview();
@@ -1999,10 +2018,15 @@ class CourseManager {
         const chapterSelect = document.getElementById('courseChapter');
         chapterSelect.innerHTML = '<option value="">Select Chapter</option>';
         
+        console.log('🔄 Updating chapter dropdown for subject:', subjectId);
+        
         if (!subjectId) return;
         
         const subject = this.subjects.find(s => s.id === subjectId);
+        console.log('📚 Found subject:', subject);
+        
         if (subject && subject.chapters) {
+            console.log('📚 Subject chapters:', subject.chapters);
             subject.chapters.forEach(chapter => {
                 const option = document.createElement('option');
                 option.value = chapter.id;
