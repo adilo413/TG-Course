@@ -186,6 +186,11 @@ class CourseManager {
         document.getElementById('courseSubject').addEventListener('change', (e) => {
             this.updateChapterDropdown(e.target.value);
         });
+
+        // Watermark toggle
+        document.getElementById('watermarkToggle').addEventListener('click', () => {
+            this.toggleWatermarkPreview();
+        });
     }
 
     setupRichTextEditor() {
@@ -623,6 +628,25 @@ class CourseManager {
         burgerBtn.classList.remove('active');
     }
 
+    toggleWatermarkPreview() {
+        const courseContent = document.getElementById('courseContent');
+        const watermarkBtn = document.getElementById('watermarkToggle');
+        
+        if (courseContent.classList.contains('watermarked-container')) {
+            // Remove watermark
+            courseContent.classList.remove('watermarked-container');
+            watermarkBtn.classList.remove('active');
+            watermarkBtn.title = 'Show Watermark Preview';
+            console.log('🔍 Watermark preview hidden');
+        } else {
+            // Add watermark
+            courseContent.classList.add('watermarked-container');
+            watermarkBtn.classList.add('active');
+            watermarkBtn.title = 'Hide Watermark Preview';
+            console.log('🔍 Watermark preview shown');
+        }
+    }
+
     showScreen(screenName) {
         // Hide all screens
         document.querySelectorAll('.screen').forEach(screen => {
@@ -973,11 +997,35 @@ class CourseManager {
                     body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
                     h1 { color: #333; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
                     img { max-width: 100%; height: auto; border-radius: 8px; margin: 10px 0; }
+                    
+                    /* Watermark styles */
+                    .watermarked-container {
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    
+                    .watermarked-container::after {
+                        content: 'Bright Freshman Tutorial';
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        color: rgba(0, 0, 0, 0.05);
+                        font-size: 4rem;
+                        font-weight: 300;
+                        text-transform: uppercase;
+                        transform: translate(-50%, -50%) rotate(-45deg);
+                        z-index: -1;
+                        user-select: none;
+                        pointer-events: none;
+                        font-family: Arial, sans-serif;
+                        letter-spacing: 0.1em;
+                        white-space: nowrap;
+                    }
                 </style>
             </head>
             <body>
                 <h1>${title}</h1>
-                <div>${content}</div>
+                <div class="watermarked-container">${content}</div>
             </body>
             </html>
         `);
