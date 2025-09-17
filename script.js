@@ -651,17 +651,30 @@ class CourseManager {
             courseCard.className = 'course-card';
             courseCard.innerHTML = `
                 <div class="course-header">
-                    <h3>${course.title}</h3>
-                    <div class="course-status ${course.is_active !== false ? 'active' : 'inactive'}">
-                        <i class="fas fa-circle"></i>
-                        ${course.is_active !== false ? 'Active' : 'Inactive'}
-                    </div>
+                    <span class="course-title">${course.title}</span>
+                    <span class="course-price">${course.is_active !== false ? 'Active' : 'Inactive'}</span>
                 </div>
-                <p>${course.content.replace(/<[^>]*>/g, '').substring(0, 120)}...</p>
-                <div class="course-meta">
-                    <span><i class="fas fa-calendar"></i> ${new Date(course.created_at).toLocaleDateString()}</span>
-                    <span><i class="fas fa-link"></i> Link Available</span>
-                </div>
+                <p class="course-desc">${course.content.replace(/<[^>]*>/g, '').substring(0, 120)}...</p>
+                <ul class="course-lists">
+                    <li class="course-list">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Created: ${new Date(course.created_at).toLocaleDateString()}</span>
+                    </li>
+                    <li class="course-list">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Link Available</span>
+                    </li>
+                    <li class="course-list">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Ready to Share</span>
+                    </li>
+                </ul>
                 <div class="course-actions">
                     <button class="btn-action btn-edit" onclick="event.stopPropagation(); window.courseManager.editCourse('${course.course_id}')">
                         <i class="fas fa-edit"></i> Edit
@@ -1785,9 +1798,9 @@ class ThemeManager {
         localStorage.setItem('theme', theme);
         
         // Update toggle state
-        const toggle = document.getElementById('themeToggle');
+        const toggle = document.getElementById('themeInput');
         if (toggle) {
-            toggle.classList.toggle('active', theme === 'light');
+            toggle.checked = theme === 'dark';
         }
     }
 
@@ -1832,9 +1845,9 @@ class ThemeManager {
     }
 
     setupThemeToggle() {
-        const toggle = document.getElementById('themeToggle');
+        const toggle = document.getElementById('themeInput');
         if (toggle) {
-            toggle.addEventListener('click', () => {
+            toggle.addEventListener('change', () => {
                 this.toggleTheme();
             });
         }
