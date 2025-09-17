@@ -1483,16 +1483,22 @@ body {
     background: none;
     border: none;
     font-size: 1.2rem;
-    color: #999;
+    color: var(--text-light);
     cursor: pointer;
-    padding: 5px;
+    padding: 8px;
     border-radius: 50%;
     transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
 }
 
 .close-modal:hover {
     background: var(--color-light-gray);
     color: var(--text-primary);
+    transform: scale(1.1);
 }
 
 .link-modal-body {

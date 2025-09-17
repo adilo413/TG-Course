@@ -993,10 +993,10 @@ class CourseManager {
         const modal = document.createElement('div');
         modal.className = 'link-modal';
         modal.innerHTML = `
-            <div class="link-modal-content">
+            <div class="link-modal-content" onclick="event.stopPropagation()">
                 <div class="link-modal-header">
                     <h3>Course Link Generated</h3>
-                    <button class="close-modal" onclick="this.closest('.link-modal').remove()">
+                    <button class="close-modal" onclick="this.closest('.link-modal').remove()" title="Close">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -1049,9 +1049,31 @@ class CourseManager {
                     </div>
                     
                     <p class="link-note">Share the Telegram link with your students. They can only access it if they're channel members.</p>
+                    
+                    <div class="modal-footer" style="margin-top: 30px; text-align: center;">
+                        <button class="btn btn-secondary" onclick="this.closest('.link-modal').remove()" style="padding: 12px 30px;">
+                            <i class="fas fa-times"></i> Close
+                        </button>
+                    </div>
                 </div>
             </div>
         `;
+        
+        // Add click-outside-to-close functionality
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+        
+        // Add ESC key to close
+        const handleEscKey = (e) => {
+            if (e.key === 'Escape') {
+                modal.remove();
+                document.removeEventListener('keydown', handleEscKey);
+            }
+        };
+        document.addEventListener('keydown', handleEscKey);
         
         document.body.appendChild(modal);
         
