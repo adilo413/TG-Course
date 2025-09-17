@@ -23,17 +23,22 @@ class CourseManager {
         this.setupStudentSection();
         this.setupSubjectManagement(); // Setup subject management functionality
         this.detectUserRole();
-        this.initializeAPI(); // Initialize API and handle deep links
+        await this.initializeAPI(); // Initialize API and handle deep links
         
         // Load subjects from database after API is ready
+        console.log('🔄 Loading subjects in init...');
+        console.log('🔄 window.supabaseAPI available:', !!window.supabaseAPI);
+        
         if (window.supabaseAPI) {
             this.subjects = await this.loadSubjectsFromDatabase();
         } else {
-            // Fallback to default subjects if API not ready
+            console.log('🔄 API not ready, using default subjects');
             this.subjects = this.getDefaultSubjects();
         }
         
-        this.loadCourses();
+        console.log('🔄 Final subjects count:', this.subjects.length);
+        await this.loadCourses();
+        console.log('🔄 Courses loaded, count:', this.courses.length);
     }
 
     initializeAPI() {
@@ -89,7 +94,7 @@ class CourseManager {
             
             if (this.api && await this.api.isAdminLoggedIn()) {
                 console.log('✅ Valid admin session found, redirecting to dashboard');
-                this.showScreen('dashboard');
+                await this.showScreen('dashboard');
             } else {
                 console.log('ℹ️ No valid admin session found, showing login screen');
                 this.showScreen('login');
@@ -575,7 +580,7 @@ class CourseManager {
             if (result.success) {
                 console.log('✅ Login successful!');
                 errorDiv.classList.remove('show');
-                this.showScreen('dashboard');
+                await this.showScreen('dashboard');
                 document.getElementById('adminPassword').value = '';
             } else {
                 console.log('❌ Login failed:', result.error);
@@ -680,7 +685,7 @@ class CourseManager {
         existingWatermarks.forEach(watermark => watermark.remove());
     }
 
-    showScreen(screenName) {
+    async showScreen(screenName) {
         // Hide all screens
         document.querySelectorAll('.screen').forEach(screen => {
             screen.classList.remove('active');
@@ -699,6 +704,18 @@ class CourseManager {
 
         // Load content based on screen
         if (screenName === 'dashboard') {
+            console.log('🔄 Dashboard screen activated');
+            console.log('🔄 Current subjects count:', this.subjects.length);
+            console.log('🔄 Current courses count:', this.courses.length);
+            
+            // Ensure subjects are loaded before displaying
+            if (this.subjects.length === 0) {
+                console.log('🔄 No subjects found, loading from database...');
+                await this.loadSubjectsFromDatabase();
+                await this.loadCourses();
+            }
+            
+            console.log('🔄 About to call loadSubjects()');
             this.loadSubjects();
         } else if (screenName === 'courseCreation') {
             this.updateCourseSubjectDropdown();
@@ -964,7 +981,7 @@ class CourseManager {
                 this.editingCourseId = null; // Reset editing state
                 this.showMessage(wasEditing ? 'Course updated successfully!' : 'Course saved successfully!', 'success');
                 await this.loadCourses(); // Reload courses from database
-                this.showScreen('dashboard');
+                await this.showScreen('dashboard');
             } else {
                 this.showMessage(result.error || 'Failed to save course', 'error');
             }
@@ -2098,24 +2115,33 @@ class CourseManager {
         document.getElementById('subjectSuccess').classList.remove('show');
     }
 
-    // Subject Persistence Methods - Now using Supabase
+    // Subject Persistence Methods
     async loadSubjectsFromDatabase() {
         try {
+            console.log('🔄 Attempting to load subjects from database...');
+            console.log('🔄 window.supabaseAPI available:', !!window.supabaseAPI);
+            
             if (!window.supabaseAPI) {
-                console.error('❌ Supabase API not available');
+                console.error('❌ Supabase API not available, using default subjects');
                 return this.getDefaultSubjects();
             }
 
+            console.log('🔄 Calling getSubjects...');
             const result = await window.supabaseAPI.getSubjects();
+            console.log('🔄 getSubjects result:', result);
+            
             if (result.success) {
                 console.log('✅ Subjects loaded from database:', result.data);
+                console.log('✅ Subjects count:', result.data.length);
                 return result.data;
             } else {
                 console.error('❌ Failed to load subjects from database:', result.error);
+                console.log('🔄 Falling back to default subjects');
                 return this.getDefaultSubjects();
             }
         } catch (error) {
             console.error('❌ Error loading subjects from database:', error);
+            console.log('🔄 Falling back to default subjects due to error');
             return this.getDefaultSubjects();
         }
     }
