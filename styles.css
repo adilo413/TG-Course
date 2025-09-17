@@ -173,6 +173,58 @@ body {
     filter: drop-shadow(0 4px 20px rgba(74, 144, 226, 0.5));
 }
 
+/* Icon styling for emoji replacements */
+.btn-icon, .input-icon, .toolbar-icon, .menu-icon, .close-icon, .error-icon, .reason-icon {
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 1em;
+}
+
+.toolbar-icon {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.close-icon {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.error-icon, .reason-icon {
+    font-size: 1.3em;
+    margin-right: 10px;
+}
+
+/* Fix white theme visibility issues */
+[data-theme="light"] .btn-secondary {
+    color: #333 !important;
+    border-color: #ddd !important;
+}
+
+[data-theme="light"] .btn-secondary:hover {
+    background-color: #f8f9fa !important;
+    color: #000 !important;
+}
+
+[data-theme="light"] .back-btn {
+    color: #333 !important;
+    border-color: #ddd !important;
+}
+
+[data-theme="light"] .back-btn:hover {
+    background-color: #f8f9fa !important;
+    color: #000 !important;
+}
+
+[data-theme="light"] .mobile-menu-item {
+    color: #333 !important;
+}
+
+[data-theme="light"] .mobile-menu-item:hover {
+    background-color: #f8f9fa !important;
+    color: #000 !important;
+}
+
 .main-logo {
     height: 40px;
     width: auto;

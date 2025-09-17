@@ -6,7 +6,6 @@
     <title>Bright Freshman Tutorial</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='30' r='15' fill='%23FFD700'/><rect x='35' y='45' width='30' height='40' rx='3' fill='%234A90E2'/><path d='M25 40 L35 35 L45 40 L35 45 Z' fill='%238B4513'/></svg>">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -50,11 +49,11 @@
                 </div>
                 <form id="loginForm" class="login-form">
                     <div class="input-group">
-                        <i class="fas fa-lock"></i>
+                        <span class="input-icon">🔒</span>
                         <input type="password" id="adminPassword" placeholder="Enter admin password" required>
                     </div>
                     <button type="submit" class="login-btn">
-                        <i class="fas fa-sign-in-alt"></i>
+                        <span class="btn-icon">🚀</span>
                         Login
                     </button>
                 </form>
@@ -99,18 +98,18 @@
                 <h1>Bright Freshman Tutorial</h1>
                 <div class="header-actions">
                     <button id="manageSubjectsBtn" class="btn-secondary desktop-only">
-                        <i class="fas fa-tags"></i>
+                        <span class="btn-icon">📚</span>
                         Manage Subjects
                     </button>
                     <button id="createCourseBtn" class="btn-primary">
-                        <i class="fas fa-plus"></i>
+                        <span class="btn-icon">➕</span>
                         <span class="desktop-only">New Course</span>
                     </button>
                     <button id="settingsBtn" class="btn-secondary desktop-only">
-                        <i class="fas fa-cog"></i>
+                        <span class="btn-icon">⚙️</span>
                     </button>
                     <button id="logoutBtn" class="btn-secondary desktop-only">
-                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="btn-icon">🚪</span>
                     </button>
                     
                     <!-- Mobile Burger Menu -->
@@ -122,15 +121,15 @@
                         </button>
                         <div id="mobileMenu" class="mobile-menu-content">
                             <button id="mobileManageSubjectsBtn" class="mobile-menu-item">
-                                <i class="fas fa-tags"></i>
+                                <span class="menu-icon">📚</span>
                                 Manage Subjects
                             </button>
                             <button id="mobileSettingsBtn" class="mobile-menu-item">
-                                <i class="fas fa-cog"></i>
+                                <span class="menu-icon">⚙️</span>
                                 Settings
                             </button>
                             <button id="mobileLogoutBtn" class="mobile-menu-item">
-                                <i class="fas fa-sign-out-alt"></i>
+                                <span class="menu-icon">🚪</span>
                                 Logout
                             </button>
                         </div>
@@ -151,7 +150,7 @@
         <header class="app-header">
             <div class="header-content">
                 <button id="backToDashboard" class="btn-back">
-                    <i class="fas fa-arrow-left"></i>
+                    <span class="btn-icon">⬅️</span>
                     Back
                 </button>
                 <h1>Create New Course</h1>
@@ -213,42 +212,42 @@
                                 
                                 <!-- Text Formatting -->
                                 <button type="button" class="toolbar-btn" data-command="bold" title="Bold">
-                                    <i class="fas fa-bold"></i>
+                                    <span class="toolbar-icon">B</span>
                                 </button>
                                 <button type="button" class="toolbar-btn" data-command="italic" title="Italic">
-                                    <i class="fas fa-italic"></i>
+                                    <span class="toolbar-icon">I</span>
                                 </button>
                                 <button type="button" class="toolbar-btn" data-command="underline" title="Underline">
-                                    <i class="fas fa-underline"></i>
+                                    <span class="toolbar-icon">U</span>
                                 </button>
                                 
                                 <div class="toolbar-divider"></div>
                                 
                                 <!-- Text Alignment -->
                                 <button type="button" class="toolbar-btn" data-command="justifyLeft" title="Align Left">
-                                    <i class="fas fa-align-left"></i>
+                                    <span class="toolbar-icon">⬅️</span>
                                 </button>
                                 <button type="button" class="toolbar-btn" data-command="justifyCenter" title="Align Center">
-                                    <i class="fas fa-align-center"></i>
+                                    <span class="toolbar-icon">↔️</span>
                                 </button>
                                 <button type="button" class="toolbar-btn" data-command="justifyRight" title="Align Right">
-                                    <i class="fas fa-align-right"></i>
+                                    <span class="toolbar-icon">➡️</span>
                                 </button>
                                 <button type="button" class="toolbar-btn" data-command="justifyFull" title="Justify">
-                                    <i class="fas fa-align-justify"></i>
+                                    <span class="toolbar-icon">⬌</span>
                                 </button>
                                 
                                 <div class="toolbar-divider"></div>
                                 
                                 <!-- Lists and Media -->
                                 <button type="button" class="toolbar-btn" data-command="insertUnorderedList" title="Bullet List">
-                                    <i class="fas fa-list-ul"></i>
+                                    <span class="toolbar-icon">•</span>
                                 </button>
                                 <button type="button" class="toolbar-btn" data-command="insertOrderedList" title="Numbered List">
-                                    <i class="fas fa-list-ol"></i>
+                                    <span class="toolbar-icon">1.</span>
                                 </button>
                                 <button type="button" class="toolbar-btn" data-command="insertImage" title="Insert Image">
-                                    <i class="fas fa-image"></i>
+                                    <span class="toolbar-icon">🖼️</span>
                                 </button>
                                 
                                 <div class="toolbar-divider"></div>
@@ -263,7 +262,7 @@
                                 
                                 <!-- Watermark Toggle -->
                                 <button type="button" class="toolbar-btn" id="watermarkToggle" title="Toggle Watermark Preview">
-                                    <i class="fas fa-stamp"></i>
+                                    <span class="toolbar-icon">🏷️</span>
                                 </button>
                             </div>
                             <div id="courseContent" class="rich-text-editor" contenteditable="true" placeholder="Write your course content here..."></div>
@@ -271,11 +270,11 @@
 
                         <div class="form-actions">
                             <button id="saveCourse" class="btn-primary">
-                                <i class="fas fa-save"></i>
+                                <span class="btn-icon">💾</span>
                                 Save Course
                             </button>
                             <button id="previewCourse" class="btn-secondary">
-                                <i class="fas fa-eye"></i>
+                                <span class="btn-icon">👁️</span>
                                 Preview
                             </button>
                         </div>
@@ -299,7 +298,7 @@
         <header class="app-header">
             <div class="header-content">
                 <button id="backToDashboardFromSettings" class="btn-back">
-                    <i class="fas fa-arrow-left"></i>
+                    <span class="btn-icon">⬅️</span>
                     Back
                 </button>
                 <h1>Settings</h1>
@@ -397,7 +396,7 @@
                         <input type="password" id="confirmPassword" required>
                     </div>
                     <button type="submit" class="btn-primary">
-                        <i class="fas fa-key"></i>
+                        <span class="btn-icon">🔑</span>
                         Change Password
                     </button>
                 </form>
@@ -412,7 +411,7 @@
         <header class="app-header">
             <div class="header-content">
                 <button id="backToSubjects" class="btn-back">
-                    <i class="fas fa-arrow-left"></i>
+                    <span class="btn-icon">⬅️</span>
                     Back
                 </button>
                 <h1 id="chaptersSubjectTitle">Chapters</h1>
@@ -431,7 +430,7 @@
         <header class="app-header">
             <div class="header-content">
                 <button id="backToChapters" class="btn-back">
-                    <i class="fas fa-arrow-left"></i>
+                    <span class="btn-icon">⬅️</span>
                     Back
                 </button>
                 <h1 id="coursesChapterTitle">Courses</h1>
@@ -522,27 +521,27 @@
         <div class="access-denied-container">
             <div class="access-denied-card">
                 <div class="access-denied-icon">
-                    <i class="fas fa-lock"></i>
+                    <span class="error-icon">🔒</span>
                 </div>
                 <h1>Access Denied</h1>
                 <p>You don't have permission to view this course.</p>
                 <div class="access-reasons">
                     <div class="reason-item">
-                        <i class="fas fa-users"></i>
+                        <span class="reason-icon">👥</span>
                         <span>You must be a member of the private channel to access this content</span>
                     </div>
                     <div class="reason-item">
-                        <i class="fas fa-link"></i>
+                        <span class="reason-icon">🔗</span>
                         <span>This course may have been deactivated by the admin</span>
                     </div>
                     <div class="reason-item">
-                        <i class="fas fa-key"></i>
+                        <span class="reason-icon">🔑</span>
                         <span>Invalid or expired access link</span>
                     </div>
                 </div>
                 <div class="access-actions">
                     <button class="btn-primary" onclick="window.courseManager.contactAdmin()">
-                        <i class="fas fa-envelope"></i>
+                        <span class="btn-icon">📧</span>
                         Contact Admin
                     </button>
                 </div>
@@ -567,7 +566,7 @@
             <div class="modal-header">
                 <h3 id="subjectModalTitle">Add New Subject</h3>
                 <button class="close-modal" id="closeSubjectModal">
-                    <i class="fas fa-times"></i>
+                    <span class="close-icon">✕</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -581,9 +580,9 @@
                         <textarea id="subjectDescription" placeholder="Brief description of the subject" rows="3"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="subjectIcon">Icon Class (FontAwesome)</label>
-                        <input type="text" id="subjectIcon" placeholder="e.g., fas fa-calculator" required>
-                        <small>Use FontAwesome icon classes (e.g., fas fa-book, fas fa-calculator, fas fa-flask)</small>
+                        <label for="subjectIcon">Icon (Emoji)</label>
+                        <input type="text" id="subjectIcon" placeholder="e.g., 📚, 🧮, 🧪" required>
+                        <small>Use emoji icons (e.g., 📚, 🧮, 🧪, 📖, 🔬, 💻)</small>
                     </div>
                     <div class="form-group">
                         <label for="subjectChapters">Number of Chapters</label>
@@ -607,11 +606,11 @@
                     </div>
                     <div class="form-actions">
                         <button type="button" class="btn-secondary" id="cancelSubject">
-                            <i class="fas fa-times"></i>
+                            <span class="close-icon">✕</span>
                             Cancel
                         </button>
                         <button type="submit" class="btn-primary" id="saveSubject">
-                            <i class="fas fa-save"></i>
+                            <span class="btn-icon">💾</span>
                             Save Subject
                         </button>
                     </div>
