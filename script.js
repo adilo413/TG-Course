@@ -1031,13 +1031,13 @@ class CourseManager {
                     .watermarked-container::before {
                         content: 'BRIGHT\A FRESH';
                         position: absolute;
-                        top: 15%;
-                        left: 15%;
+                        top: 10%;
+                        left: 50%;
                         color: rgba(0, 0, 0, 0.15);
                         font-size: 2.2rem;
                         font-weight: 900;
                         text-transform: uppercase;
-                        transform: rotate(-15deg);
+                        transform: translateX(-50%) rotate(-15deg);
                         z-index: -1;
                         user-select: none;
                         pointer-events: none;
@@ -1052,13 +1052,13 @@ class CourseManager {
                     .watermarked-container::after {
                         content: 'BRIGHT\A FRESH';
                         position: absolute;
-                        bottom: 15%;
-                        right: 15%;
+                        top: 25%;
+                        left: 50%;
                         color: rgba(0, 0, 0, 0.15);
                         font-size: 2.2rem;
                         font-weight: 900;
                         text-transform: uppercase;
-                        transform: rotate(-15deg);
+                        transform: translateX(-50%) rotate(-15deg);
                         z-index: -1;
                         user-select: none;
                         pointer-events: none;
@@ -1072,13 +1072,13 @@ class CourseManager {
                     
                     .watermark-3 {
                         position: absolute;
-                        top: 15%;
-                        right: 15%;
+                        top: 50%;
+                        left: 50%;
                         color: rgba(0, 0, 0, 0.15);
                         font-size: 2.2rem;
                         font-weight: 900;
                         text-transform: uppercase;
-                        transform: rotate(-15deg);
+                        transform: translateX(-50%) rotate(-15deg);
                         z-index: -1;
                         user-select: none;
                         pointer-events: none;
@@ -1091,13 +1091,13 @@ class CourseManager {
                     
                     .watermark-4 {
                         position: absolute;
-                        bottom: 15%;
-                        left: 15%;
+                        bottom: 10%;
+                        left: 50%;
                         color: rgba(0, 0, 0, 0.15);
                         font-size: 2.2rem;
                         font-weight: 900;
                         text-transform: uppercase;
-                        transform: rotate(-15deg);
+                        transform: translateX(-50%) rotate(-15deg);
                         z-index: -1;
                         user-select: none;
                         pointer-events: none;

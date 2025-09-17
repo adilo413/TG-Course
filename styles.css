@@ -2046,21 +2046,19 @@ body {
 
 /* Multiple watermarks using ::before and ::after */
 .watermarked-container::before {
-    content: 'BRIGHT\A FRESH'; /* First watermark - Top Left */
+    content: 'BRIGHT\A FRESH'; /* First watermark - Top */
     
-    /* Positioning - Top left area */
+    /* Positioning - Top area */
     position: absolute;
-    top: 15%;
-    left: 15%;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%) rotate(-15deg);
     
     /* Text and styling properties */
     color: rgba(255, 255, 255, 0.2);
     font-size: 2.2rem;
     font-weight: 900;
     text-transform: uppercase;
-    
-    /* Transform for rotation - Lower angle */
-    transform: rotate(-15deg);
     
     /* Ensure behind content */
     z-index: -1;
@@ -2077,21 +2075,19 @@ body {
 }
 
 .watermarked-container::after {
-    content: 'BRIGHT\A FRESH'; /* Second watermark - Bottom Right */
+    content: 'BRIGHT\A FRESH'; /* Second watermark - Below Top */
     
-    /* Positioning - Bottom right area */
+    /* Positioning - Below top area */
     position: absolute;
-    bottom: 15%;
-    right: 15%;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%) rotate(-15deg);
     
     /* Text and styling properties */
     color: rgba(255, 255, 255, 0.2);
     font-size: 2.2rem;
     font-weight: 900;
     text-transform: uppercase;
-    
-    /* Transform for rotation - Lower angle */
-    transform: rotate(-15deg);
     
     /* Ensure behind content */
     z-index: -1;
@@ -2122,19 +2118,18 @@ body {
     line-height: 0.9;
     text-align: center;
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
-    transform: rotate(-15deg);
+    left: 50%;
+    transform: translateX(-50%) rotate(-15deg);
 }
 
 .watermark-3 {
-    /* Top Right */
-    top: 15%;
-    right: 15%;
+    /* Middle */
+    top: 50%;
 }
 
 .watermark-4 {
-    /* Bottom Left */
-    bottom: 15%;
-    left: 15%;
+    /* Bottom */
+    bottom: 10%;
 }
 
 /* Light theme watermarks */
