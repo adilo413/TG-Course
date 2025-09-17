@@ -163,16 +163,21 @@ class SupabaseAPI {
 
     async createCourse(courseData) {
         try {
+            console.log('💾 Supabase createCourse called with data:', courseData);
+            
             const course = {
                 course_id: this.generateId(),
                 title: courseData.title,
                 subject: courseData.subject,
+                chapter: courseData.chapter || null,
                 content: courseData.content,
                 images: courseData.images || [],
                 is_active: true,
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
             };
+            
+            console.log('💾 Course object to insert:', course);
 
             const { data, error } = await this.client
                 .from('courses')
@@ -190,10 +195,14 @@ class SupabaseAPI {
 
     async updateCourse(courseId, updates) {
         try {
+            console.log('💾 Supabase updateCourse called with:', { courseId, updates });
+            
             const updateData = {
                 ...updates,
                 updated_at: new Date().toISOString()
             };
+            
+            console.log('💾 Update data to send:', updateData);
 
             const { data, error } = await this.client
                 .from('courses')
