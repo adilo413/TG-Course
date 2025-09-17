@@ -1004,23 +1004,46 @@ class CourseManager {
                         overflow: hidden;
                     }
                     
-                    .watermarked-container::after {
-                        content: 'Bright Freshman Tutorial';
+                    .watermarked-container::before {
+                        content: 'BRIGHT\A FRESHMAN';
                         position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        color: rgba(0, 0, 0, 0.2);
-                        font-size: 4rem;
+                        top: 20%;
+                        left: 20%;
+                        color: rgba(0, 0, 0, 0.15);
+                        font-size: 2.5rem;
                         font-weight: 900;
                         text-transform: uppercase;
-                        transform: translate(-50%, -50%) rotate(-45deg);
+                        transform: rotate(-45deg);
                         z-index: -1;
                         user-select: none;
                         pointer-events: none;
                         font-family: Arial, sans-serif;
-                        letter-spacing: 0.2em;
-                        white-space: nowrap;
-                        text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        letter-spacing: 0.15em;
+                        white-space: pre;
+                        line-height: 0.8;
+                        text-align: center;
+                        text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+                    }
+                    
+                    .watermarked-container::after {
+                        content: 'BRIGHT\A FRESHMAN';
+                        position: absolute;
+                        top: 60%;
+                        right: 15%;
+                        color: rgba(0, 0, 0, 0.15);
+                        font-size: 2.8rem;
+                        font-weight: 900;
+                        text-transform: uppercase;
+                        transform: rotate(-45deg);
+                        z-index: -1;
+                        user-select: none;
+                        pointer-events: none;
+                        font-family: Arial, sans-serif;
+                        letter-spacing: 0.15em;
+                        white-space: pre;
+                        line-height: 0.8;
+                        text-align: center;
+                        text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
                     }
                 </style>
             </head>

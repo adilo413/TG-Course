@@ -2044,43 +2044,78 @@ body {
     overflow: hidden;
 }
 
-.watermarked-container::after {
-    content: 'Bright Freshman Tutorial'; /* The text for your watermark */
+/* Multiple watermarks using ::before and ::after */
+.watermarked-container::before {
+    content: 'BRIGHT\A FRESHMAN'; /* First watermark */
     
-    /* Positioning and size to cover the container */
+    /* Positioning - Top left area */
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 20%;
+    left: 20%;
     
-    /* Text and styling properties - Much more visible */
-    color: rgba(255, 255, 255, 0.25); /* More visible white watermark for dark theme */
-    font-size: 5rem;
-    font-weight: 900; /* Much bolder */
+    /* Text and styling properties */
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 2.5rem;
+    font-weight: 900;
     text-transform: uppercase;
     
-    /* Transform for rotation and centering */
-    transform: translate(-50%, -50%) rotate(-45deg);
+    /* Transform for rotation */
+    transform: rotate(-45deg);
     
-    /* Ensure the watermark is behind the main content */
-    z-index: -1; 
-    
-    /* Prevent the watermark text from being selected */
+    /* Ensure behind content */
+    z-index: -1;
     user-select: none;
     pointer-events: none;
     
-    /* Additional styling */
+    /* Styling */
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    letter-spacing: 0.2em;
-    white-space: nowrap;
-    
-    /* Add text shadow for better visibility */
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    letter-spacing: 0.15em;
+    white-space: pre;
+    line-height: 0.8;
+    text-align: center;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
 }
 
-/* Light theme watermark */
+.watermarked-container::after {
+    content: 'BRIGHT\A FRESHMAN'; /* Center watermark */
+    
+    /* Positioning - Center right area */
+    position: absolute;
+    top: 60%;
+    right: 15%;
+    
+    /* Text and styling properties */
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 2.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    
+    /* Transform for rotation */
+    transform: rotate(-45deg);
+    
+    /* Ensure behind content */
+    z-index: -1;
+    user-select: none;
+    pointer-events: none;
+    
+    /* Styling */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: 0.15em;
+    white-space: pre;
+    line-height: 0.8;
+    text-align: center;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+}
+
+/* Light theme watermarks */
+[data-theme="light"] .watermarked-container::before {
+    color: rgba(0, 0, 0, 0.15);
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
 [data-theme="light"] .watermarked-container::after {
-    color: rgba(0, 0, 0, 0.2); /* Much more visible dark watermark for light theme */
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    color: rgba(0, 0, 0, 0.15);
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Access Denied Screen */
