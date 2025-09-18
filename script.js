@@ -2409,8 +2409,8 @@ class CourseManager {
     }
 
     contactAdmin() {
-        // In real app, this would open Telegram chat with admin
-        window.open('https://t.me/tutor_tiial_bot', '_blank');
+        // Open Telegram chat with admin for access issues
+        window.open('https://t.me/Gestapo32', '_blank');
     }
 
     setupHashRouting() {

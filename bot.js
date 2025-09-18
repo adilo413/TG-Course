@@ -14,13 +14,13 @@ bot.onText(/\/start/, (msg) => {
 
 This bot helps you access educational courses. 
 
-📚 To view courses:
-• Use the course links shared in our channel
-• Make sure you're a member of our channel
+🔐 **Access Information:**
+• If you are an admin, please open the mini app to manage courses
+• If you are a student, please contact the admin for access
 
-🔗 Channel: ${process.env.CHANNEL_INVITE_LINK}
+📞 **Contact Admin:** @Gestapo32
 
-Need help? Contact the admin.
+⚠️ **Note:** Channel access is restricted to paid members only.
     `;
     
     bot.sendMessage(chatId, welcomeMessage);
@@ -39,8 +39,10 @@ bot.onText(/\/course\/([^\/\?]+)\?token=([^&\s]+)/, async (msg, match) => {
         
         if (member.status === 'left' || member.status === 'kicked') {
             await bot.sendMessage(chatId, 
-                '❌ You must be a member of our channel to access courses.\n\n' +
-                `Join here: ${process.env.CHANNEL_INVITE_LINK}`
+                '❌ Access Denied!\n\n' +
+                'You must be a member of our private channels to access courses.\n\n' +
+                '📞 **Contact Admin:** @Gestapo32\n' +
+                '⚠️ Channel access is restricted to paid members only.'
             );
             return;
         }
@@ -74,8 +76,9 @@ bot.on('message', (msg) => {
     // Send help message for other messages
     bot.sendMessage(chatId, 
         'Hi! 👋\n\n' +
-        'Use /start to see available commands.\n' +
-        'Use course links from our channel to access content.'
+        'Use /start to see available commands.\n\n' +
+        '📞 **Need access?** Contact admin: @Gestapo32\n' +
+        '⚠️ Channel access is restricted to paid members only.'
     );
 });
 
