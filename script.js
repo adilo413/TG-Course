@@ -728,6 +728,24 @@ class CourseManager {
         existingWatermarks.forEach(watermark => watermark.remove());
     }
 
+    embedWatermarksInContent(content) {
+        // Create watermark HTML for all 100 watermarks
+        let watermarkHTML = '';
+        
+        // Add all 100 watermarks (3-100, since 1-2 are pseudo-elements)
+        for (let i = 3; i <= 100; i++) {
+            watermarkHTML += `<div class="additional-watermark watermark-${i}" style="position: absolute; color: rgba(128, 128, 128, 0.3); font-size: 2.2rem; font-weight: 900; text-transform: uppercase; z-index: -1; user-select: none; pointer-events: none; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; letter-spacing: 0.1em; line-height: 0.9; text-align: center; text-shadow: 0 0 8px rgba(128, 128, 128, 0.2); left: 50%; transform: translateX(-50%) rotate(10deg); top: ${i-1}%;">BRIGHT<br>FRESH</div>`;
+        }
+        
+        // Wrap content in watermarked container with all watermarks
+        return `<div class="watermarked-container" style="position: relative; overflow: hidden;">
+            <div class="course-content" style="position: relative; z-index: 1;">
+                ${content}
+            </div>
+            ${watermarkHTML}
+        </div>`;
+    }
+
     async showScreen(screenName) {
         // Hide all screens
         document.querySelectorAll('.screen').forEach(screen => {
@@ -991,11 +1009,18 @@ class CourseManager {
         const title = document.getElementById('courseTitle').value.trim();
         const subject = document.getElementById('courseSubject').value;
         const chapter = document.getElementById('courseChapter').value;
-        const content = document.getElementById('courseContent').innerHTML;
+        let content = document.getElementById('courseContent').innerHTML;
 
         if (!title || !subject || !chapter || !content.trim()) {
             this.showMessage('Please fill in all fields including chapter', 'error');
             return;
+        }
+
+        // Check if watermarks are enabled and embed them in the content
+        const watermarkToggle = document.getElementById('watermarkToggle');
+        if (watermarkToggle && watermarkToggle.classList.contains('active')) {
+            console.log('🏷️ Watermarks enabled - embedding 100 watermarks in content');
+            content = this.embedWatermarksInContent(content);
         }
 
         try {
@@ -2040,7 +2065,14 @@ class CourseManager {
         const date = new Date(this.currentCourse.created_at).toLocaleDateString();
         document.getElementById('studentCourseDate').textContent = date;
         
-        document.getElementById('studentCourseContent').innerHTML = this.currentCourse.content;
+        // Check if content already has embedded watermarks
+        if (this.currentCourse.content.includes('watermarked-container')) {
+            // Content already has embedded watermarks, display as-is
+            document.getElementById('studentCourseContent').innerHTML = this.currentCourse.content;
+        } else {
+            // Content doesn't have watermarks, display normally
+            document.getElementById('studentCourseContent').innerHTML = this.currentCourse.content;
+        }
     }
 
     setupAntiCopyProtection() {

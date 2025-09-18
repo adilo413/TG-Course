@@ -2488,6 +2488,18 @@ body {
     text-shadow: 0 0 8px rgba(128, 128, 128, 0.2);
 }
 
+/* Embedded watermarks in course content - ensure gray color */
+.additional-watermark {
+    color: rgba(128, 128, 128, 0.3) !important;
+    text-shadow: 0 0 8px rgba(128, 128, 128, 0.2) !important;
+}
+
+/* Light theme embedded watermarks */
+[data-theme="light"] .additional-watermark {
+    color: rgba(128, 128, 128, 0.3) !important;
+    text-shadow: 0 0 8px rgba(128, 128, 128, 0.2) !important;
+}
+
 [data-theme="light"] .watermarked-container::after {
     color: rgba(128, 128, 128, 0.3);
     text-shadow: 0 0 8px rgba(128, 128, 128, 0.2);
