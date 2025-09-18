@@ -26,20 +26,20 @@ serve(async (req) => {
 
     // Channel configurations
     const channelConfigs = {
-      'brightfresh': {
-        id: '-1003004502647',
-        name: 'BrightFresh'
-      },
-      'brighttrial': {
+      'brightclassb': {
         id: '-1003037484094',
-        name: 'Bright fo trial'
+        name: 'Bright Class-B'
+      },
+      'brightclassa': {
+        id: '-1003019067966',
+        name: 'Bright Class-A'
       }
     }
 
     const channel = channelConfigs[channelType]
     if (!channel) {
       return new Response(
-        JSON.stringify({ error: 'Invalid channel type. Use "brightfresh" or "brighttrial"' }),
+        JSON.stringify({ error: 'Invalid channel type. Use "brightclassa" or "brightclassb"' }),
         { 
           status: 400, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 

@@ -1285,11 +1285,11 @@ class CourseManager {
                      <div style="margin: 15px 0;">
                          <h4 style="color: #e74c3c; margin-bottom: 10px;">🚀 Post to Channels</h4>
                          <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                             <button class="btn-upload btn-post-1" onclick="window.courseManager.postToChannel('${courseId}', 'brightfresh')">
-                                 <i class="fas fa-paper-plane"></i> Post to BrightFresh
+                             <button class="btn-upload btn-post-1" onclick="window.courseManager.postToChannel('${courseId}', 'brightclassb')">
+                                 <i class="fas fa-paper-plane"></i> Post to Bright Class-B
                              </button>
-                             <button class="btn-upload btn-post-2" onclick="window.courseManager.postToChannel('${courseId}', 'brighttrial')">
-                                 <i class="fas fa-paper-plane"></i> Post to Bright Trial
+                             <button class="btn-upload btn-post-2" onclick="window.courseManager.postToChannel('${courseId}', 'brightclassa')">
+                                 <i class="fas fa-paper-plane"></i> Post to Bright Class-A
                              </button>
                          </div>
                          <p style="font-size: 12px; color: #666; margin-top: 5px;">
@@ -1713,7 +1713,7 @@ class CourseManager {
             console.log('📋 Course data:', course);
             console.log('📋 Course channel_type:', course.channel_type);
             
-            let channelType = 'brightfresh'; // Default to BrightFresh
+            let channelType = 'brightclassb'; // Default to Bright Class-B
             
             // If course has channel_type info, use that
             if (course.channel_type) {
@@ -1741,7 +1741,7 @@ class CourseManager {
             
             // If not a member of the specific channel, check the other channel as fallback
             if (!membershipResult.success || !membershipResult.isMember) {
-                const fallbackChannel = channelType === 'brightfresh' ? 'brighttrial' : 'brightfresh';
+                const fallbackChannel = channelType === 'brightclassb' ? 'brightclassa' : 'brightclassb';
                 console.log(`❌ Not a member of ${channelType}, checking ${fallbackChannel}...`);
                 
                 membershipResult = await this.api.checkChannelMembership(
@@ -2329,11 +2329,11 @@ class CourseManager {
 
             // Channel configurations
             const channelConfigs = {
-                'brightfresh': {
-                    name: 'BrightFresh'
+                'brightclassb': {
+                    name: 'Bright Class-B'
                 },
-                'brighttrial': {
-                    name: 'Bright fo trial'
+                'brightclassa': {
+                    name: 'Bright Class-A'
                 }
             };
 
