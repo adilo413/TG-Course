@@ -2187,6 +2187,16 @@ body {
     box-sizing: border-box;
 }
 
+/* Preserve inline color styles from rich text editor */
+.course-content [style*="color"] {
+    color: inherit !important;
+}
+
+/* Allow inline background color styles from rich text editor */
+.course-content [style*="background-color"] {
+    background-color: inherit !important;
+}
+
 /* Light theme course content */
 [data-theme="light"] .course-content {
     /* Removed background to allow watermark to show through */
@@ -2201,12 +2211,26 @@ body {
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.9);
 }
 
+/* Preserve inline color styles for headings */
+.course-content h1[style*="color"], 
+.course-content h2[style*="color"], 
+.course-content h3[style*="color"] {
+    color: inherit !important;
+}
+
 /* Light theme course content headings */
 [data-theme="light"] .course-content h1,
 [data-theme="light"] .course-content h2,
 [data-theme="light"] .course-content h3 {
     color: #1a1a1a;
     text-shadow: none;
+}
+
+/* Preserve inline color styles for headings in light theme */
+[data-theme="light"] .course-content h1[style*="color"], 
+[data-theme="light"] .course-content h2[style*="color"], 
+[data-theme="light"] .course-content h3[style*="color"] {
+    color: inherit !important;
 }
 
 .course-content h1 {

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Color Preservation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .course-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: #333;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        
+        /* Preserve inline color styles from rich text editor */
+        .course-content [style*="color"] {
+            color: inherit !important;
+        }
+
+        /* Allow inline background color styles from rich text editor */
+        .course-content [style*="background-color"] {
+            background-color: inherit !important;
+        }
+        
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Color Preservation in Course Content</h1>
+    
+    <div class="test-section">
+        <h2>📝 Test Content with Inline Styles</h2>
+        <p>This section tests if inline color styles are preserved when displayed in the course content area.</p>
+        
+        <div class="course-content">
+            <h3>Normal Heading (should be default color)</h3>
+            <p>This is normal text with default color.</p>
+            
+            <h3 style="color: #ff0000;">Red Heading (should be red)</h3>
+            <p style="color: #ff0000;">This text should be red.</p>
+            
+            <h3 style="color: #0000ff;">Blue Heading (should be blue)</h3>
+            <p style="color: #0000ff;">This text should be blue.</p>
+            
+            <h3 style="color: #00ff00;">Green Heading (should be green)</h3>
+            <p style="color: #00ff00;">This text should be green.</p>
+            
+            <h3 style="color: #ffffff; background-color: #000000;">White on Black Heading (should be white on black)</h3>
+            <p style="color: #ffffff; background-color: #000000;">This text should be white on black background.</p>
+            
+            <h3 style="color: #ffff00;">Yellow Heading (should be yellow)</h3>
+            <p style="color: #ffff00;">This text should be yellow.</p>
+        </div>
+        
+        <button class="test-button" onclick="addTestContent()">Add More Test Content</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>🔍 HTML Source</h2>
+        <p>Here's the HTML source of the course content above:</p>
+        <pre id="htmlSource" style="background: #f0f0f0; padding: 15px; border-radius: 5px; overflow-x: auto; font-size: 12px;"></pre>
+    </div>
+
+    <script>
+        function updateHtmlSource() {
+            const courseContent = document.querySelector('.course-content');
+            document.getElementById('htmlSource').textContent = courseContent.innerHTML;
+        }
+        
+        function addTestContent() {
+            const courseContent = document.querySelector('.course-content');
+            const newContent = document.createElement('div');
+            newContent.innerHTML = `
+                <h3 style="color: #ff00ff;">Magenta Heading (should be magenta)</h3>
+                <p style="color: #ff00ff;">This text should be magenta.</p>
+                <p style="color: #00ffff;">This text should be cyan.</p>
+                <p style="color: #ffa500;">This text should be orange.</p>
+            `;
+            courseContent.appendChild(newContent);
+            updateHtmlSource();
+        }
+        
+        // Update HTML source on page load
+        updateHtmlSource();
+    </script>
+</body>
+</html>
