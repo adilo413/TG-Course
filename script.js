@@ -729,20 +729,21 @@ class CourseManager {
     }
 
     embedWatermarksInContent(content) {
-        // Create watermark HTML for all 100 watermarks
-        let watermarkHTML = '';
+        // Create watermark layer HTML for all 100 watermarks using CSS pseudo-elements
+        let watermarkLayersHTML = '';
         
-        // Add all 100 watermarks (3-100, since 1-2 are pseudo-elements)
-        for (let i = 3; i <= 100; i++) {
-            watermarkHTML += `<div class="additional-watermark watermark-${i}" style="position: absolute; color: rgba(128, 128, 128, 0.3) !important; font-size: 2.2rem; font-weight: 900; text-transform: uppercase; z-index: -1; user-select: none; pointer-events: none; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; letter-spacing: 0.1em; line-height: 0.9; text-align: center; text-shadow: 0 0 8px rgba(128, 128, 128, 0.2) !important; left: 50%; transform: translateX(-50%) rotate(10deg); top: ${i-1}%;">BRIGHT<br>FRESH</div>`;
+        // Add 49 watermark layers (each layer has 2 watermarks via ::before and ::after)
+        // This gives us 98 additional watermarks (3-100) plus the 2 from watermarked-container = 100 total
+        for (let i = 1; i <= 49; i++) {
+            watermarkLayersHTML += `<div class="watermark-layer-${i}"></div>`;
         }
         
-        // Wrap content in watermarked container with all watermarks
+        // Wrap content in watermarked container with all watermark layers
         return `<div class="watermarked-container" style="position: relative; overflow: hidden; width: 100%;">
             <div class="course-content" style="position: relative; z-index: 1; width: 100%;">
                 ${content}
             </div>
-            ${watermarkHTML}
+            ${watermarkLayersHTML}
         </div>`;
     }
 
@@ -1221,7 +1222,8 @@ class CourseManager {
                         left: 50%;
                     }
                     
-                    .watermark-3 { top: 2%; }
+                    .watermark-layer-1::before { content: 'BRIGHT\A FRESH'; top: 2%; }
+                    .watermark-layer-1::after { content: 'BRIGHT\A FRESH'; top: 3%; }
                     .watermark-4 { top: 3%; }
                     .watermark-5 { top: 4%; }
                     .watermark-6 { top: 5%; }
@@ -1325,104 +1327,55 @@ class CourseManager {
                 <h1>${title}</h1>
                 <div class="watermarked-container">
                     ${content}
-                    <div class="additional-watermark watermark-3">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-4">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-5">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-6">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-7">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-8">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-9">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-10">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-11">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-12">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-13">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-14">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-15">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-16">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-17">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-18">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-19">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-20">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-21">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-22">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-23">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-24">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-25">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-26">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-27">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-28">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-29">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-30">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-31">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-32">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-33">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-34">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-35">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-36">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-37">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-38">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-39">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-40">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-41">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-42">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-43">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-44">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-45">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-46">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-47">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-48">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-49">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-50">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-51">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-52">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-53">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-54">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-55">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-56">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-57">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-58">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-59">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-60">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-61">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-62">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-63">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-64">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-65">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-66">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-67">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-68">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-69">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-70">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-71">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-72">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-73">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-74">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-75">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-76">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-77">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-78">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-79">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-80">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-81">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-82">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-83">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-84">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-85">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-86">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-87">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-88">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-89">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-90">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-91">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-92">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-93">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-94">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-95">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-96">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-97">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-98">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-99">BRIGHT<br>FRESH</div>
-                    <div class="additional-watermark watermark-100">BRIGHT<br>FRESH</div>
+                    <div class="watermark-layer-1"></div>
+                    <div class="watermark-layer-2"></div>
+                    <div class="watermark-layer-3"></div>
+                    <div class="watermark-layer-4"></div>
+                    <div class="watermark-layer-5"></div>
+                    <div class="watermark-layer-6"></div>
+                    <div class="watermark-layer-7"></div>
+                    <div class="watermark-layer-8"></div>
+                    <div class="watermark-layer-9"></div>
+                    <div class="watermark-layer-10"></div>
+                    <div class="watermark-layer-11"></div>
+                    <div class="watermark-layer-12"></div>
+                    <div class="watermark-layer-13"></div>
+                    <div class="watermark-layer-14"></div>
+                    <div class="watermark-layer-15"></div>
+                    <div class="watermark-layer-16"></div>
+                    <div class="watermark-layer-17"></div>
+                    <div class="watermark-layer-18"></div>
+                    <div class="watermark-layer-19"></div>
+                    <div class="watermark-layer-20"></div>
+                    <div class="watermark-layer-21"></div>
+                    <div class="watermark-layer-22"></div>
+                    <div class="watermark-layer-23"></div>
+                    <div class="watermark-layer-24"></div>
+                    <div class="watermark-layer-25"></div>
+                    <div class="watermark-layer-26"></div>
+                    <div class="watermark-layer-27"></div>
+                    <div class="watermark-layer-28"></div>
+                    <div class="watermark-layer-29"></div>
+                    <div class="watermark-layer-30"></div>
+                    <div class="watermark-layer-31"></div>
+                    <div class="watermark-layer-32"></div>
+                    <div class="watermark-layer-33"></div>
+                    <div class="watermark-layer-34"></div>
+                    <div class="watermark-layer-35"></div>
+                    <div class="watermark-layer-36"></div>
+                    <div class="watermark-layer-37"></div>
+                    <div class="watermark-layer-38"></div>
+                    <div class="watermark-layer-39"></div>
+                    <div class="watermark-layer-40"></div>
+                    <div class="watermark-layer-41"></div>
+                    <div class="watermark-layer-42"></div>
+                    <div class="watermark-layer-43"></div>
+                    <div class="watermark-layer-44"></div>
+                    <div class="watermark-layer-45"></div>
+                    <div class="watermark-layer-46"></div>
+                    <div class="watermark-layer-47"></div>
+                    <div class="watermark-layer-48"></div>
+                    <div class="watermark-layer-49"></div>
                 </div>
             </body>
             </html>
