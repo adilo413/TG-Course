@@ -712,17 +712,15 @@ class CourseManager {
         // Remove any existing additional watermarks first
         this.removeAdditionalWatermarks(container);
         
-        // Create watermark 3 - Top Right
-        const watermark3 = document.createElement('div');
-        watermark3.className = 'additional-watermark watermark-3';
-        watermark3.innerHTML = 'BRIGHT<br>FRESH';
-        container.appendChild(watermark3);
+        // Create 98 additional watermarks (3-100) distributed throughout the content
+        for (let i = 3; i <= 100; i++) {
+            const watermark = document.createElement('div');
+            watermark.className = `additional-watermark watermark-${i}`;
+            watermark.innerHTML = 'BRIGHT<br>FRESH';
+            container.appendChild(watermark);
+        }
         
-        // Create watermark 4 - Bottom Left
-        const watermark4 = document.createElement('div');
-        watermark4.className = 'additional-watermark watermark-4';
-        watermark4.innerHTML = 'BRIGHT<br>FRESH';
-        container.appendChild(watermark4);
+        console.log(`🔍 Added ${98} additional watermarks (total: 100 watermarks)`);
     }
 
     removeAdditionalWatermarks(container) {
@@ -1102,13 +1100,13 @@ class CourseManager {
                     .watermarked-container::before {
                         content: 'BRIGHT\A FRESH';
                         position: absolute;
-                        top: 10%;
+                        top: 0%;
                         left: 50%;
-                        color: rgba(0, 0, 0, 0.15);
+                        color: rgba(128, 128, 128, 0.3);
                         font-size: 2.2rem;
                         font-weight: 900;
                         text-transform: uppercase;
-                        transform: translateX(-50%) rotate(-15deg);
+                        transform: translateX(-50%) rotate(10deg);
                         z-index: -1;
                         user-select: none;
                         pointer-events: none;
@@ -1117,19 +1115,19 @@ class CourseManager {
                         white-space: pre-line;
                         line-height: 0.9;
                         text-align: center;
-                        text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+                        text-shadow: 0 0 8px rgba(128, 128, 128, 0.2);
                     }
                     
                     .watermarked-container::after {
                         content: 'BRIGHT\A FRESH';
                         position: absolute;
-                        top: 25%;
+                        top: 1%;
                         left: 50%;
-                        color: rgba(0, 0, 0, 0.15);
+                        color: rgba(128, 128, 128, 0.3);
                         font-size: 2.2rem;
                         font-weight: 900;
                         text-transform: uppercase;
-                        transform: translateX(-50%) rotate(-15deg);
+                        transform: translateX(-50%) rotate(10deg);
                         z-index: -1;
                         user-select: none;
                         pointer-events: none;
@@ -1138,18 +1136,18 @@ class CourseManager {
                         white-space: pre-line;
                         line-height: 0.9;
                         text-align: center;
-                        text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+                        text-shadow: 0 0 8px rgba(128, 128, 128, 0.2);
                     }
                     
                     .watermark-3 {
                         position: absolute;
                         top: 50%;
                         left: 50%;
-                        color: rgba(0, 0, 0, 0.15);
+                        color: rgba(128, 128, 128, 0.3);
                         font-size: 2.2rem;
                         font-weight: 900;
                         text-transform: uppercase;
-                        transform: translateX(-50%) rotate(-15deg);
+                        transform: translateX(-50%) rotate(10deg);
                         z-index: -1;
                         user-select: none;
                         pointer-events: none;
@@ -1157,18 +1155,18 @@ class CourseManager {
                         letter-spacing: 0.1em;
                         line-height: 0.9;
                         text-align: center;
-                        text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+                        text-shadow: 0 0 8px rgba(128, 128, 128, 0.2);
                     }
                     
                     .watermark-4 {
                         position: absolute;
                         bottom: 10%;
                         left: 50%;
-                        color: rgba(0, 0, 0, 0.15);
+                        color: rgba(128, 128, 128, 0.3);
                         font-size: 2.2rem;
                         font-weight: 900;
                         text-transform: uppercase;
-                        transform: translateX(-50%) rotate(-15deg);
+                        transform: translateX(-50%) rotate(10deg);
                         z-index: -1;
                         user-select: none;
                         pointer-events: none;
@@ -1176,16 +1174,230 @@ class CourseManager {
                         letter-spacing: 0.1em;
                         line-height: 0.9;
                         text-align: center;
-                        text-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+                        text-shadow: 0 0 8px rgba(128, 128, 128, 0.2);
                     }
+                    
+                    .additional-watermark {
+                        position: absolute;
+                        color: rgba(128, 128, 128, 0.3);
+                        font-size: 2.2rem;
+                        font-weight: 900;
+                        text-transform: uppercase;
+                        transform: translateX(-50%) rotate(10deg);
+                        z-index: -1;
+                        user-select: none;
+                        pointer-events: none;
+                        font-family: Arial, sans-serif;
+                        letter-spacing: 0.1em;
+                        white-space: pre-line;
+                        line-height: 0.9;
+                        text-align: center;
+                        text-shadow: 0 0 8px rgba(128, 128, 128, 0.2);
+                        left: 50%;
+                    }
+                    
+                    .watermark-3 { top: 2%; }
+                    .watermark-4 { top: 3%; }
+                    .watermark-5 { top: 4%; }
+                    .watermark-6 { top: 5%; }
+                    .watermark-7 { top: 6%; }
+                    .watermark-8 { top: 7%; }
+                    .watermark-9 { top: 8%; }
+                    .watermark-10 { top: 9%; }
+                    .watermark-11 { top: 10%; }
+                    .watermark-12 { top: 11%; }
+                    .watermark-13 { top: 12%; }
+                    .watermark-14 { top: 13%; }
+                    .watermark-15 { top: 14%; }
+                    .watermark-16 { top: 15%; }
+                    .watermark-17 { top: 16%; }
+                    .watermark-18 { top: 17%; }
+                    .watermark-19 { top: 18%; }
+                    .watermark-20 { top: 19%; }
+                    .watermark-21 { top: 20%; }
+                    .watermark-22 { top: 21%; }
+                    .watermark-23 { top: 22%; }
+                    .watermark-24 { top: 23%; }
+                    .watermark-25 { top: 24%; }
+                    .watermark-26 { top: 25%; }
+                    .watermark-27 { top: 26%; }
+                    .watermark-28 { top: 27%; }
+                    .watermark-29 { top: 28%; }
+                    .watermark-30 { top: 29%; }
+                    .watermark-31 { top: 30%; }
+                    .watermark-32 { top: 31%; }
+                    .watermark-33 { top: 32%; }
+                    .watermark-34 { top: 33%; }
+                    .watermark-35 { top: 34%; }
+                    .watermark-36 { top: 35%; }
+                    .watermark-37 { top: 36%; }
+                    .watermark-38 { top: 37%; }
+                    .watermark-39 { top: 38%; }
+                    .watermark-40 { top: 39%; }
+                    .watermark-41 { top: 40%; }
+                    .watermark-42 { top: 41%; }
+                    .watermark-43 { top: 42%; }
+                    .watermark-44 { top: 43%; }
+                    .watermark-45 { top: 44%; }
+                    .watermark-46 { top: 45%; }
+                    .watermark-47 { top: 46%; }
+                    .watermark-48 { top: 47%; }
+                    .watermark-49 { top: 48%; }
+                    .watermark-50 { top: 49%; }
+                    .watermark-51 { top: 50%; }
+                    .watermark-52 { top: 51%; }
+                    .watermark-53 { top: 52%; }
+                    .watermark-54 { top: 53%; }
+                    .watermark-55 { top: 54%; }
+                    .watermark-56 { top: 55%; }
+                    .watermark-57 { top: 56%; }
+                    .watermark-58 { top: 57%; }
+                    .watermark-59 { top: 58%; }
+                    .watermark-60 { top: 59%; }
+                    .watermark-61 { top: 60%; }
+                    .watermark-62 { top: 61%; }
+                    .watermark-63 { top: 62%; }
+                    .watermark-64 { top: 63%; }
+                    .watermark-65 { top: 64%; }
+                    .watermark-66 { top: 65%; }
+                    .watermark-67 { top: 66%; }
+                    .watermark-68 { top: 67%; }
+                    .watermark-69 { top: 68%; }
+                    .watermark-70 { top: 69%; }
+                    .watermark-71 { top: 70%; }
+                    .watermark-72 { top: 71%; }
+                    .watermark-73 { top: 72%; }
+                    .watermark-74 { top: 73%; }
+                    .watermark-75 { top: 74%; }
+                    .watermark-76 { top: 75%; }
+                    .watermark-77 { top: 76%; }
+                    .watermark-78 { top: 77%; }
+                    .watermark-79 { top: 78%; }
+                    .watermark-80 { top: 79%; }
+                    .watermark-81 { top: 80%; }
+                    .watermark-82 { top: 81%; }
+                    .watermark-83 { top: 82%; }
+                    .watermark-84 { top: 83%; }
+                    .watermark-85 { top: 84%; }
+                    .watermark-86 { top: 85%; }
+                    .watermark-87 { top: 86%; }
+                    .watermark-88 { top: 87%; }
+                    .watermark-89 { top: 88%; }
+                    .watermark-90 { top: 89%; }
+                    .watermark-91 { top: 90%; }
+                    .watermark-92 { top: 91%; }
+                    .watermark-93 { top: 92%; }
+                    .watermark-94 { top: 93%; }
+                    .watermark-95 { top: 94%; }
+                    .watermark-96 { top: 95%; }
+                    .watermark-97 { top: 96%; }
+                    .watermark-98 { top: 97%; }
+                    .watermark-99 { top: 98%; }
+                    .watermark-100 { top: 99%; }
                 </style>
             </head>
             <body>
                 <h1>${title}</h1>
                 <div class="watermarked-container">
                     ${content}
-                    <div class="watermark-3">BRIGHT<br>FRESH</div>
-                    <div class="watermark-4">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-3">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-4">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-5">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-6">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-7">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-8">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-9">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-10">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-11">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-12">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-13">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-14">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-15">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-16">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-17">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-18">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-19">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-20">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-21">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-22">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-23">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-24">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-25">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-26">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-27">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-28">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-29">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-30">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-31">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-32">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-33">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-34">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-35">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-36">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-37">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-38">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-39">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-40">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-41">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-42">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-43">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-44">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-45">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-46">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-47">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-48">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-49">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-50">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-51">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-52">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-53">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-54">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-55">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-56">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-57">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-58">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-59">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-60">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-61">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-62">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-63">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-64">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-65">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-66">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-67">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-68">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-69">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-70">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-71">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-72">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-73">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-74">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-75">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-76">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-77">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-78">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-79">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-80">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-81">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-82">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-83">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-84">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-85">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-86">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-87">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-88">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-89">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-90">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-91">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-92">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-93">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-94">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-95">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-96">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-97">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-98">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-99">BRIGHT<br>FRESH</div>
+                    <div class="additional-watermark watermark-100">BRIGHT<br>FRESH</div>
                 </div>
             </body>
             </html>

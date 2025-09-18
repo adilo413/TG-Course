@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Enhanced Watermark System - 33 Watermarks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .watermarked-container {
+            position: relative;
+            overflow: hidden;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 20px 0;
+            min-height: 3000px; /* Simulate very long content */
+        }
+        
+        /* Multiple watermarks using ::before and ::after */
+        .watermarked-container::before {
+            content: 'BRIGHT\A FRESH'; /* First watermark - Top */
+            
+            /* Positioning - Top area */
+            position: absolute;
+            top: 2%;
+            left: 50%;
+            transform: translateX(-50%) rotate(10deg);
+            
+            /* Text and styling properties */
+            color: rgba(128, 128, 128, 0.3);
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            
+            /* Ensure behind content */
+            z-index: -1;
+            user-select: none;
+            pointer-events: none;
+            
+            /* Styling */
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            letter-spacing: 0.1em;
+            white-space: pre-line; /* Use pre-line for proper line breaks */
+            line-height: 0.9;
+            text-align: center;
+            text-shadow: 0 0 8px rgba(128, 128, 128, 0.2);
+        }
+
+        .watermarked-container::after {
+            content: 'BRIGHT\A FRESH'; /* Second watermark - Below Top */
+            
+            /* Positioning - Below top area */
+            position: absolute;
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%) rotate(10deg);
+            
+            /* Text and styling properties */
+            color: rgba(128, 128, 128, 0.3);
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            
+            /* Ensure behind content */
+            z-index: -1;
+            user-select: none;
+            pointer-events: none;
+            
+            /* Styling */
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            letter-spacing: 0.1em;
+            white-space: pre-line; /* Use pre-line for proper line breaks */
+            line-height: 0.9;
+            text-align: center;
+            text-shadow: 0 0 8px rgba(128, 128, 128, 0.2);
+        }
+
+        /* Additional watermarks - Base class for all dynamic watermarks */
+        .additional-watermark {
+            position: absolute;
+            color: rgba(128, 128, 128, 0.3);
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            z-index: -1;
+            user-select: none;
+            pointer-events: none;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            letter-spacing: 0.1em;
+            line-height: 0.9;
+            text-align: center;
+            text-shadow: 0 0 8px rgba(128, 128, 128, 0.2);
+            left: 50%;
+            transform: translateX(-50%) rotate(10deg);
+        }
+
+        /* Watermark positioning classes - distributed throughout content with closer spacing */
+        .watermark-1 { top: 2%; }
+        .watermark-2 { top: 5%; }
+        .watermark-3 { top: 8%; }
+        .watermark-4 { top: 11%; }
+        .watermark-5 { top: 14%; }
+        .watermark-6 { top: 17%; }
+        .watermark-7 { top: 20%; }
+        .watermark-8 { top: 23%; }
+        .watermark-9 { top: 26%; }
+        .watermark-10 { top: 29%; }
+        .watermark-11 { top: 32%; }
+        .watermark-12 { top: 35%; }
+        .watermark-13 { top: 38%; }
+        .watermark-14 { top: 41%; }
+        .watermark-15 { top: 44%; }
+        .watermark-16 { top: 47%; }
+        .watermark-17 { top: 50%; }
+        .watermark-18 { top: 53%; }
+        .watermark-19 { top: 56%; }
+        .watermark-20 { top: 59%; }
+        .watermark-21 { top: 62%; }
+        .watermark-22 { top: 65%; }
+        .watermark-23 { top: 68%; }
+        .watermark-24 { top: 71%; }
+        .watermark-25 { top: 74%; }
+        .watermark-26 { top: 77%; }
+        .watermark-27 { top: 80%; }
+        .watermark-28 { top: 83%; }
+        .watermark-29 { top: 86%; }
+        .watermark-30 { top: 89%; }
+        .watermark-31 { top: 92%; }
+        .watermark-32 { top: 95%; }
+        .watermark-33 { top: 98%; }
+        
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🏷️ Enhanced Watermark System - 33 Watermarks</h1>
+    
+    <div class="test-section">
+        <h2>✅ Improvements Made</h2>
+        <div class="success">
+            <strong>✅ Fixed Color Issue:</strong> All watermarks now use consistent gray color (rgba(128, 128, 128, 0.3))<br>
+            <strong>✅ Increased Count:</strong> Now 33 watermarks total (was 20)<br>
+            <strong>✅ Closer Spacing:</strong> 3% intervals instead of 5% for better coverage<br>
+            <strong>✅ No Content Overlap:</strong> Gray color ensures watermarks don't cover course content
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📋 New Watermark Configuration</h2>
+        <div class="info">
+            <strong>Total Watermarks:</strong> 33 watermarks<br>
+            <strong>Color:</strong> Consistent gray (rgba(128, 128, 128, 0.3))<br>
+            <strong>Angle:</strong> 10 degrees<br>
+            <strong>Spacing:</strong> 3% intervals (closer together)<br>
+            <strong>Distribution:</strong> 2% to 98% vertically<br>
+            <strong>Alignment:</strong> All horizontally centered<br>
+            <strong>Text:</strong> "BRIGHT FRESH" with line break
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📄 Long Content with 33 Watermarks</h2>
+        <p>This simulates your client's very long course content with 33 watermarks distributed throughout:</p>
+        
+        <div class="watermarked-container">
+            <h3>Sample Course Content</h3>
+            <p>This is a simulation of very long course content that would be typical for mobile devices. The content extends vertically to demonstrate how the 33 watermarks are distributed throughout the entire length with closer spacing.</p>
+            
+            <h4>Chapter 1: Introduction</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            
+            <h4>Chapter 2: Main Concepts</h4>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            
+            <h4>Chapter 3: Advanced Topics</h4>
+            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            
+            <h4>Chapter 4: Practical Applications</h4>
+            <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.</p>
+            
+            <h4>Chapter 5: Case Studies</h4>
+            <p>Consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>
+            
+            <h4>Chapter 6: Conclusion</h4>
+            <p>Nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</p>
+            
+            <p>This content continues to demonstrate the vertical distribution of watermarks throughout the entire length of the content, ensuring comprehensive coverage for mobile devices with long content. The gray color ensures the watermarks are visible but don't interfere with reading the course content.</p>
+            
+            <!-- Additional watermarks (3-33) -->
+            <div class="additional-watermark watermark-3">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-4">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-5">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-6">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-7">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-8">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-9">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-10">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-11">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-12">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-13">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-14">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-15">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-16">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-17">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-18">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-19">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-20">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-21">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-22">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-23">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-24">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-25">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-26">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-27">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-28">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-29">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-30">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-31">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-32">BRIGHT<br>FRESH</div>
+            <div class="additional-watermark watermark-33">BRIGHT<br>FRESH</div>
+        </div>
+        
+        <button class="test-button" onclick="toggleWatermarks()">Toggle Watermarks</button>
+        <button class="test-button" onclick="scrollToTop()">Scroll to Top</button>
+        <button class="test-button" onclick="scrollToBottom()">Scroll to Bottom</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 Watermark Distribution (33 Total)</h2>
+        <div class="info">
+            <strong>Watermark Positions (3% intervals):</strong><br>
+            • Watermark 1: 2% (::before pseudo-element)<br>
+            • Watermark 2: 5% (::after pseudo-element)<br>
+            • Watermark 3: 8% • Watermark 4: 11% • Watermark 5: 14%<br>
+            • Watermark 6: 17% • Watermark 7: 20% • Watermark 8: 23%<br>
+            • Watermark 9: 26% • Watermark 10: 29% • Watermark 11: 32%<br>
+            • Watermark 12: 35% • Watermark 13: 38% • Watermark 14: 41%<br>
+            • Watermark 15: 44% • Watermark 16: 47% • Watermark 17: 50%<br>
+            • Watermark 18: 53% • Watermark 19: 56% • Watermark 20: 59%<br>
+            • Watermark 21: 62% • Watermark 22: 65% • Watermark 23: 68%<br>
+            • Watermark 24: 71% • Watermark 25: 74% • Watermark 26: 77%<br>
+            • Watermark 27: 80% • Watermark 28: 83% • Watermark 29: 86%<br>
+            • Watermark 30: 89% • Watermark 31: 92% • Watermark 32: 95%<br>
+            • Watermark 33: 98%
+        </div>
+    </div>
+
+    <script>
+        function toggleWatermarks() {
+            const container = document.querySelector('.watermarked-container');
+            const additionalWatermarks = container.querySelectorAll('.additional-watermark');
+            
+            additionalWatermarks.forEach(watermark => {
+                watermark.style.display = watermark.style.display === 'none' ? 'block' : 'none';
+            });
+            
+            console.log('Watermarks toggled');
+        }
+        
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function scrollToBottom() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        // Log watermark count on page load
+        window.addEventListener('load', () => {
+            const container = document.querySelector('.watermarked-container');
+            const additionalWatermarks = container.querySelectorAll('.additional-watermark');
+            console.log(`✅ Enhanced watermark system loaded with ${additionalWatermarks.length + 2} total watermarks (2 pseudo-elements + ${additionalWatermarks.length} additional)`);
+            console.log('🎨 All watermarks use consistent gray color: rgba(128, 128, 128, 0.3)');
+            console.log('📏 Watermarks spaced 3% apart for closer coverage');
+        });
+    </script>
+</body>
+</html>
