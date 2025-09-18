@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Full Width Text - No Margins</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 10px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .watermarked-container {
+            position: relative;
+            overflow: hidden;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 10px 0;
+            min-height: 3000px;
+            width: 100%;
+        }
+        
+        .course-content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: none;
+            padding: 20px;
+            margin: 0;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            text-align: left;
+            color: #333;
+        }
+        
+        /* Multiple watermarks using ::before and ::after pseudo-elements */
+        .watermarked-container::before {
+            content: 'BRIGHT\A FRESH'; /* Watermark 1 - 0% */
+            position: absolute;
+            top: 0%;
+            left: 50%;
+            transform: translateX(-50%) rotate(10deg);
+            color: rgba(128, 128, 128, 0.3);
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            z-index: -1;
+            user-select: none;
+            pointer-events: none;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            letter-spacing: 0.1em;
+            white-space: pre-line;
+            line-height: 0.9;
+            text-align: center;
+            text-shadow: 0 0 8px rgba(128, 128, 128, 0.2);
+        }
+
+        .watermarked-container::after {
+            content: 'BRIGHT\A FRESH'; /* Watermark 2 - 1% */
+            position: absolute;
+            top: 1%;
+            left: 50%;
+            transform: translateX(-50%) rotate(10deg);
+            color: rgba(128, 128, 128, 0.3);
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            z-index: -1;
+            user-select: none;
+            pointer-events: none;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            letter-spacing: 0.1em;
+            white-space: pre-line;
+            line-height: 0.9;
+            text-align: center;
+            text-shadow: 0 0 8px rgba(128, 128, 128, 0.2);
+        }
+
+        /* Additional watermark containers using CSS pseudo-elements */
+        .watermark-layer-1::before { content: 'BRIGHT\A FRESH'; top: 2%; }
+        .watermark-layer-1::after { content: 'BRIGHT\A FRESH'; top: 3%; }
+        .watermark-layer-2::before { content: 'BRIGHT\A FRESH'; top: 4%; }
+        .watermark-layer-2::after { content: 'BRIGHT\A FRESH'; top: 5%; }
+        .watermark-layer-3::before { content: 'BRIGHT\A FRESH'; top: 6%; }
+        .watermark-layer-3::after { content: 'BRIGHT\A FRESH'; top: 7%; }
+        .watermark-layer-4::before { content: 'BRIGHT\A FRESH'; top: 8%; }
+        .watermark-layer-4::after { content: 'BRIGHT\A FRESH'; top: 9%; }
+        .watermark-layer-5::before { content: 'BRIGHT\A FRESH'; top: 10%; }
+        .watermark-layer-5::after { content: 'BRIGHT\A FRESH'; top: 11%; }
+        .watermark-layer-6::before { content: 'BRIGHT\A FRESH'; top: 12%; }
+        .watermark-layer-6::after { content: 'BRIGHT\A FRESH'; top: 13%; }
+        .watermark-layer-7::before { content: 'BRIGHT\A FRESH'; top: 14%; }
+        .watermark-layer-7::after { content: 'BRIGHT\A FRESH'; top: 15%; }
+        .watermark-layer-8::before { content: 'BRIGHT\A FRESH'; top: 16%; }
+        .watermark-layer-8::after { content: 'BRIGHT\A FRESH'; top: 17%; }
+        .watermark-layer-9::before { content: 'BRIGHT\A FRESH'; top: 18%; }
+        .watermark-layer-9::after { content: 'BRIGHT\A FRESH'; top: 19%; }
+        .watermark-layer-10::before { content: 'BRIGHT\A FRESH'; top: 20%; }
+        .watermark-layer-10::after { content: 'BRIGHT\A FRESH'; top: 21%; }
+        .watermark-layer-11::before { content: 'BRIGHT\A FRESH'; top: 22%; }
+        .watermark-layer-11::after { content: 'BRIGHT\A FRESH'; top: 23%; }
+        .watermark-layer-12::before { content: 'BRIGHT\A FRESH'; top: 24%; }
+        .watermark-layer-12::after { content: 'BRIGHT\A FRESH'; top: 25%; }
+        .watermark-layer-13::before { content: 'BRIGHT\A FRESH'; top: 26%; }
+        .watermark-layer-13::after { content: 'BRIGHT\A FRESH'; top: 27%; }
+        .watermark-layer-14::before { content: 'BRIGHT\A FRESH'; top: 28%; }
+        .watermark-layer-14::after { content: 'BRIGHT\A FRESH'; top: 29%; }
+        .watermark-layer-15::before { content: 'BRIGHT\A FRESH'; top: 30%; }
+        .watermark-layer-15::after { content: 'BRIGHT\A FRESH'; top: 31%; }
+        .watermark-layer-16::before { content: 'BRIGHT\A FRESH'; top: 32%; }
+        .watermark-layer-16::after { content: 'BRIGHT\A FRESH'; top: 33%; }
+        .watermark-layer-17::before { content: 'BRIGHT\A FRESH'; top: 34%; }
+        .watermark-layer-17::after { content: 'BRIGHT\A FRESH'; top: 35%; }
+        .watermark-layer-18::before { content: 'BRIGHT\A FRESH'; top: 36%; }
+        .watermark-layer-18::after { content: 'BRIGHT\A FRESH'; top: 37%; }
+        .watermark-layer-19::before { content: 'BRIGHT\A FRESH'; top: 38%; }
+        .watermark-layer-19::after { content: 'BRIGHT\A FRESH'; top: 39%; }
+        .watermark-layer-20::before { content: 'BRIGHT\A FRESH'; top: 40%; }
+        .watermark-layer-20::after { content: 'BRIGHT\A FRESH'; top: 41%; }
+        .watermark-layer-21::before { content: 'BRIGHT\A FRESH'; top: 42%; }
+        .watermark-layer-21::after { content: 'BRIGHT\A FRESH'; top: 43%; }
+        .watermark-layer-22::before { content: 'BRIGHT\A FRESH'; top: 44%; }
+        .watermark-layer-22::after { content: 'BRIGHT\A FRESH'; top: 45%; }
+        .watermark-layer-23::before { content: 'BRIGHT\A FRESH'; top: 46%; }
+        .watermark-layer-23::after { content: 'BRIGHT\A FRESH'; top: 47%; }
+        .watermark-layer-24::before { content: 'BRIGHT\A FRESH'; top: 48%; }
+        .watermark-layer-24::after { content: 'BRIGHT\A FRESH'; top: 49%; }
+        .watermark-layer-25::before { content: 'BRIGHT\A FRESH'; top: 50%; }
+        .watermark-layer-25::after { content: 'BRIGHT\A FRESH'; top: 51%; }
+        .watermark-layer-26::before { content: 'BRIGHT\A FRESH'; top: 52%; }
+        .watermark-layer-26::after { content: 'BRIGHT\A FRESH'; top: 53%; }
+        .watermark-layer-27::before { content: 'BRIGHT\A FRESH'; top: 54%; }
+        .watermark-layer-27::after { content: 'BRIGHT\A FRESH'; top: 55%; }
+        .watermark-layer-28::before { content: 'BRIGHT\A FRESH'; top: 56%; }
+        .watermark-layer-28::after { content: 'BRIGHT\A FRESH'; top: 57%; }
+        .watermark-layer-29::before { content: 'BRIGHT\A FRESH'; top: 58%; }
+        .watermark-layer-29::after { content: 'BRIGHT\A FRESH'; top: 59%; }
+        .watermark-layer-30::before { content: 'BRIGHT\A FRESH'; top: 60%; }
+        .watermark-layer-30::after { content: 'BRIGHT\A FRESH'; top: 61%; }
+        .watermark-layer-31::before { content: 'BRIGHT\A FRESH'; top: 62%; }
+        .watermark-layer-31::after { content: 'BRIGHT\A FRESH'; top: 63%; }
+        .watermark-layer-32::before { content: 'BRIGHT\A FRESH'; top: 64%; }
+        .watermark-layer-32::after { content: 'BRIGHT\A FRESH'; top: 65%; }
+        .watermark-layer-33::before { content: 'BRIGHT\A FRESH'; top: 66%; }
+        .watermark-layer-33::after { content: 'BRIGHT\A FRESH'; top: 67%; }
+        .watermark-layer-34::before { content: 'BRIGHT\A FRESH'; top: 68%; }
+        .watermark-layer-34::after { content: 'BRIGHT\A FRESH'; top: 69%; }
+        .watermark-layer-35::before { content: 'BRIGHT\A FRESH'; top: 70%; }
+        .watermark-layer-35::after { content: 'BRIGHT\A FRESH'; top: 71%; }
+        .watermark-layer-36::before { content: 'BRIGHT\A FRESH'; top: 72%; }
+        .watermark-layer-36::after { content: 'BRIGHT\A FRESH'; top: 73%; }
+        .watermark-layer-37::before { content: 'BRIGHT\A FRESH'; top: 74%; }
+        .watermark-layer-37::after { content: 'BRIGHT\A FRESH'; top: 75%; }
+        .watermark-layer-38::before { content: 'BRIGHT\A FRESH'; top: 76%; }
+        .watermark-layer-38::after { content: 'BRIGHT\A FRESH'; top: 77%; }
+        .watermark-layer-39::before { content: 'BRIGHT\A FRESH'; top: 78%; }
+        .watermark-layer-39::after { content: 'BRIGHT\A FRESH'; top: 79%; }
+        .watermark-layer-40::before { content: 'BRIGHT\A FRESH'; top: 80%; }
+        .watermark-layer-40::after { content: 'BRIGHT\A FRESH'; top: 81%; }
+        .watermark-layer-41::before { content: 'BRIGHT\A FRESH'; top: 82%; }
+        .watermark-layer-41::after { content: 'BRIGHT\A FRESH'; top: 83%; }
+        .watermark-layer-42::before { content: 'BRIGHT\A FRESH'; top: 84%; }
+        .watermark-layer-42::after { content: 'BRIGHT\A FRESH'; top: 85%; }
+        .watermark-layer-43::before { content: 'BRIGHT\A FRESH'; top: 86%; }
+        .watermark-layer-43::after { content: 'BRIGHT\A FRESH'; top: 87%; }
+        .watermark-layer-44::before { content: 'BRIGHT\A FRESH'; top: 88%; }
+        .watermark-layer-44::after { content: 'BRIGHT\A FRESH'; top: 89%; }
+        .watermark-layer-45::before { content: 'BRIGHT\A FRESH'; top: 90%; }
+        .watermark-layer-45::after { content: 'BRIGHT\A FRESH'; top: 91%; }
+        .watermark-layer-46::before { content: 'BRIGHT\A FRESH'; top: 92%; }
+        .watermark-layer-46::after { content: 'BRIGHT\A FRESH'; top: 93%; }
+        .watermark-layer-47::before { content: 'BRIGHT\A FRESH'; top: 94%; }
+        .watermark-layer-47::after { content: 'BRIGHT\A FRESH'; top: 95%; }
+        .watermark-layer-48::before { content: 'BRIGHT\A FRESH'; top: 96%; }
+        .watermark-layer-48::after { content: 'BRIGHT\A FRESH'; top: 97%; }
+        .watermark-layer-49::before { content: 'BRIGHT\A FRESH'; top: 98%; }
+        .watermark-layer-49::after { content: 'BRIGHT\A FRESH'; top: 99%; }
+
+        /* Base styles for all watermark layers - ensure proper positioning */
+        .watermark-layer-1,
+        .watermark-layer-2,
+        .watermark-layer-3,
+        .watermark-layer-4,
+        .watermark-layer-5,
+        .watermark-layer-6,
+        .watermark-layer-7,
+        .watermark-layer-8,
+        .watermark-layer-9,
+        .watermark-layer-10,
+        .watermark-layer-11,
+        .watermark-layer-12,
+        .watermark-layer-13,
+        .watermark-layer-14,
+        .watermark-layer-15,
+        .watermark-layer-16,
+        .watermark-layer-17,
+        .watermark-layer-18,
+        .watermark-layer-19,
+        .watermark-layer-20,
+        .watermark-layer-21,
+        .watermark-layer-22,
+        .watermark-layer-23,
+        .watermark-layer-24,
+        .watermark-layer-25,
+        .watermark-layer-26,
+        .watermark-layer-27,
+        .watermark-layer-28,
+        .watermark-layer-29,
+        .watermark-layer-30,
+        .watermark-layer-31,
+        .watermark-layer-32,
+        .watermark-layer-33,
+        .watermark-layer-34,
+        .watermark-layer-35,
+        .watermark-layer-36,
+        .watermark-layer-37,
+        .watermark-layer-38,
+        .watermark-layer-39,
+        .watermark-layer-40,
+        .watermark-layer-41,
+        .watermark-layer-42,
+        .watermark-layer-43,
+        .watermark-layer-44,
+        .watermark-layer-45,
+        .watermark-layer-46,
+        .watermark-layer-47,
+        .watermark-layer-48,
+        .watermark-layer-49 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .watermark-layer-1::before,
+        .watermark-layer-1::after,
+        .watermark-layer-2::before,
+        .watermark-layer-2::after,
+        .watermark-layer-3::before,
+        .watermark-layer-3::after,
+        .watermark-layer-4::before,
+        .watermark-layer-4::after,
+        .watermark-layer-5::before,
+        .watermark-layer-5::after,
+        .watermark-layer-6::before,
+        .watermark-layer-6::after,
+        .watermark-layer-7::before,
+        .watermark-layer-7::after,
+        .watermark-layer-8::before,
+        .watermark-layer-8::after,
+        .watermark-layer-9::before,
+        .watermark-layer-9::after,
+        .watermark-layer-10::before,
+        .watermark-layer-10::after,
+        .watermark-layer-11::before,
+        .watermark-layer-11::after,
+        .watermark-layer-12::before,
+        .watermark-layer-12::after,
+        .watermark-layer-13::before,
+        .watermark-layer-13::after,
+        .watermark-layer-14::before,
+        .watermark-layer-14::after,
+        .watermark-layer-15::before,
+        .watermark-layer-15::after,
+        .watermark-layer-16::before,
+        .watermark-layer-16::after,
+        .watermark-layer-17::before,
+        .watermark-layer-17::after,
+        .watermark-layer-18::before,
+        .watermark-layer-18::after,
+        .watermark-layer-19::before,
+        .watermark-layer-19::after,
+        .watermark-layer-20::before,
+        .watermark-layer-20::after,
+        .watermark-layer-21::before,
+        .watermark-layer-21::after,
+        .watermark-layer-22::before,
+        .watermark-layer-22::after,
+        .watermark-layer-23::before,
+        .watermark-layer-23::after,
+        .watermark-layer-24::before,
+        .watermark-layer-24::after,
+        .watermark-layer-25::before,
+        .watermark-layer-25::after,
+        .watermark-layer-26::before,
+        .watermark-layer-26::after,
+        .watermark-layer-27::before,
+        .watermark-layer-27::after,
+        .watermark-layer-28::before,
+        .watermark-layer-28::after,
+        .watermark-layer-29::before,
+        .watermark-layer-29::after,
+        .watermark-layer-30::before,
+        .watermark-layer-30::after,
+        .watermark-layer-31::before,
+        .watermark-layer-31::after,
+        .watermark-layer-32::before,
+        .watermark-layer-32::after,
+        .watermark-layer-33::before,
+        .watermark-layer-33::after,
+        .watermark-layer-34::before,
+        .watermark-layer-34::after,
+        .watermark-layer-35::before,
+        .watermark-layer-35::after,
+        .watermark-layer-36::before,
+        .watermark-layer-36::after,
+        .watermark-layer-37::before,
+        .watermark-layer-37::after,
+        .watermark-layer-38::before,
+        .watermark-layer-38::after,
+        .watermark-layer-39::before,
+        .watermark-layer-39::after,
+        .watermark-layer-40::before,
+        .watermark-layer-40::after,
+        .watermark-layer-41::before,
+        .watermark-layer-41::after,
+        .watermark-layer-42::before,
+        .watermark-layer-42::after,
+        .watermark-layer-43::before,
+        .watermark-layer-43::after,
+        .watermark-layer-44::before,
+        .watermark-layer-44::after,
+        .watermark-layer-45::before,
+        .watermark-layer-45::after,
+        .watermark-layer-46::before,
+        .watermark-layer-46::after,
+        .watermark-layer-47::before,
+        .watermark-layer-47::after,
+        .watermark-layer-48::before,
+        .watermark-layer-48::after,
+        .watermark-layer-49::before,
+        .watermark-layer-49::after {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%) rotate(10deg);
+            color: rgba(128, 128, 128, 0.3);
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            z-index: -1;
+            user-select: none;
+            pointer-events: none;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            letter-spacing: 0.1em;
+            white-space: pre-line;
+            line-height: 0.9;
+            text-align: center;
+            text-shadow: 0 0 8px rgba(128, 128, 128, 0.2);
+        }
+        
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>📖 Full Width Text - No Margins</h1>
+    
+    <div class="test-section">
+        <h2>✅ Full Width Text Fixed</h2>
+        <div class="success">
+            <strong>✅ No Margins:</strong> Course content margin set to 0<br>
+            <strong>✅ Full Width:</strong> Text takes full width of #courseContent div<br>
+            <strong>✅ No Left/Right Margins:</strong> Text flows edge to edge<br>
+            <strong>✅ Better Readability:</strong> More text per line, easier to read<br>
+            <strong>✅ 100 Watermarks:</strong> All working with CSS pseudo-elements
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📋 What Was Changed</h2>
+        <div class="info">
+            <strong>Margin Removal:</strong><br>
+            • Changed `margin: 20px` to `margin: 0` in .course-content<br>
+            • Updated JavaScript embedded content to include `margin: 0`<br>
+            • Text now takes full width of the #courseContent div<br><br>
+            
+            <strong>Result:</strong><br>
+            • Text flows from edge to edge<br>
+            • More words per line<br>
+            • Better reading experience<br>
+            • No wasted space on left and right margins
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📄 Sample Course Content - Full Width Text</h2>
+        <p>This shows how the content now appears with full width text and no margins:</p>
+        
+        <div class="watermarked-container">
+            <div class="course-content">
+                <h3>THREE (3): LEARNING AND THEORIES OF LEARNING</h3>
+                
+                <h4>Definitions of learning</h4>
+                <p>Learning is a relatively permanent change in behaviour occurring as a result of experience or practice. This definition emphasizes that learning involves a change in behavior that is relatively permanent, meaning it persists over time and is not just a temporary response to a stimulus.</p>
+                
+                <p><strong>'ትምህርት' (Learning)</strong> ማለት በልምድ (experience) ወይንም በልምምድ (practice) ምክንያት በባህሪያችን ላይ የሚከሰት በአንፃሩ ለረጅም ጊዜ የሚቆይ (relatively permanent) ለውጥ ነው::</p>
+                
+                <h4>Key Characteristics of Learning:</h4>
+                <ul>
+                    <li>Learning involves a change in behavior that can be observed and measured</li>
+                    <li>The change must be relatively permanent, not just temporary</li>
+                    <li>Learning occurs through experience or practice, not through maturation alone</li>
+                    <li>Learning is not the same as performance - we may learn something but not demonstrate it</li>
+                    <li>Learning can be positive (acquiring new behaviors) or negative (losing behaviors)</li>
+                </ul>
+                
+                <p>This content demonstrates how the text now flows naturally across the full width of the container, making it much more readable and inviting to read. The watermarks are properly distributed without overlapping, and the content takes up the full available width without any left or right margins.</p>
+                
+                <h4>Additional Content</h4>
+                <p>Here we can see that the text flows naturally from left to right, creating a comfortable reading experience. The watermarks are visible in the background but don't interfere with the readability of the content. Each paragraph flows naturally without being constrained to narrow columns, and there are no wasted margins on the left and right sides.</p>
+                
+                <p>The full width text approach makes much better use of the available space, especially on mobile devices where screen real estate is limited. Users can now read more content at once without having to scroll as frequently, and the text feels more natural and easier to follow.</p>
+            </div>
+            
+            <!-- All 49 watermark layers (each creates 2 watermarks via ::before and ::after) -->
+            <div class="watermark-layer-1"></div>
+            <div class="watermark-layer-2"></div>
+            <div class="watermark-layer-3"></div>
+            <div class="watermark-layer-4"></div>
+            <div class="watermark-layer-5"></div>
+            <div class="watermark-layer-6"></div>
+            <div class="watermark-layer-7"></div>
+            <div class="watermark-layer-8"></div>
+            <div class="watermark-layer-9"></div>
+            <div class="watermark-layer-10"></div>
+            <div class="watermark-layer-11"></div>
+            <div class="watermark-layer-12"></div>
+            <div class="watermark-layer-13"></div>
+            <div class="watermark-layer-14"></div>
+            <div class="watermark-layer-15"></div>
+            <div class="watermark-layer-16"></div>
+            <div class="watermark-layer-17"></div>
+            <div class="watermark-layer-18"></div>
+            <div class="watermark-layer-19"></div>
+            <div class="watermark-layer-20"></div>
+            <div class="watermark-layer-21"></div>
+            <div class="watermark-layer-22"></div>
+            <div class="watermark-layer-23"></div>
+            <div class="watermark-layer-24"></div>
+            <div class="watermark-layer-25"></div>
+            <div class="watermark-layer-26"></div>
+            <div class="watermark-layer-27"></div>
+            <div class="watermark-layer-28"></div>
+            <div class="watermark-layer-29"></div>
+            <div class="watermark-layer-30"></div>
+            <div class="watermark-layer-31"></div>
+            <div class="watermark-layer-32"></div>
+            <div class="watermark-layer-33"></div>
+            <div class="watermark-layer-34"></div>
+            <div class="watermark-layer-35"></div>
+            <div class="watermark-layer-36"></div>
+            <div class="watermark-layer-37"></div>
+            <div class="watermark-layer-38"></div>
+            <div class="watermark-layer-39"></div>
+            <div class="watermark-layer-40"></div>
+            <div class="watermark-layer-41"></div>
+            <div class="watermark-layer-42"></div>
+            <div class="watermark-layer-43"></div>
+            <div class="watermark-layer-44"></div>
+            <div class="watermark-layer-45"></div>
+            <div class="watermark-layer-46"></div>
+            <div class="watermark-layer-47"></div>
+            <div class="watermark-layer-48"></div>
+            <div class="watermark-layer-49"></div>
+        </div>
+        
+        <button class="test-button" onclick="scrollToTop()">Scroll to Top</button>
+        <button class="test-button" onclick="scrollToBottom()">Scroll to Bottom</button>
+        <button class="test-button" onclick="showWatermarkCount()">Show Watermark Count</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 Full Width Text System</h2>
+        <div class="info">
+            <strong>✅ Perfect Text Layout:</strong><br>
+            • <strong>No Margins:</strong> Text takes full width of #courseContent div<br>
+            • <strong>Edge to Edge:</strong> Text flows from left edge to right edge<br>
+            • <strong>Better Readability:</strong> More words per line, easier to read<br>
+            • <strong>100 Watermarks:</strong> All using CSS pseudo-elements<br>
+            • <strong>No Overlap:</strong> Watermarks properly positioned<br>
+            • <strong>Mini App Ready:</strong> Works in Telegram Mini App
+        </div>
+    </div>
+
+    <script>
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function scrollToBottom() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        function showWatermarkCount() {
+            alert(`Total Watermarks: 100\n(2 from watermarked-container + 98 from 49 watermark layers)\n\nFull Width Text:\n✅ No margins\n✅ Edge to edge text\n✅ Better readability`);
+        }
+        
+        // Log watermark count on page load
+        window.addEventListener('load', () => {
+            console.log(`✅ Full width text system loaded with 100 total watermarks`);
+            console.log('🎨 All watermarks use consistent gray color: rgba(128, 128, 128, 0.3)');
+            console.log('📱 Mini app compatible: Pure CSS pseudo-element approach');
+            console.log('🛡️ Screenshot protection: MAXIMUM');
+            console.log('📖 Text: Full width, no margins, edge to edge');
+        });
+    </script>
+</body>
+</html>

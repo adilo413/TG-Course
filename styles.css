@@ -2178,7 +2178,7 @@ body {
     /* Removed background to allow watermark to show through */
     padding: 20px;
     border-radius: 12px;
-    margin: 20px;
+    margin: 0;
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
     width: 100%;
     max-width: none;
