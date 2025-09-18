@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test New Channel Configurations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test New Channel Configurations</h1>
+    
+    <div class="test-section">
+        <h2>📋 Channel Information</h2>
+        <div class="info">
+            <strong>Channel 1:</strong> Bright Class-B (ID: -1003037484094)
+            <br><strong>Channel 2:</strong> Bright Class-A (ID: -1003019067966)
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔍 Test Membership Check</h2>
+        <p>Test if the membership check function works with the new channels:</p>
+        
+        <button class="test-button" onclick="testMembership('brightclassb')">
+            Test Bright Class-B Membership
+        </button>
+        
+        <button class="test-button" onclick="testMembership('brightclassa')">
+            Test Bright Class-A Membership
+        </button>
+        
+        <div id="membershipResult" class="result" style="display: none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>📤 Test Post to Channel</h2>
+        <p>Test if the post to channel function works with the new channels:</p>
+        
+        <button class="test-button" onclick="testPostToChannel('brightclassb')">
+            Test Post to Bright Class-B
+        </button>
+        
+        <button class="test-button" onclick="testPostToChannel('brightclassa')">
+            Test Post to Bright Class-A
+        </button>
+        
+        <div id="postResult" class="result" style="display: none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔗 Test Course Link Generation</h2>
+        <p>Test if the course link generation works correctly:</p>
+        
+        <button class="test-button" onclick="testCourseLink()">
+            Test Course Link Generation
+        </button>
+        
+        <div id="linkResult" class="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://jakqyuawjtkoupackdmo.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impha3F5dWF3anRrb3VwYWNrZG1vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwOTAyNDcsImV4cCI6MjA3MzY2NjI0N30.DWpYBUtI_uM0WyhvB_qML6CTrCviZV-ZS8mqWKmihRs';
+        
+        // Test user ID (replace with actual user ID for testing)
+        const TEST_USER_ID = '8072788083';
+        const TEST_COURSE_ID = 'test-course-123';
+        const TEST_COURSE_TITLE = 'Test Course - New Channel Configuration';
+
+        async function testMembership(channelType) {
+            const resultDiv = document.getElementById('membershipResult');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result info';
+            resultDiv.textContent = `Testing membership check for ${channelType}...`;
+
+            try {
+                const response = await fetch(`${SUPABASE_URL}/functions/v1/check-membership`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    },
+                    body: JSON.stringify({
+                        telegramUserId: TEST_USER_ID,
+                        channelType: channelType
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = `✅ Membership check successful for ${channelType}:
+Status: ${data.isMember ? 'Member' : 'Not a member'}
+Member Status: ${data.memberStatus}
+Channel: ${data.channelName}
+User: ${data.user.first_name} ${data.user.last_name || ''}`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ Membership check failed for ${channelType}:
+Error: ${data.error}
+Details: ${data.details || 'No details provided'}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Network error for ${channelType}:
+${error.message}`;
+            }
+        }
+
+        async function testPostToChannel(channelType) {
+            const resultDiv = document.getElementById('postResult');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result info';
+            resultDiv.textContent = `Testing post to channel for ${channelType}...`;
+
+            try {
+                // Generate a test course link
+                const testCourseLink = `https://t.me/tutor_tiial_bot/CourseViewer?startapp=${TEST_COURSE_ID}_test-token-123`;
+
+                const response = await fetch(`${SUPABASE_URL}/functions/v1/post-to-channel`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    },
+                    body: JSON.stringify({
+                        courseTitle: TEST_COURSE_TITLE,
+                        courseLink: testCourseLink,
+                        channelType: channelType
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = `✅ Post to channel successful for ${channelType}:
+Message ID: ${data.messageId}
+Channel: ${data.channelName}
+Message: ${data.message}`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ Post to channel failed for ${channelType}:
+Error: ${data.error}
+Details: ${data.details || 'No details provided'}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Network error for ${channelType}:
+${error.message}`;
+            }
+        }
+
+        async function testCourseLink() {
+            const resultDiv = document.getElementById('linkResult');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result info';
+            resultDiv.textContent = 'Testing course link generation...';
+
+            try {
+                // Test the course link format
+                const testToken = 'test-token-123';
+                const courseLink = `https://t.me/tutor_tiial_bot/CourseViewer?startapp=${TEST_COURSE_ID}_${testToken}`;
+                
+                resultDiv.className = 'result success';
+                resultDiv.textContent = `✅ Course link generation test:
+Course ID: ${TEST_COURSE_ID}
+Token: ${testToken}
+Generated Link: ${courseLink}
+
+This link format should work with the Telegram Mini App.`;
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Course link generation error:
+${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
