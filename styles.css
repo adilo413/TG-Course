@@ -2180,11 +2180,13 @@ body {
     border-radius: 12px;
     margin: 20px;
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
-    max-width: 100%;
+    width: 100%;
+    max-width: none;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
     box-sizing: border-box;
+    text-align: left;
 }
 
 /* Preserve inline color styles from rich text editor */
@@ -2300,6 +2302,8 @@ body {
     /* Establish a positioning context for the pseudo-element */
     position: relative;
     overflow: hidden;
+    width: 100%;
+    min-height: 100vh;
 }
 
 /* Multiple watermarks using ::before and ::after pseudo-elements */
@@ -2445,7 +2449,65 @@ body {
 .watermark-layer-49::before { content: 'BRIGHT\A FRESH'; top: 98%; }
 .watermark-layer-49::after { content: 'BRIGHT\A FRESH'; top: 99%; }
 
-/* Base styles for all watermark layers */
+/* Base styles for all watermark layers - ensure proper positioning */
+.watermark-layer-1,
+.watermark-layer-2,
+.watermark-layer-3,
+.watermark-layer-4,
+.watermark-layer-5,
+.watermark-layer-6,
+.watermark-layer-7,
+.watermark-layer-8,
+.watermark-layer-9,
+.watermark-layer-10,
+.watermark-layer-11,
+.watermark-layer-12,
+.watermark-layer-13,
+.watermark-layer-14,
+.watermark-layer-15,
+.watermark-layer-16,
+.watermark-layer-17,
+.watermark-layer-18,
+.watermark-layer-19,
+.watermark-layer-20,
+.watermark-layer-21,
+.watermark-layer-22,
+.watermark-layer-23,
+.watermark-layer-24,
+.watermark-layer-25,
+.watermark-layer-26,
+.watermark-layer-27,
+.watermark-layer-28,
+.watermark-layer-29,
+.watermark-layer-30,
+.watermark-layer-31,
+.watermark-layer-32,
+.watermark-layer-33,
+.watermark-layer-34,
+.watermark-layer-35,
+.watermark-layer-36,
+.watermark-layer-37,
+.watermark-layer-38,
+.watermark-layer-39,
+.watermark-layer-40,
+.watermark-layer-41,
+.watermark-layer-42,
+.watermark-layer-43,
+.watermark-layer-44,
+.watermark-layer-45,
+.watermark-layer-46,
+.watermark-layer-47,
+.watermark-layer-48,
+.watermark-layer-49 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
 .watermark-layer-1::before,
 .watermark-layer-1::after,
 .watermark-layer-2::before,

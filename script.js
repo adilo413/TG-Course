@@ -739,8 +739,8 @@ class CourseManager {
         }
         
         // Wrap content in watermarked container with all watermark layers
-        return `<div class="watermarked-container" style="position: relative; overflow: hidden; width: 100%;">
-            <div class="course-content" style="position: relative; z-index: 1; width: 100%;">
+        return `<div class="watermarked-container" style="position: relative; overflow: hidden; width: 100%; min-height: 100vh;">
+            <div class="course-content" style="position: relative; z-index: 1; width: 100%; max-width: none; padding: 20px; line-height: 1.8; font-size: 1.1rem; text-align: left;">
                 ${content}
             </div>
             ${watermarkLayersHTML}
