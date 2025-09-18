@@ -2482,12 +2482,6 @@ body {
 .watermark-99 { top: 98%; }
 .watermark-100 { top: 99%; }
 
-/* Light theme watermarks */
-[data-theme="light"] .watermarked-container::before {
-    color: rgba(128, 128, 128, 0.3);
-    text-shadow: 0 0 8px rgba(128, 128, 128, 0.2);
-}
-
 /* Embedded watermarks in course content - ensure gray color */
 .additional-watermark {
     color: rgba(128, 128, 128, 0.3) !important;
@@ -2498,6 +2492,12 @@ body {
 [data-theme="light"] .additional-watermark {
     color: rgba(128, 128, 128, 0.3) !important;
     text-shadow: 0 0 8px rgba(128, 128, 128, 0.2) !important;
+}
+
+/* Light theme watermarks */
+[data-theme="light"] .watermarked-container::before {
+    color: rgba(128, 128, 128, 0.3);
+    text-shadow: 0 0 8px rgba(128, 128, 128, 0.2);
 }
 
 [data-theme="light"] .watermarked-container::after {

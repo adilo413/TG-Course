@@ -734,12 +734,12 @@ class CourseManager {
         
         // Add all 100 watermarks (3-100, since 1-2 are pseudo-elements)
         for (let i = 3; i <= 100; i++) {
-            watermarkHTML += `<div class="additional-watermark watermark-${i}" style="position: absolute; color: rgba(128, 128, 128, 0.3); font-size: 2.2rem; font-weight: 900; text-transform: uppercase; z-index: -1; user-select: none; pointer-events: none; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; letter-spacing: 0.1em; line-height: 0.9; text-align: center; text-shadow: 0 0 8px rgba(128, 128, 128, 0.2); left: 50%; transform: translateX(-50%) rotate(10deg); top: ${i-1}%;">BRIGHT<br>FRESH</div>`;
+            watermarkHTML += `<div class="additional-watermark watermark-${i}" style="position: absolute; color: rgba(128, 128, 128, 0.3) !important; font-size: 2.2rem; font-weight: 900; text-transform: uppercase; z-index: -1; user-select: none; pointer-events: none; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; letter-spacing: 0.1em; line-height: 0.9; text-align: center; text-shadow: 0 0 8px rgba(128, 128, 128, 0.2) !important; left: 50%; transform: translateX(-50%) rotate(10deg); top: ${i-1}%;">BRIGHT<br>FRESH</div>`;
         }
         
         // Wrap content in watermarked container with all watermarks
-        return `<div class="watermarked-container" style="position: relative; overflow: hidden;">
-            <div class="course-content" style="position: relative; z-index: 1;">
+        return `<div class="watermarked-container" style="position: relative; overflow: hidden; width: 100%;">
+            <div class="course-content" style="position: relative; z-index: 1; width: 100%;">
                 ${content}
             </div>
             ${watermarkHTML}
