@@ -30,6 +30,8 @@ const supabaseClient = initializeSupabase();
 class SupabaseAPI {
     constructor() {
         this.client = supabaseClient;
+        this.supabaseUrl = SUPABASE_URL;
+        this.supabaseKey = SUPABASE_ANON_KEY;
         if (!this.client) {
             console.error('❌ SupabaseAPI: No client available');
         } else {
@@ -408,14 +410,21 @@ class SupabaseAPI {
     }
 
     // Channel Membership Check
-    async checkChannelMembership(telegramUserId, channelId) {
+    async checkChannelMembership(telegramUserId, channelType) {
         try {
+            console.log('🔍 SupabaseAPI.checkChannelMembership called with:', {
+                telegramUserId,
+                channelType
+            });
+            
             const { data, error } = await this.client.functions.invoke('check-membership', {
                 body: {
                     telegramUserId: telegramUserId,
-                    channelId: channelId
+                    channelType: channelType
                 }
             });
+
+            console.log('📋 SupabaseAPI.checkChannelMembership response:', { data, error });
 
             if (error) throw error;
             return data;

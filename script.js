@@ -1230,7 +1230,7 @@ class CourseManager {
                 // Find course for display
                 const course = this.courses.find(c => c.course_id === courseId);
                 if (course) {
-                    this.showLinkModal(course.title, telegramLink, miniAppUrl, directLink);
+                    this.showLinkModal(course.title, telegramLink, miniAppUrl, directLink, courseId);
                 }
                 
                 // Refresh the courses list
@@ -1255,7 +1255,7 @@ class CourseManager {
         return token;
     }
 
-    showLinkModal(title, telegramLink, miniAppUrl, directLink) {
+    showLinkModal(title, telegramLink, miniAppUrl, directLink, courseId) {
         const modal = document.createElement('div');
         modal.className = 'link-modal';
         modal.innerHTML = `
@@ -1282,15 +1282,20 @@ class CourseManager {
                         </p>
                     </div>
                     
-                    <div style="margin: 15px 0;">
-                        <h4 style="color: #e74c3c; margin-bottom: 10px;">🚀 Auto-Upload to Channel</h4>
-                        <button class="btn-upload" onclick="window.courseManager.uploadToChannel('${title}', '${telegramLink}')">
-                            <i class="fas fa-paper-plane"></i> Post to Channel
-                        </button>
-                        <p style="font-size: 12px; color: #666; margin-top: 5px;">
-                            Automatically post this course link to your private channel
-                        </p>
-                    </div>
+                     <div style="margin: 15px 0;">
+                         <h4 style="color: #e74c3c; margin-bottom: 10px;">🚀 Post to Channels</h4>
+                         <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                             <button class="btn-upload btn-post-1" onclick="window.courseManager.postToChannel('${courseId}', 'brightfresh')">
+                                 <i class="fas fa-paper-plane"></i> Post to BrightFresh
+                             </button>
+                             <button class="btn-upload btn-post-2" onclick="window.courseManager.postToChannel('${courseId}', 'brighttrial')">
+                                 <i class="fas fa-paper-plane"></i> Post to Bright Trial
+                             </button>
+                         </div>
+                         <p style="font-size: 12px; color: #666; margin-top: 5px;">
+                             Automatically post this course link to your channels
+                         </p>
+                     </div>
                     
                     <div style="margin: 15px 0;">
                         <h4 style="color: #28a745; margin-bottom: 10px;">🔗 Direct Link (For Testing)</h4>
@@ -1703,18 +1708,57 @@ class CourseManager {
                 return;
             }
 
-            // Check channel membership
+            // Check channel membership based on course's channel type
             console.log('🔍 Checking channel membership...');
-            const membershipResult = await this.api.checkChannelMembership(
+            console.log('📋 Course data:', course);
+            console.log('📋 Course channel_type:', course.channel_type);
+            
+            let channelType = 'brightfresh'; // Default to BrightFresh
+            
+            // If course has channel_type info, use that
+            if (course.channel_type) {
+                channelType = course.channel_type;
+                console.log(`📢 Course was posted to: ${channelType}`);
+            } else {
+                console.log('📢 No channel info found, checking both channels...');
+            }
+            
+            // Check the specific channel first
+            console.log(`🔍 Checking membership for channel: ${channelType}`);
+            console.log(`🔍 User ID: ${this.telegramUser.id}`);
+            
+            console.log(`🔍 About to call checkChannelMembership with:`, {
+                telegramUserId: this.telegramUser.id,
+                channelType: channelType
+            });
+            
+            let membershipResult = await this.api.checkChannelMembership(
                 this.telegramUser.id, 
-                '-1003004502647' // Your channel ID from important-links
+                channelType
             );
             
+            console.log(`📋 Membership result for ${channelType}:`, membershipResult);
+            
+            // If not a member of the specific channel, check the other channel as fallback
             if (!membershipResult.success || !membershipResult.isMember) {
-                console.log('❌ User is not a channel member:', membershipResult);
+                const fallbackChannel = channelType === 'brightfresh' ? 'brighttrial' : 'brightfresh';
+                console.log(`❌ Not a member of ${channelType}, checking ${fallbackChannel}...`);
+                
+                membershipResult = await this.api.checkChannelMembership(
+                    this.telegramUser.id, 
+                    fallbackChannel
+                );
+                
+                console.log(`📋 Membership result for ${fallbackChannel}:`, membershipResult);
+            }
+            
+            if (!membershipResult.success || !membershipResult.isMember) {
+                console.log('❌ User is not a member of any channel:', membershipResult);
                 this.showScreen('accessDenied');
                 return;
             }
+            
+            console.log(`✅ Channel membership verified for ${membershipResult.channelName}`);
             
             console.log('✅ Channel membership verified, loading content...');
 
@@ -2271,6 +2315,96 @@ class CourseManager {
         } catch (error) {
             console.error('❌ Error saving subjects to database:', error);
             return false;
+        }
+    }
+
+    async postToChannel(courseId, channelType) {
+        try {
+            // Find the course
+            const course = this.courses.find(c => c.course_id === courseId);
+            if (!course) {
+                this.showMessage('Course not found', 'error');
+                return;
+            }
+
+            // Channel configurations
+            const channelConfigs = {
+                'brightfresh': {
+                    name: 'BrightFresh'
+                },
+                'brighttrial': {
+                    name: 'Bright fo trial'
+                }
+            };
+
+            const channel = channelConfigs[channelType];
+            if (!channel) {
+                this.showMessage('Invalid channel type', 'error');
+                return;
+            }
+
+            // Generate course link first
+            const result = await this.api.generateCourseToken(courseId);
+            if (!result.success) {
+                this.showMessage('Failed to generate course link', 'error');
+                return;
+            }
+
+            const token = result.token;
+            // Use the Telegram Mini App link format for posting to channels
+            const courseLink = `https://t.me/tutor_tiial_bot/CourseViewer?startapp=${courseId}_${token}`;
+            
+            console.log(`📢 Posting to ${channel.name} with link:`, courseLink);
+
+            // Show loading message
+            this.showMessage(`Posting to ${channel.name}...`, 'info');
+
+            // Post to channel using Supabase Edge Function
+            const response = await fetch(`${this.api.supabaseUrl}/functions/v1/post-to-channel`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.api.supabaseKey}`
+                },
+                body: JSON.stringify({
+                    courseTitle: course.title,
+                    courseLink: courseLink,
+                    channelType: channelType
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                this.showMessage(`Course posted to ${channel.name} successfully!`, 'success');
+                
+                // Update course with channel information for future reference
+                await this.updateCourseChannel(courseId, channelType);
+            } else {
+                this.showMessage(`Failed to post to ${channel.name}: ${data.error}`, 'error');
+            }
+
+        } catch (error) {
+            console.error('Post to channel error:', error);
+            this.showMessage('Failed to post to channel. Please try again.', 'error');
+        }
+    }
+
+    async updateCourseChannel(courseId, channelType) {
+        try {
+            // Update the course in the database to track which channel it was posted to
+            const result = await this.api.updateCourse(courseId, {
+                channel_type: channelType,
+                last_posted_at: new Date().toISOString()
+            });
+            
+            if (result.success) {
+                console.log(`✅ Course ${courseId} updated with channel type: ${channelType}`);
+            } else {
+                console.log(`⚠️ Failed to update course channel info: ${result.error}`);
+            }
+        } catch (error) {
+            console.error('Error updating course channel:', error);
         }
     }
 

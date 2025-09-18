@@ -13,11 +13,37 @@ serve(async (req) => {
   }
 
   try {
-    const { telegramUserId, channelId } = await req.json()
+    const { telegramUserId, channelType } = await req.json()
+    
+    console.log('🔍 check-membership function called with:', { telegramUserId, channelType })
 
-    if (!telegramUserId || !channelId) {
+    if (!telegramUserId || !channelType) {
+      console.log('❌ Missing parameters:', { telegramUserId, channelType })
       return new Response(
-        JSON.stringify({ error: 'Missing telegramUserId or channelId' }),
+        JSON.stringify({ error: 'Missing telegramUserId or channelType' }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      )
+    }
+
+    // Channel configurations (same as post-to-channel)
+    const channelConfigs = {
+      'brightfresh': {
+        id: '-1003004502647',
+        name: 'BrightFresh'
+      },
+      'brighttrial': {
+        id: '-1003037484094',
+        name: 'Bright fo trial'
+      }
+    }
+
+    const channel = channelConfigs[channelType]
+    if (!channel) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid channel type. Use "brightfresh" or "brighttrial"' }),
         { 
           status: 400, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -27,7 +53,9 @@ serve(async (req) => {
 
     // Get bot token from environment
     const botToken = Deno.env.get('BOT_TOKEN')
+    console.log('🔍 Bot token available:', !!botToken)
     if (!botToken) {
+      console.log('❌ Bot token not configured')
       return new Response(
         JSON.stringify({ error: 'Bot token not configured' }),
         { 
@@ -39,18 +67,25 @@ serve(async (req) => {
 
     // Check if user is a member of the channel
     const telegramApiUrl = `https://api.telegram.org/bot${botToken}/getChatMember`
+    console.log('🔍 Calling Telegram API:', { 
+      url: telegramApiUrl, 
+      chat_id: channel.id, 
+      user_id: parseInt(telegramUserId) 
+    })
+    
     const response = await fetch(telegramApiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        chat_id: channelId,
+        chat_id: channel.id,
         user_id: parseInt(telegramUserId)
       })
     })
 
     const data = await response.json()
+    console.log('📋 Telegram API response:', data)
 
     if (!data.ok) {
       console.error('Telegram API error:', data)
@@ -75,6 +110,8 @@ serve(async (req) => {
         success: true, 
         isMember,
         memberStatus: member.status,
+        channelName: channel.name,
+        channelType: channelType,
         user: {
           id: member.user.id,
           username: member.user.username,

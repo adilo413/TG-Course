@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Edge Functions</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        .result { margin: 10px 0; padding: 10px; background: #f5f5f5; border-radius: 3px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Edge Functions Test</h1>
+    
+    <div class="test-section">
+        <h3>Test check-membership Function</h3>
+        <button onclick="testCheckMembership()">Test check-membership</button>
+        <div id="checkMembershipResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test post-to-channel Function</h3>
+        <button onclick="testPostToChannel()">Test post-to-channel</button>
+        <div id="postToChannelResult" class="result"></div>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://jakqyuawjtkoupackdmo.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impha3F5dWF3anRrb3VwYWNrZG1vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwOTAyNDcsImV4cCI6MjA3MzY2NjI0N30.DWpYBUtI_uM0WyhvB_qML6CTrCviZV-ZS8mqWKmihRs';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        async function testCheckMembership() {
+            const resultDiv = document.getElementById('checkMembershipResult');
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                const { data, error } = await supabase.functions.invoke('check-membership', {
+                    body: {
+                        telegramUserId: '8072788083', // Test user ID - replace with your actual Telegram user ID
+                        channelType: 'brightfresh'
+                    }
+                });
+                
+                if (error) {
+                    resultDiv.innerHTML = `<div class="error">❌ Error: ${JSON.stringify(error, null, 2)}</div>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="success">✅ Success: ${JSON.stringify(data, null, 2)}</div>`;
+                }
+            } catch (err) {
+                resultDiv.innerHTML = `<div class="error">❌ Exception: ${err.message}</div>`;
+            }
+        }
+        
+        async function testPostToChannel() {
+            const resultDiv = document.getElementById('postToChannelResult');
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                const { data, error } = await supabase.functions.invoke('post-to-channel', {
+                    body: {
+                        courseTitle: 'Test Course',
+                        courseLink: 'https://t.me/tutor_tiial_bot/CourseViewer?startapp=test_123',
+                        channelType: 'brightfresh'
+                    }
+                });
+                
+                if (error) {
+                    resultDiv.innerHTML = `<div class="error">❌ Error: ${JSON.stringify(error, null, 2)}</div>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="success">✅ Success: ${JSON.stringify(data, null, 2)}</div>`;
+                }
+            } catch (err) {
+                resultDiv.innerHTML = `<div class="error">❌ Exception: ${err.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>

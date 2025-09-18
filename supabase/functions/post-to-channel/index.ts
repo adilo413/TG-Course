@@ -12,11 +12,34 @@ serve(async (req) => {
   }
 
   try {
-    const { courseTitle, courseLink, channelId } = await req.json()
+    const { courseTitle, courseLink, channelType } = await req.json()
 
-    if (!courseTitle || !courseLink || !channelId) {
+    if (!courseTitle || !courseLink || !channelType) {
       return new Response(
-        JSON.stringify({ error: 'Missing courseTitle, courseLink, or channelId' }),
+        JSON.stringify({ error: 'Missing courseTitle, courseLink, or channelType' }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      )
+    }
+
+    // Channel configurations
+    const channelConfigs = {
+      'brightfresh': {
+        id: '-1003004502647',
+        name: 'BrightFresh'
+      },
+      'brighttrial': {
+        id: '-1003037484094',
+        name: 'Bright fo trial'
+      }
+    }
+
+    const channel = channelConfigs[channelType]
+    if (!channel) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid channel type. Use "brightfresh" or "brighttrial"' }),
         { 
           status: 400, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -63,7 +86,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        chat_id: channelId,
+        chat_id: channel.id,
         text: message,
         parse_mode: 'HTML',
         disable_web_page_preview: false
@@ -91,7 +114,8 @@ serve(async (req) => {
       JSON.stringify({ 
         success: true, 
         messageId: data.result.message_id,
-        message: 'Course link posted to channel successfully'
+        channelName: channel.name,
+        message: `Course link posted to ${channel.name} successfully`
       }),
       { 
         status: 200, 

@@ -1625,6 +1625,69 @@ body {
     box-shadow: 0 3px 10px rgba(233, 151, 26, 0.3);
 }
 
+.btn-post-1 {
+    background: #3498db;
+    color: var(--text-white);
+}
+
+.btn-post-1:hover {
+    background: #2980b9;
+    color: var(--text-white);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3);
+}
+
+.btn-post-2 {
+    background: #9b59b6;
+    color: var(--text-white);
+}
+
+.btn-post-2:hover {
+    background: #8e44ad;
+    color: var(--text-white);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(155, 89, 182, 0.3);
+}
+
+/* Modal post buttons */
+.link-modal .btn-post-1 {
+    background: #3498db;
+    color: var(--text-white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    flex: 1;
+}
+
+.link-modal .btn-post-1:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3);
+}
+
+.link-modal .btn-post-2 {
+    background: #9b59b6;
+    color: var(--text-white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    flex: 1;
+}
+
+.link-modal .btn-post-2:hover {
+    background: #8e44ad;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(155, 89, 182, 0.3);
+}
+
 .btn-delete {
     background: var(--color-accent-1);
     color: var(--text-white);
