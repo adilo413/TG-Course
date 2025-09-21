@@ -59,7 +59,7 @@ supabase functions deploy post-to-channel
 For **each function**, you need to add environment variables:
 
 ### Environment Variables Needed:
-- **`BOT_TOKEN`**: `8480202227:AAGJkjHD7dTUFZiiAKUzeb_UHXCQ50XTNxQ`
+- **`BOT_TOKEN`**: `8093976132:AAGPMXwL61Y0xIirs9ieTKjX0ZTjP-4GSPw`
 
 ### How to Set Environment Variables:
 1. **Go to Edge Functions** in your Supabase dashboard

@@ -47,7 +47,7 @@ supabase functions deploy post-to-channel
 
 ### Step 4: Set Environment Variables
 For each function, add these environment variables:
-- `BOT_TOKEN`: `8480202227:AAGJkjHD7dTUFZiiAKUzeb_UHXCQ50XTNxQ`
+- `BOT_TOKEN`: `8093976132:AAGPMXwL61Y0xIirs9ieTKjX0ZTjP-4GSPw`
 
 ## Testing
 

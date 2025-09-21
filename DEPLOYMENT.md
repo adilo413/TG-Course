@@ -30,7 +30,7 @@ The channel membership verification requires a Supabase Edge Function. Here's ho
 
 5. **Set environment variables:**
    ```bash
-   supabase secrets set BOT_TOKEN=8480202227:AAGJkjHD7dTUFZiiAKUzeb_UHXCQ50XTNxQ
+   supabase secrets set BOT_TOKEN=8093976132:AAGPMXwL61Y0xIirs9ieTKjX0ZTjP-4GSPw
    ```
 
 #### **Option B: Manual Deployment via Supabase Dashboard**
@@ -48,7 +48,7 @@ The channel membership verification requires a Supabase Edge Function. Here's ho
 
 4. **Set Environment Variables:**
    - Go to "Settings" → "Edge Functions"
-   - Add secret: `BOT_TOKEN` = `8480202227:AAGJkjHD7dTUFZiiAKUzeb_UHXCQ50XTNxQ`
+   - Add secret: `BOT_TOKEN` = `8093976132:AAGPMXwL61Y0xIirs9ieTKjX0ZTjP-4GSPw`
 
 ### **2. Test the Implementation**
 
