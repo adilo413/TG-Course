@@ -1568,7 +1568,7 @@ class CourseManager {
             const result = await this.api.postCourseToChannel(
                 courseTitle, 
                 courseLink, 
-                '-1003004502647' // Your channel ID
+                '-1002730713649' // Your channel ID
             );
             
             if (result.success) {

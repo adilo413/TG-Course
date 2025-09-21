@@ -117,7 +117,7 @@ Content-Type: application/json
 - ✅ Ensure bot has permission to post to the channel
 
 ### Channel Access Issues
-- ✅ Verify `CHANNEL_CHAT_ID` is correct: `-1002798244043`
+- ✅ Verify `CHANNEL_CHAT_ID` is correct: `-1002730713649`
 - ✅ Ensure bot is admin in the channel
 
 ## 📝 Function URLs After Deployment
