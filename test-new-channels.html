@@ -164,7 +164,7 @@ ${error.message}`;
 
             try {
                 // Generate a test course link
-                const testCourseLink = `https://t.me/brightadmin_bot/course_viewer?startapp=${TEST_COURSE_ID}_test-token-123`;
+                const testCourseLink = `https://t.me/brightadmin_bot/CourseView?startapp=${TEST_COURSE_ID}_test-token-123`;
 
                 const response = await fetch(`${SUPABASE_URL}/functions/v1/post-to-channel`, {
                     method: 'POST',
@@ -209,7 +209,7 @@ ${error.message}`;
             try {
                 // Test the course link format
                 const testToken = 'test-token-123';
-                const courseLink = `https://t.me/brightadmin_bot/course_viewer?startapp=${TEST_COURSE_ID}_${testToken}`;
+                const courseLink = `https://t.me/brightadmin_bot/CourseView?startapp=${TEST_COURSE_ID}_${testToken}`;
                 
                 resultDiv.className = 'result success';
                 resultDiv.textContent = `✅ Course link generation test:

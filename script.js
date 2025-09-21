@@ -1412,7 +1412,7 @@ class CourseManager {
                 const token = result.token;
                 // Generate Telegram Mini App link that opens within Telegram
                 const miniAppUrl = `https://tg-course.vercel.app/#/course/${courseId}?token=${token}`;
-                const telegramLink = `https://t.me/brightadmin_bot/course_viewer?startapp=${courseId}_${token}`;
+                const telegramLink = `https://t.me/brightadmin_bot/CourseView?startapp=${courseId}_${token}`;
                 
                 // Also create a simple direct link for testing
                 const directLink = `https://tg-course.vercel.app/?course=${courseId}&token=${token}`;
@@ -2549,7 +2549,7 @@ class CourseManager {
 
             const token = result.token;
             // Use the Telegram Mini App link format for posting to channels
-            const courseLink = `https://t.me/brightadmin_bot/course_viewer?startapp=${courseId}_${token}`;
+            const courseLink = `https://t.me/brightadmin_bot/CourseView?startapp=${courseId}_${token}`;
             
             console.log(`📢 Posting to ${channel.name} with link:`, courseLink);
 

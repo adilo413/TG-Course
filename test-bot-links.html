@@ -85,7 +85,7 @@
             try {
                 // Test the course link format
                 const testToken = 'test-token-123';
-                const courseLink = `https://t.me/brightadmin_bot/course_viewer?startapp=${TEST_COURSE_ID}_${testToken}`;
+                const courseLink = `https://t.me/brightadmin_bot/CourseView?startapp=${TEST_COURSE_ID}_${testToken}`;
                 
                 resultDiv.className = 'result success';
                 resultDiv.innerHTML = `
@@ -114,7 +114,7 @@
             try {
                 // Generate a test course link
                 const testToken = 'test-token-123';
-                const courseLink = `https://t.me/brightadmin_bot/course_viewer?startapp=${TEST_COURSE_ID}_${testToken}`;
+                const courseLink = `https://t.me/brightadmin_bot/CourseView?startapp=${TEST_COURSE_ID}_${testToken}`;
 
                 const response = await fetch(`${SUPABASE_URL}/functions/v1/post-to-channel`, {
                     method: 'POST',
