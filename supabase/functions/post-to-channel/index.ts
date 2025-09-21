@@ -74,9 +74,13 @@ serve(async (req) => {
 
 🎯 <b>${escapedTitle}</b>
 
-🔗 Access the course: <a href="${courseLink}">${escapedTitle}</a>
+🔗 Access the course: <a href="${courseLink}">Click here to open course</a>
 
 💡 Click the link above to start learning!`;
+
+    // Debug: Log the course link being sent
+    console.log('🔗 Course link being sent:', courseLink);
+    console.log('📝 Full message:', message);
 
     // Send message to channel
     const telegramApiUrl = `https://api.telegram.org/bot${botToken}/sendMessage`
